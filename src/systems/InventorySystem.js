@@ -99,6 +99,12 @@ export class InventorySystem {
     this.changed();
   }
 
+  /** Yeniden doğuş: çantadaki tüm eşyalar silinir (Ruh Ağacı yuvaları korunur). */
+  clear() {
+    this.items.fill(null);
+    this.changed();
+  }
+
   changed() {
     this.game.bus.emit(Events.INVENTORY_CHANGED, this.items);
   }

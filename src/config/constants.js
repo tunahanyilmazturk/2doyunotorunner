@@ -24,6 +24,7 @@ export const INVENTORY_SIZE = 30;
 export const SHOP_SIZE = 6;
 export const SHOP_REFRESH_SECONDS = 300;
 export const MAX_POTIONS = 999;
+export const START_POTIONS = 3; // koşu başında (ve yeniden doğuşta) çantadaki iksir
 export const POTION_COOLDOWN = 3;
 export const AUTO_POTION_THRESHOLD = 0.35;
 

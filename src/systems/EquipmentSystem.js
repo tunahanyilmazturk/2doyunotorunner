@@ -74,6 +74,16 @@ export class EquipmentSystem {
     }
   }
 
+  /** Yeniden doğuş: kuşanılan her şey çıkarılır ve yok olur (envantere dönmez). */
+  clearRun() {
+    for (const slot of SLOT_ORDER) {
+      const previous = this.slots[slot];
+      if (!previous) continue;
+      this.slots[slot] = null;
+      this.game.bus.emit(Events.EQUIPMENT_CHANGED, { slot, item: null, previous });
+    }
+  }
+
   unequip(slot) {
     const item = this.slots[slot];
     if (!item) return false;

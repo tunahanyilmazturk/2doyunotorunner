@@ -2,12 +2,17 @@ import { Events } from '../core/events.js';
 import { UPGRADES, UPGRADE_MAP, upgradeCost as baseCost } from '../data/upgrades.js';
 
 const AUTO_INTERVAL = 0.5;
+// Yeniden doğuştan sonra otomatik alım kısa süre bekler; yoksa sıfırlanan
+// yükseltmeler ilk altınla birlikte anında geri alınıp "hiç sıfırlanmadı" gibi görünür.
+const AUTO_GRACE = 10;
 
 export class UpgradeSystem {
   constructor(game) {
     this.game = game;
     this.buyMode = 1; // 1 | 10 | 'max'
     this.autoTimer = 0;
+    this.autoPause = 0;
+    game.bus.on(Events.PRESTIGE, () => (this.autoPause = AUTO_GRACE));
   }
 
   /** Otomatik alım ilk yeniden doğuştan sonra açılır */
@@ -31,6 +36,10 @@ export class UpgradeSystem {
   /** İşaretli yükseltmelerden en ucuzunu (x1) alabildiği sürece alır */
   update(dt) {
     if (!this.autoEnabled) return;
+    if (this.autoPause > 0) {
+      this.autoPause = Math.max(0, this.autoPause - dt);
+      return;
+    }
     this.autoTimer -= dt;
     if (this.autoTimer > 0) return;
     this.autoTimer = AUTO_INTERVAL;

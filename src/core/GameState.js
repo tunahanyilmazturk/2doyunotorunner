@@ -1,4 +1,4 @@
-import { INVENTORY_SIZE, SAVE_VERSION } from '../config/constants.js';
+import { INVENTORY_SIZE, SAVE_VERSION, START_POTIONS } from '../config/constants.js';
 import { SLOT_ORDER } from '../data/items.js';
 import { SKILLS } from '../data/skills.js';
 import { UPGRADES } from '../data/upgrades.js';
@@ -8,6 +8,11 @@ import { UPGRADES } from '../data/upgrades.js';
 //
 // Okuma/doğrulama ve sürüm geçişleri `core/saveIntegrity.js` içindedir;
 // burası yalnızca "olması gereken şekli" tanımlar.
+//
+// KOŞU ALANLARI: `gold`dan `shop`a kadar olanlar tek bir yeniden doğuş koşusuna
+// aittir ve Yeniden Doğuş'ta sıfırlanır (bkz. `PrestigeSystem.resetRun`).
+// Alttakiler (Ruhlar, en iyi bölge, Ruh Ağacı, başarımlar, istatistikler, ayarlar)
+// kalıcıdır ve yeniden doğuştan etkilenmez.
 export function createDefaultState() {
   return {
     version: SAVE_VERSION,
@@ -25,7 +30,7 @@ export function createDefaultState() {
     upgradeAuto: Object.fromEntries(UPGRADES.map((u) => [u.id, true])), // otomatik alıma dahil mi
     inventory: new Array(INVENTORY_SIZE).fill(null),
     equipment: Object.fromEntries(SLOT_ORDER.map((s) => [s, null])),
-    potions: 3,
+    potions: START_POTIONS,
     elixirs: {}, // süreli iksirler: id → kalan saniye
 
     skills: Object.fromEntries(SKILLS.map((s) => [s.id, 0])),

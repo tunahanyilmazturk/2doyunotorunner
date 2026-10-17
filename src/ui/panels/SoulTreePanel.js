@@ -179,9 +179,10 @@ export class SoulTreePanel {
     const keep = this.game.tree.perk('goldKeep');
     const ok = await this.ui.modal.confirm(
       'Yeniden doğ?',
-      `Altın${keep ? ` (%${keep} korunur)` : ''}, altın yükseltmeleri ve bölge sıfırlanacak.
+      `Altın${keep ? ` (%${keep} korunur)` : ''}, altın yükseltmeleri, bölge, <b>envanter ve kuşanılan ekipman</b>,
+       yetenek seviyeleri, iksirler ve mağaza vitrini <b>sıfırlanacak</b>.
        <b>+${formatNumber(p.pendingSouls)} Ruh</b> kazanacak ve <b>${p.startStage}. bölgeden</b> başlayacaksın.
-       Envanter, ekipman, yetenekler ve Ruh Ağacı korunur.`,
+       Ruh Ağacı, Ruhlar, başarımlar ve istatistikler korunur.`,
       'Yeniden Doğ'
     );
     if (ok) p.prestige();

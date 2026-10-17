@@ -58,8 +58,9 @@ Beş haritanın hareketli önizlemesi: sunucu açıkken `/tools/map-preview.html
   Öfke, Demir Deri, Altın, Şans Parşömeni; süreleri kayıtla korunur)
 - **Tehlikeli düşmanlar** — bosslar her 4., elitler her 5. saldırıda zırhı yarı delen **ağır vuruş** yapar;
   öncesinde kırmızı parıltı ve "⚠ Ağır vuruş geliyor!" uyarısı çıkar
-- **Yeniden Doğuş + Ruh Ağacı** — 20. bölgeden sonra yeniden doğ (ilerleme durunca HUD öneri düğmesi çıkar), Ruh kazan ve 5 dallı, 25 düğümlü
-  teknoloji ağacında harca (aşağıya bak)
+- **Yeniden Doğuş + Ruh Ağacı** — 20. bölgeden sonra yeniden doğ (ilerleme durunca HUD öneri düğmesi çıkar): temiz bir koşu
+  başlar (envanter, ekipman, yetenekler, iksirler ve mağaza da sıfırlanır), Ruh kazanılır ve 5 dallı, 25 düğümlü
+  teknoloji ağacında harcanır (aşağıya bak)
 - **Kabus döngüleri** — her 50 bölgede biyomlar baştan döner ama canavarlar ×6 can, ×3.5 saldırı, ×3 altınla gelir;
   içerik hiç bitmez, her duvar yeniden doğmaya ve ağacı büyütmeye davet eder
 - **Çevrimdışı kazanç** — oyun kapalıyken altın (en fazla 8 saat). Sekme arka plana atıldığında oyun
@@ -76,8 +77,10 @@ Beş haritanın hareketli önizlemesi: sunucu açıkken `/tools/map-preview.html
 
 ## Ruh Ağacı
 
-Yeniden doğuşta altın, altın yükseltmeleri ve bölge sıfırlanır; Ruh kazanılır. Envanter, ekipman, yetenekler ve
-ağaç korunur. Kazanılan her Ruh ayrıca kalıcı **Ruh gücü** verir (+%0.5 saldırı/can/altın).
+Yeniden doğuşta altın, altın yükseltmeleri, bölge, **envanter ve kuşanılan ekipman**, yetenek seviyeleri,
+iksirler ve mağaza vitrini sıfırlanır; Ruh kazanılır — yani her yeniden doğuş temiz bir koşudur.
+Ruh Ağacı, Ruhlar, başarımlar ve istatistikler korunur. Kazanılan her Ruh ayrıca kalıcı **Ruh gücü** verir
+(+%0.5 saldırı/can/altın).
 Düğümler soldan sağa açılır (önceki düğümde en az 1 seviye gerekir); bazıları başka daldan da şart koşar.
 
 | Dal | Düğümler (soldan sağa) |
@@ -237,7 +240,7 @@ Ayarlar, kayıt işlemleri ve istatistikler üst bardaki ⚙️ butonundadır.
 ## Testler ve Denge
 
 ```bash
-npm test           # node:test — denge eğrisi, kayıt doğrulama, eşya setleri, kağıt bebek çerçevesi, ses eşlemesi, veri tutarlılığı
+npm test           # node:test — denge eğrisi, kayıt doğrulama, eşya setleri, kağıt bebek çerçevesi, yeniden doğuş sıfırlaması, ses eşlemesi, veri tutarlılığı
 npm run balance    # Bölge bölge güç tablosu ve duvarların yeri
 npm run balance 60 120   # yalnızca 60-120 aralığını göster (duvarlar tüm eğriden hesaplanır)
 ```

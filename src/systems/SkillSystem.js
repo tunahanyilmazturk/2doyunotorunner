@@ -15,13 +15,28 @@ export class SkillSystem {
   }
 
   /** Ruh Ağacı'ndan açılan yeteneklere 1. seviyeyi bedava verir. */
-  grantTreeSkills() {
+  grantTreeSkills({ silent = false } = {}) {
     for (const skill of SKILLS) {
       if (skill.tree && this.isUnlocked(skill) && this.level(skill.id) === 0) {
         this.state.skills[skill.id] = 1;
-        this.game.bus.emit(Events.SKILLS_CHANGED, { id: skill.id, level: 1 });
+        if (!silent) this.game.bus.emit(Events.SKILLS_CHANGED, { id: skill.id, level: 1 });
       }
     }
+  }
+
+  /**
+   * Yeniden doğuş: yetenek seviyeleri, bekleme süreleri ve aktif bufflar sıfırlanır.
+   * Ruh Ağacı'ndan açılan yetenekler ücretsiz 1. seviyesini geri alır (ağaç kalıcı).
+   */
+  resetRun() {
+    for (const skill of SKILLS) {
+      this.state.skills[skill.id] = 0;
+      this.cooldowns[skill.id] = 0;
+    }
+    this.buffs = {};
+    this.grantTreeSkills({ silent: true });
+    this.game.bus.emit(Events.SKILLS_CHANGED, { id: null, level: 0 });
+    this.game.bus.emit(Events.BUFFS_CHANGED, this.buffs);
   }
 
   /** Ruh Ağacı "Büyü Gücü" uygulanmış etki değeri */
