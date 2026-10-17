@@ -38,6 +38,12 @@ register('interface', [
   'export', 'import', 'reset', 'confirm', 'close', 'expand', 'collapse', 'link',
 ]);
 
+// Atlas ızgaraları tamamen dolu (her satır/hücre kullanılıyor), bu yüzden yeni
+// çizim eklemek yerine var olan simgeler paylaştırılır. Arayüz bu anahtarları
+// şablonla üretir (`achievement-${group}`), eksik olursa iconHTML fırlatır.
+ICONS['achievement-sets'] = { ...ICONS['achievement-items'] };
+ICONS['achievement-setTypes'] = { ...ICONS['achievement-gear'] };
+
 export function itemArtKey(item) {
   const type = item.slot === 'weapon' ? (item.kind || 'sword') : item.slot;
   const level = Number(item.level) || 1;
@@ -69,7 +75,7 @@ export function icon(key, label = '') {
 
 // Legacy text decorations share the same art, including prices, hints and toasts.
 // Specific content (skills, equipment, achievements) uses explicit keys instead.
-const aliases = {
+export const aliases = {
   '🎒': 'inventory', '⬆️': 'menu-upgrades', '✨': 'menu-skills', '🔨': 'menu-forge', '🏪': 'menu-shop', '🏆': 'menu-achievements', '🌳': 'menu-prestige',
   '⚙️': 'settings', '🪙': 'gold', '💰': 'gold', '👻': 'soul', '❤️': 'health', '♥': 'health', '💾': 'save', '🔒': 'lock', '⚡': 'equip-best', '📊': 'stats',
   '🪖': 'item-helmet-1', '📿': 'item-amulet-2', '🧣': 'item-cape-1', '⚔️': 'combat', '🛡️': 'item-shield-1', '🦺': 'item-armor-2', '🧤': 'item-gloves-1', '🪢': 'item-belt-1', '💍': 'item-ring-2', '👢': 'item-boots-1',
@@ -80,7 +86,7 @@ const aliases = {
 };
 const escapedAliases = Object.keys(aliases).sort((a, b) => b.length - a.length).map((s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
 const pattern = new RegExp(`\\[\\[icon:([a-zA-Z0-9-]+)\\]\\]|${escapedAliases.join('|')}`, 'gu');
-const ignored = 'script, style, textarea, input, select, option, canvas, .pixel-icon, [contenteditable="true"]';
+const ignored = 'script, style, textarea, input, select, option, canvas, .pixel-icon, [data-raw-icon], [contenteditable="true"]';
 
 export function iconRuns(text) {
   pattern.lastIndex = 0;
@@ -118,11 +124,23 @@ function replaceText(node) {
   for (const match of node.data.matchAll(pattern)) {
     content.append(document.createTextNode(node.data.slice(last, match.index)));
     const key = match[1] || aliases[match[0]];
-    content.append(ICONS[key] ? icon(key) : document.createTextNode(match[0]));
+    content.append(ICONS[key] ? icon(key) : rawToken(match[0]));
     last = match.index + match[0].length;
   }
   content.append(document.createTextNode(node.data.slice(last)));
   node.replaceWith(content);
+}
+
+/**
+ * Bilinmeyen anahtar/emoji: metni olduğu gibi korur ama `data-raw-icon` ile
+ * işaretler. İşaret olmadan bu metin yeniden taranır, her tarama aynı metni
+ * yeniden üretir ve MutationObserver sonsuz döngüye girer (sayfa kilitlenir).
+ */
+function rawToken(text) {
+  const span = document.createElement('span');
+  span.setAttribute('data-raw-icon', '');
+  span.textContent = text;
+  return span;
 }
 
 export function initIconTheme() {

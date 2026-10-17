@@ -7,7 +7,8 @@ import { humanoid } from './humanoid.js';
 
 export const FLY_HEIGHT = 50;
 
-const SHAPES = { slime, mushroom, ghost, humanoid, beast, flyer, serpent };
+/** Canavarların `shape` alanının geçerli değerleri (data/monsters.js ile eşleşmeli). */
+export const SHAPES = { slime, mushroom, ghost, humanoid, beast, flyer, serpent };
 
 export function drawMonster(ctx, m) {
   const def = m.def;

@@ -1,11 +1,11 @@
 import { Balance } from '../config/balance.js';
-import { BOSS_TIME_LIMIT, GAME_SPEEDS, KILLS_PER_STAGE, POTION_COOLDOWN } from '../config/constants.js';
+import { GAME_SPEEDS, KILLS_PER_STAGE, POTION_COOLDOWN } from '../config/constants.js';
 import { Events } from '../core/events.js';
 import { getBiome, getBiomeTitle, getCycle } from '../data/biomes.js';
 import { getRarity } from '../data/rarities.js';
 import { iconToken, itemArtKey } from './icons.js';
 import { SKILLS } from '../data/skills.js';
-import { $, el } from '../utils/dom.js';
+import { $, el, setText } from '../utils/dom.js';
 import { formatNumber } from '../utils/format.js';
 
 // Üst bar + oyun alanı üzerindeki bilgi katmanı + yetenek/iksir çubuğu.
@@ -171,35 +171,43 @@ export class HUD {
     const { state, player } = game;
     const stats = game.stats.get();
 
-    els.gold.textContent = formatNumber(state.gold);
-    els.gps.textContent = `${formatNumber(state.stats.goldPerSec)}/sn`;
-    els.souls.textContent = formatNumber(state.souls);
+    setText(els.gold, formatNumber(state.gold));
+    setText(els.gps, `${formatNumber(state.stats.goldPerSec)}/sn`);
+    setText(els.souls, formatNumber(state.souls));
 
     els.hpFill.style.width = `${player.hpRatio * 100}%`;
-    els.hpText.textContent = `${formatNumber(player.hp)} / ${formatNumber(player.maxHp)}`;
+    setText(els.hpText, `${formatNumber(player.hp)} / ${formatNumber(player.maxHp)}`);
     els.hpFill.classList.toggle('low', player.hpRatio < 0.3);
 
     const biome = getBiome(state.stage);
-    els.biome.textContent = getBiomeTitle(state.stage);
+    setText(els.biome, getBiomeTitle(state.stage));
     els.biome.classList.toggle('nightmare', getCycle(state.stage) > 0);
-    els.stage.textContent = `Bölge ${state.stage}`;
+    setText(els.stage, `Bölge ${state.stage}`);
 
     const spawn = game.spawn;
     const bossNext = spawn.isBossStage && state.autoAdvance && state.kills >= KILLS_PER_STAGE;
     const bossPhase = spawn.bossActive || bossNext;
     els.pips.classList.toggle('boss', bossPhase);
     this.pipEls.forEach((pip, i) => pip.classList.toggle('on', bossPhase || i < state.kills));
-    els.status.textContent = bossPhase ? '👑 Boss savaşı' : state.autoAdvance ? '' : 'Bu bölgede kasılıyor';
-    els.status.hidden = !els.status.textContent || spawn.bossActive;
+    const status = setText(els.status, bossPhase ? '👑 Boss savaşı' : state.autoAdvance ? '' : 'Bu bölgede kasılıyor');
+    els.status.hidden = !status || spawn.bossActive;
 
     els.bossTimer.hidden = !spawn.bossActive;
     if (spawn.bossActive) {
       els.bossFill.style.width = `${(spawn.bossTimer / spawn.bossTimeTotal) * 100}%`;
-      els.bossText.textContent = `${spawn.bossTimer.toFixed(1)} sn`;
+      // Kalan canı mevcut DPS ile eritmek için gereken süre sayacı aşıyorsa
+      // boss kaçacak; bunu önceden söyle (oyuncu boşuna beklemesin).
+      const boss = spawn.current;
+      const need = boss ? boss.hp / Math.max(0.001, stats.dps * stats.bossDmgMult) : 0;
+      const doomed = need > spawn.bossTimer;
+      els.bossTimer.classList.toggle('doomed', doomed);
+      setText(els.bossText, doomed ? `${spawn.bossTimer.toFixed(1)} sn · yetişmez` : `${spawn.bossTimer.toFixed(1)} sn`);
+    } else {
+      els.bossTimer.classList.remove('doomed');
     }
 
     els.bossBtn.hidden = state.autoAdvance;
-    els.dps.textContent = `${formatNumber(stats.dps)} hasar/sn`;
+    setText(els.dps, `${formatNumber(stats.dps)} hasar/sn`);
 
     this.updateActionBar();
     this.updateBuffs();
@@ -214,14 +222,14 @@ export class HUD {
       a.node.classList.toggle('ready', lvl > 0 && cd <= 0);
       a.node.classList.toggle('active', game.skills.buffRemaining(a.skill.id) > 0);
       a.cd.style.height = `${lvl > 0 ? game.skills.cooldownRatio(a.skill) * 100 : 0}%`;
-      a.timer.textContent = lvl > 0 && cd > 0 ? Math.ceil(cd) : '';
+      setText(a.timer, lvl > 0 && cd > 0 ? Math.ceil(cd) : '');
       a.auto.classList.toggle('on', lvl > 0 && game.state.skillAuto[a.skill.id]);
-      a.count.textContent = lvl > 0 ? lvl : '🔒';
+      setText(a.count, lvl > 0 ? lvl : '🔒');
     }
     const p = this.potion;
     p.cd.style.height = `${game.potions.cooldownRatio * 100}%`;
-    p.timer.textContent = game.potions.cooldown > 0 ? Math.ceil(game.potions.cooldown) : '';
-    p.count.textContent = game.state.potions;
+    setText(p.timer, game.potions.cooldown > 0 ? Math.ceil(game.potions.cooldown) : '');
+    setText(p.count, game.state.potions);
     p.auto.classList.toggle('on', game.state.settings.autoPotion);
     p.node.classList.toggle('locked', game.state.potions <= 0);
     p.node.classList.toggle('ready', game.state.potions > 0 && game.potions.cooldown <= 0);

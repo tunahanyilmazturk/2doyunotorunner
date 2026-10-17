@@ -8,12 +8,21 @@
 //   slot   → ekipman yuvası açar
 //   skill  → aktif yetenek açar
 //
-// Perk anahtarları:
-//   inventorySlots  envantere ek yuva        soulGain      yeniden doğuşta % fazla Ruh
-//   goldKeep        yeniden doğuşta korunan altın %   startStage  yeniden doğuştan sonra başlangıç bölgesi +
-//   discount        yükseltme ve mağaza indirimi %    bossTime    boss süresine ek saniye
-//   doubleDrop      çift eşya düşme şansı %           skillCooldown  yetenek bekleme süresi azalması %
-//   skillPower      yetenek etkisi %                  autoBoss     kasarken bir bölge sonra bossu kendiliğinden dene
+// Perk anahtarları: kodun `tree.perk('...')` ile okuduğu kurallar.
+// Bu liste makine tarafından denetlenir (test/data.test.js): bir düğüm burada
+// olmayan bir anahtar kullanırsa test kırılır.
+export const PERK_KEYS = [
+  'inventorySlots', // envantere ek yuva
+  'soulGain', // yeniden doğuşta % fazla Ruh
+  'goldKeep', // yeniden doğuşta korunan altın %
+  'startStage', // yeniden doğuştan sonra başlangıç bölgesi +
+  'discount', // yükseltme ve mağaza indirimi %
+  'bossTime', // boss süresine ek saniye
+  'doubleDrop', // çift eşya düşme şansı %
+  'skillCooldown', // yetenek bekleme süresi azalması %
+  'skillPower', // yetenek etkisi %
+  'autoBoss', // kasarken bir bölge sonra bossu kendiliğinden dene
+];
 
 export const BRANCHES = [
   { id: 'combat', name: 'Savaş', icon: '⚔️', color: '#e0625a' },
