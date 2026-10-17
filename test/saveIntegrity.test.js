@@ -155,6 +155,7 @@ test('tüm ayarlar geçerli değerlerle kayıpsız dolaşır', () => {
     autoPotion: false,
     pixelArt: false,
     autoBuy: true,
+    autoBuyProfile: 'gold',
     dockCollapsed: true,
     autoSellTier: 3,
     audio: false,
@@ -162,6 +163,12 @@ test('tüm ayarlar geçerli değerlerle kayıpsız dolaşır', () => {
   };
   const out = sanitizeSave({ settings }).settings;
   for (const [key, value] of Object.entries(settings)) assert.equal(out[key], value, `ayar kayboldu: ${key}`);
+});
+
+test('oto-alım profili yalnızca tanımlı kimliklerden biri olabilir', () => {
+  assert.equal(sanitizeSave({ settings: { autoBuyProfile: 'damage' } }).settings.autoBuyProfile, 'damage');
+  assert.equal(sanitizeSave({ settings: { autoBuyProfile: 'kirli' } }).settings.autoBuyProfile, 'cheapest', 'bilinmeyen profil varsayılana döner');
+  assert.equal(sanitizeSave({ settings: {} }).settings.autoBuyProfile, 'cheapest');
 });
 
 test('ses düzeyi 0..1 aralığına sıkışır', () => {

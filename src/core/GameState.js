@@ -45,6 +45,7 @@ export function createDefaultState() {
       autoPotion: true,
       pixelArt: true, // dünya düşük çözünürlükte çizilip keskin büyütülür
       autoBuy: false, // yükseltmeleri otomatik al (ilk yeniden doğuştan sonra açılır)
+      autoBuyProfile: 'cheapest', // oto-alım önceliği (bkz. UpgradeAdvisor.PROFILES)
       dockCollapsed: false, // alt menü gizli mi
       autoSellTier: -1, // -1: kapalı, 0: Sıradan, 1: ≤ Kaliteli ...
       audio: true, // ses efektleri

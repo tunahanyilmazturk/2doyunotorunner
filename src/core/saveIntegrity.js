@@ -23,6 +23,7 @@ import { SKILLS } from '../data/skills.js';
 import { TREE_MAP } from '../data/soulTree.js';
 import { STAT_DEFS } from '../data/stats.js';
 import { UPGRADES } from '../data/upgrades.js';
+import { PROFILES } from '../systems/UpgradeAdvisor.js';
 
 const MAX_TIER = RARITIES.length - 1;
 const MAX_STAGE = 100000; // bölge/eşya seviyesi üst sınırı
@@ -59,6 +60,9 @@ const int = (v, min, max, fallback = min) => {
 const bool = (v, fallback) => (typeof v === 'boolean' ? v : fallback);
 
 const oneOf = (v, allowed, fallback) => (allowed.includes(v) ? v : fallback);
+
+/** Yükseltme oto-alım profili kimlikleri (tek ev: UpgradeAdvisor.PROFILES). */
+const PROFILE_IDS = PROFILES.map((p) => p.id);
 
 /** 0..1 aralığına sıkıştırılmış ondalık (ses düzeyi gibi). */
 const unit = (v, fallback) => Math.min(1, Math.max(0, num(v, fallback)));
@@ -220,6 +224,7 @@ export function sanitizeSave(raw) {
     autoPotion: bool(s.autoPotion, true),
     pixelArt: bool(s.pixelArt, true),
     autoBuy: bool(s.autoBuy, false),
+    autoBuyProfile: oneOf(s.autoBuyProfile, PROFILE_IDS, 'cheapest'),
     dockCollapsed: bool(s.dockCollapsed, false),
     autoSellTier: int(s.autoSellTier, -1, MAX_TIER, -1),
     audio: bool(s.audio, true),

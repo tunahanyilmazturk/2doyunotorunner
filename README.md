@@ -51,8 +51,10 @@ Beş haritanın hareketli önizlemesi: sunucu açıkken `/tools/map-preview.html
   anlık gösteren önden bir figür durur: kask, zırh, omuzluk, kolye, kemer, eldiven, çizme, pelerin,
   sol elde kalkan, sağ elde silah (silah türü kendi çizimiyle). Yuvalar figürün gövde hizasına
   denk gelir (kask baş, kemer bel, çizme ayak); kilitli yuvalar figürde boş kalır
-- **12 yükseltme** — x1 / x10 / MAX satın alma; **kilometre taşları** (her 25 seviyede etki ×2);
-  ilk yeniden doğuştan sonra **otomatik alım** (en ucuz işaretli yükseltmeyi kendiliğinden alır)
+- **12 yükseltme** — x1 / x10 / MAX satın alma (satırda **Shift**=x10, **Ctrl**=MAKS);
+  **kilometre taşları** (her 25 seviyede etki ×2); **tahmini verim** çubuğu ("⚡ en iyisini al"
+  altın başına en çok kazandıranı seçer), sıralama / filtre / arama; ilk yeniden doğuştan sonra
+  **otomatik alım** (öncelik profili: en ucuz / verim / hasar / hayatta kalma / altın)
 - **Mağaza** — üç bölüm: **Eşyalar** (5 dakikada bir yenilenen vitrin, ▲ daha iyi işareti),
   **Sandıklar** (Tahta / Demir / Altın: garanti nadirlikte eşya), **İksirler** (Can İksiri + 4 süreli iksir:
   Öfke, Demir Deri, Altın, Şans Parşömeni; süreleri kayıtla korunur)
@@ -168,7 +170,8 @@ Ayarlar, kayıt işlemleri ve istatistikler üst bardaki ⚙️ butonundadır.
     │   ├── SkillSystem.js       Yetenekler: bekleme süreleri, bufflar, otomatik kullanım
     │   ├── ForgeSystem.js       Demirci: eşya güçlendirme
     │   ├── AchievementSystem.js Başarım kontrolü
-    │   ├── UpgradeSystem.js     Toplu satın alma hesapları
+    │   ├── UpgradeSystem.js     Toplu satın alma hesapları, oto-alım profilleri
+    │   ├── UpgradeAdvisor.js    Yükseltme danışmanı: kazanç oranı, verim, öncelik profilleri (saf)
     │   ├── ShopSystem.js        Vitrin + iksir
     │   ├── PotionSystem.js      Otomatik/manuel can iksiri
     │   ├── ElixirSystem.js      Süreli iksirler (stat bonusu, kayıtla korunur)
@@ -240,7 +243,7 @@ Ayarlar, kayıt işlemleri ve istatistikler üst bardaki ⚙️ butonundadır.
 ## Testler ve Denge
 
 ```bash
-npm test           # node:test — denge eğrisi, kayıt doğrulama, eşya setleri, kağıt bebek çerçevesi, yeniden doğuş sıfırlaması, ses eşlemesi, veri tutarlılığı
+npm test           # node:test — denge eğrisi, kayıt doğrulama, eşya setleri, kağıt bebek çerçevesi, yeniden doğuş sıfırlaması, yükseltme danışmanı ve profilleri, ses eşlemesi, veri tutarlılığı
 npm run balance    # Bölge bölge güç tablosu ve duvarların yeri
 npm run balance 60 120   # yalnızca 60-120 aralığını göster (duvarlar tüm eğriden hesaplanır)
 ```

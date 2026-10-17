@@ -1195,6 +1195,79 @@
   cursor: not-allowed;
 }
 
+/* ---------- Yükseltmeler: tahmini verim şeridi + alım geri bildirimi ---------- */
+.up-eff {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 3px;
+}
+.up-eff-track {
+  flex: 1;
+  height: 5px;
+  background: var(--bg);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.up-eff-track > span {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--good));
+  transition: width 0.2s ease-out;
+}
+.up-eff-label {
+  flex: none;
+  min-width: 38px;
+  text-align: right;
+  font-size: 10px;
+  color: var(--muted);
+}
+/* "En iyisini al"ın ilk alacağı satır */
+.upgrade-row.best {
+  border-color: var(--good);
+}
+.upgrade-row.best .up-eff-label {
+  color: var(--good);
+  font-weight: 800;
+}
+/* Parası yetmeyen satır geri planda kalsın */
+.upgrade-row.poor {
+  opacity: 0.7;
+}
+@keyframes up-bought {
+  0% {
+    background: var(--accent);
+    transform: scale(1.03);
+  }
+  100% {
+    background: var(--bg-2);
+    transform: scale(1);
+  }
+}
+.upgrade-row.bought {
+  animation: up-bought 0.35s ease-out;
+}
+.up-filters {
+  margin-top: -4px;
+}
+.up-search {
+  width: 132px;
+  padding: 3px 6px;
+  background: var(--bg-2);
+  color: var(--text);
+  border: 2px solid var(--edge);
+  border-radius: var(--radius);
+  box-shadow: var(--bevel-sunk);
+  font-size: 12px;
+}
+.up-profile {
+  max-width: 126px;
+}
+.up-empty {
+  padding: 8px 2px;
+}
+
 /* ---------- Mağaza: alt sekmeler, sandıklar, iksirler ---------- */
 .subnav {
   display: flex;
