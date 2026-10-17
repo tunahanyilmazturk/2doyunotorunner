@@ -6,6 +6,8 @@
   "private": true,
   "scripts": {
     "start": "node server.js",
-    "dev": "node server.js"
+    "dev": "node server.js",
+    "test": "node --test test/",
+    "balance": "node tools/balance-probe.mjs"
   }
 }

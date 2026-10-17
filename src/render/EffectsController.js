@@ -82,11 +82,14 @@ export class EffectsController {
     });
 
     bus.on(Events.BOSS_SPAWNED, ({ monster }) => {
-      renderer.showBanner(`⚔ BOSS: ${monster.name} ⚔`, '30 saniye içinde yen!', '#ff4060');
+      const limit = Math.round(game.spawn.bossTimeTotal);
+      renderer.showBanner(`⚔ BOSS: ${monster.name} ⚔`, `${limit} saniye içinde yen!`, '#ff4060');
       renderer.shake(6, 0.4);
     });
 
-    bus.on(Events.BOSS_FAILED, () => renderer.showBanner('Boss kaçtı...', 'Güçlen ve tekrar meydan oku', '#ff8080'));
+    bus.on(Events.BOSS_FAILED, () =>
+      renderer.showBanner('Boss kaçtı...', 'Yeniden doğ ya da daha güçlü ekipmanla gel', '#ff8080')
+    );
 
     bus.on(Events.BIOME_CHANGED, () => {
       const stage = game.state.stage;

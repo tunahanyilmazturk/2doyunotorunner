@@ -17,7 +17,7 @@ export const SPAWN_DELAY = 0.35;
 export const KILLS_PER_STAGE = 10;
 export const STAGES_PER_BIOME = 10;
 export const BOSS_EVERY = 5;
-export const BOSS_TIME_LIMIT = 30;
+export const BOSS_TIME_LIMIT = 45;
 export const RESPAWN_TIME = 2.5;
 
 export const INVENTORY_SIZE = 30;

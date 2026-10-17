@@ -1,4 +1,4 @@
-import { BOSS_EVERY, BOSS_TIME_LIMIT, KILLS_PER_STAGE, SPAWN_DELAY, SPAWN_MARGIN } from '../config/constants.js';
+import { BOSS_EVERY, KILLS_PER_STAGE, SPAWN_DELAY, SPAWN_MARGIN } from '../config/constants.js';
 import { Balance } from '../config/balance.js';
 import { Events } from '../core/events.js';
 import { getBiome, getBiomeIndex } from '../data/biomes.js';
@@ -13,7 +13,7 @@ export class SpawnSystem {
     this.current = null;
     this.spawnTimer = SPAWN_DELAY;
     this.bossTimer = 0;
-    this.bossTimeTotal = BOSS_TIME_LIMIT;
+    this.bossTimeTotal = Balance.bossTimeLimit(1);
 
     game.bus.on(Events.MONSTER_KILLED, ({ monster }) => this.onKill(monster));
     game.bus.on(Events.PLAYER_DIED, () => this.onPlayerDied());
@@ -58,7 +58,7 @@ export class SpawnSystem {
     if (spawnBoss) {
       const bossId = biome.bosses[this.state.stage % 10 === 0 ? 1 : 0];
       monster = new Monster(BOSSES[bossId], this.state.stage, { boss: true, spawnX });
-      this.bossTimeTotal = BOSS_TIME_LIMIT + this.game.tree.perk('bossTime');
+      this.bossTimeTotal = Balance.bossTimeLimit(this.state.stage) + this.game.tree.perk('bossTime');
       this.bossTimer = this.bossTimeTotal;
       this.game.bus.emit(Events.BOSS_SPAWNED, { monster });
     } else {

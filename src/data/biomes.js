@@ -1,4 +1,5 @@
 import { STAGES_PER_BIOME } from '../config/constants.js';
+import { Balance } from '../config/balance.js';
 
 // Her biyom 10 bölge sürer; sonra sıradakine geçilir (döngüsel).
 // bosses: [bölge 5'teki boss, bölge 10'daki boss]
@@ -44,8 +45,8 @@ export const getBiomeIndex = (stage) => Math.floor((stage - 1) / STAGES_PER_BIOM
 export const getBiome = (stage) => BIOMES[getBiomeIndex(stage)];
 
 const ROMAN = ['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'];
-/** Kabus döngüsü (0 = normal). Her 50 bölgede bir artar. */
-export const getCycle = (stage) => Math.floor((stage - 1) / 50);
+/** Kabus döngüsü (0 = normal). Tek kaynak: config/balance.js */
+export const getCycle = (stage) => Balance.cycleOf(stage);
 /** "Yeşil Orman" veya "Yeşil Orman · Kabus II" */
 export const getBiomeTitle = (stage) => {
   const c = getCycle(stage);

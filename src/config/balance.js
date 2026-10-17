@@ -1,4 +1,5 @@
 // Tüm denge (balance) formülleri tek yerde — oyunu ayarlamak için burayı düzenle.
+import { BOSS_EVERY, BOSS_TIME_LIMIT } from './constants.js';
 
 export const PLAYER_BASE = {
   atk: 10,
@@ -19,14 +20,27 @@ export const PLAYER_BASE = {
   bossDmg: 0, // bosslara ek hasar %
 };
 
+// ---------- Kabus döngüleri ----------
+// Her CYCLE_LENGTH bölgede biyomlar baştan döner ama canavarlar katlanarak güçlenir.
+const CYCLE_LENGTH = 50;
+
 export const Balance = {
   monsterHp: (base, stage) => base * Math.pow(1.29, stage - 1),
-  monsterAtk: (base, stage) => base * Math.pow(1.215, stage - 1),
+  // Canavar saldırısı, oyuncunun can artışından (~%13,6/bölge) hızlı büyür; bu
+  // yüzden er ya da geç ölürsün ve yeniden doğuş gerekir. Üs 1.215 iken ilk
+  // yeniden doğuş (20. bölge) neredeyse imkânsızdı; 1.20 duvarı 29-31'e taşır.
+  monsterAtk: (base, stage) => base * Math.pow(1.2, stage - 1),
   monsterGold: (base, stage) => base * Math.pow(1.155, stage - 1),
 
-  bossHpMult: 9,
+  bossHpMult: 5,
   bossAtkMult: 2.5,
   bossGoldMult: 12,
+  /**
+   * Boss süresi bölgeyle birlikte uzar ve bossun sağlığı da (bossHpMult) sabit
+   * kaldığı için sıralama doğru kalır: önce can dayanmaz, sonra boss yetişmez.
+   * Sabit 30 sn + ×9 can, oyuncuyu 15. bölgede görünmez bir sayaçla kesiyordu.
+   */
+  bossTimeLimit: (stage) => BOSS_TIME_LIMIT + Math.floor(stage / BOSS_EVERY) * 2,
 
   // Elit canavarlar: nadir, parlayan, daha güçlü ve daha ödüllü
   eliteChance: (stage) => Math.min(0.2, 0.06 + stage * 0.002), // bölgeyle artar
@@ -37,10 +51,10 @@ export const Balance = {
   eliteDropMult: 5,
   eliteMinRarityTier: 1,
 
-  // Kabus döngüleri: her 50 bölgede biyomlar baştan döner ama canavarlar katlanarak güçlenir.
-  // Bu duvarlar Ruh Ağacı ile güçlenip yeniden doğmayı teşvik eder; içerik hiç bitmez.
-  cycleLength: 50,
-  cycleOf: (stage) => Math.floor((stage - 1) / 50),
+  // Kabus döngüleri: bu duvarlar Ruh Ağacı ile güçlenip yeniden doğmayı teşvik eder;
+  // içerik hiç bitmez.
+  cycleLength: CYCLE_LENGTH,
+  cycleOf: (stage) => Math.floor((stage - 1) / CYCLE_LENGTH),
   cycleHpMult: 6,
   cycleAtkMult: 3.5,
   cycleGoldMult: 3,
