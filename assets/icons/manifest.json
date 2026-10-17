@@ -1,0 +1,3782 @@
+[
+  {
+    "id": "item-sword-0",
+    "label": "Paslı Kılıç",
+    "file": "weapons-v1.png",
+    "cols": 5,
+    "rows": 7,
+    "sheet": "weapons",
+    "col": 0,
+    "row": 0,
+    "rect": [
+      27,
+      15,
+      169,
+      188,
+      1060,
+      1484
+    ]
+  },
+  {
+    "id": "item-axe-0",
+    "label": "Odun Baltası",
+    "file": "weapons-v1.png",
+    "cols": 5,
+    "rows": 7,
+    "sheet": "weapons",
+    "col": 1,
+    "row": 0,
+    "rect": [
+      229,
+      15,
+      171,
+      175,
+      1060,
+      1484
+    ]
+  },
+  {
+    "id": "item-hammer-0",
+    "label": "Tokmak",
+    "file": "weapons-v1.png",
+    "cols": 5,
+    "rows": 7,
+    "sheet": "weapons",
+    "col": 2,
+    "row": 0,
+    "rect": [
+      446,
+      13,
+      183,
+      185,
+      1060,
+      1484
+    ]
+  },
+  {
+    "id": "item-spear-0",
+    "label": "Sivri Sopa",
+    "file": "weapons-v1.png",
+    "cols": 5,
+    "rows": 7,
+    "sheet": "weapons",
+    "col": 3,
+    "row": 0,
+    "rect": [
+      657,
+      10,
+      179,
+      188,
+      1060,
+      1484
+    ]
+  },
+  {
+    "id": "item-dagger-0",
+    "label": "Paslı Hançer",
+    "file": "weapons-v1.png",
+    "cols": 5,
+    "rows": 7,
+    "sheet": "weapons",
+    "col": 4,
+    "row": 0,
+    "rect": [
+      884,
+      38,
+      150,
+      165,
+      1060,
+      1484
+    ]
+  },
+  {
+    "id": "item-sword-1",
+    "label": "Demir Kılıç",
+    "file": "weapons-v1.png",
+    "cols": 5,
+    "rows": 7,
+    "sheet": "weapons",
+    "col": 0,
+    "row": 1,
+    "rect": [
+      18,
+      213,
+      178,
+      188,
+      1060,
+      1484
+    ]
+  },
+  {
+    "id": "item-axe-1",
+    "label": "Demir Balta",
+    "file": "weapons-v1.png",
+    "cols": 5,
+    "rows": 7,
+    "sheet": "weapons",
+    "col": 1,
+    "row": 1,
+    "rect": [
+      229,
+      209,
+      190,
+      181,
+      1060,
+      1484
+    ]
+  },
+  {
+    "id": "item-hammer-1",
+    "label": "Demir Gürz",
+    "file": "weapons-v1.png",
+    "cols": 5,
+    "rows": 7,
+    "sheet": "weapons",
+    "col": 2,
+    "row": 1,
+    "rect": [
+      444,
+      213,
+      183,
+      185,
+      1060,
+      1484
+    ]
+  },
+  {
+    "id": "item-spear-1",
+    "label": "Demir Mızrak",
+    "file": "weapons-v1.png",
+    "cols": 5,
+    "rows": 7,
+    "sheet": "weapons",
+    "col": 3,
+    "row": 1,
+    "rect": [
+      657,
+      206,
+      192,
+      200,
+      1060,
+      1484
+    ]
+  },
+  {
+    "id": "item-dagger-1",
+    "label": "Demir Hançer",
+    "file": "weapons-v1.png",
+    "cols": 5,
+    "rows": 7,
+    "sheet": "weapons",
+    "col": 4,
+    "row": 1,
+    "rect": [
+      885,
+      234,
+      150,
+      167,
+      1060,
+      1484
+    ]
+  },
+  {
+    "id": "item-sword-2",
+    "label": "Çelik Kılıç",
+    "file": "weapons-v1.png",
+    "cols": 5,
+    "rows": 7,
+    "sheet": "weapons",
+    "col": 0,
+    "row": 2,
+    "rect": [
+      19,
+      413,
+      190,
+      200,
+      1060,
+      1484
+    ]
+  },
+  {
+    "id": "item-axe-2",
+    "label": "Savaş Baltası",
+    "file": "weapons-v1.png",
+    "cols": 5,
+    "rows": 7,
+    "sheet": "weapons",
+    "col": 1,
+    "row": 2,
+    "rect": [
+      230,
+      410,
+      202,
+      197,
+      1060,
+      1484
+    ]
+  },
+  {
+    "id": "item-hammer-2",
+    "label": "Savaş Çekici",
+    "file": "weapons-v1.png",
+    "cols": 5,
+    "rows": 7,
+    "sheet": "weapons",
+    "col": 2,
+    "row": 2,
+    "rect": [
+      436,
+      405,
+      206,
+      212,
+      1060,
+      1484
+    ]
+  },
+  {
+    "id": "item-spear-2",
+    "label": "Süvari Mızrağı",
+    "file": "weapons-v1.png",
+    "cols": 5,
+    "rows": 7,
+    "sheet": "weapons",
+    "col": 3,
+    "row": 2,
+    "rect": [
+      651,
+      405,
+      209,
+      216,
+      1060,
+      1484
+    ]
+  },
+  {
+    "id": "item-dagger-2",
+    "label": "Suikastçı Hançeri",
+    "file": "weapons-v1.png",
+    "cols": 5,
+    "rows": 7,
+    "sheet": "weapons",
+    "col": 4,
+    "row": 2,
+    "rect": [
+      881,
+      422,
+      164,
+      189,
+      1060,
+      1484
+    ]
+  },
+  {
+    "id": "item-sword-3",
+    "label": "Rün Kılıcı",
+    "file": "weapons-v1.png",
+    "cols": 5,
+    "rows": 7,
+    "sheet": "weapons",
+    "col": 0,
+    "row": 3,
+    "rect": [
+      16,
+      629,
+      187,
+      200,
+      1060,
+      1484
+    ]
+  },
+  {
+    "id": "item-axe-3",
+    "label": "Rün Baltası",
+    "file": "weapons-v1.png",
+    "cols": 5,
+    "rows": 7,
+    "sheet": "weapons",
+    "col": 1,
+    "row": 3,
+    "rect": [
+      232,
+      622,
+      199,
+      209,
+      1060,
+      1484
+    ]
+  },
+  {
+    "id": "item-hammer-3",
+    "label": "Rün Çekici",
+    "file": "weapons-v1.png",
+    "cols": 5,
+    "rows": 7,
+    "sheet": "weapons",
+    "col": 2,
+    "row": 3,
+    "rect": [
+      438,
+      622,
+      206,
+      209,
+      1060,
+      1484
+    ]
+  },
+  {
+    "id": "item-spear-3",
+    "label": "Rün Mızrağı",
+    "file": "weapons-v1.png",
+    "cols": 5,
+    "rows": 7,
+    "sheet": "weapons",
+    "col": 3,
+    "row": 3,
+    "rect": [
+      651,
+      614,
+      211,
+      221,
+      1060,
+      1484
+    ]
+  },
+  {
+    "id": "item-dagger-3",
+    "label": "Rün Hançeri",
+    "file": "weapons-v1.png",
+    "cols": 5,
+    "rows": 7,
+    "sheet": "weapons",
+    "col": 4,
+    "row": 3,
+    "rect": [
+      878,
+      631,
+      166,
+      198,
+      1060,
+      1484
+    ]
+  },
+  {
+    "id": "item-sword-4",
+    "label": "Mithril Kılıç",
+    "file": "weapons-v1.png",
+    "cols": 5,
+    "rows": 7,
+    "sheet": "weapons",
+    "col": 0,
+    "row": 4,
+    "rect": [
+      16,
+      832,
+      187,
+      204,
+      1060,
+      1484
+    ]
+  },
+  {
+    "id": "item-axe-4",
+    "label": "Mithril Balta",
+    "file": "weapons-v1.png",
+    "cols": 5,
+    "rows": 7,
+    "sheet": "weapons",
+    "col": 1,
+    "row": 4,
+    "rect": [
+      233,
+      827,
+      202,
+      214,
+      1060,
+      1484
+    ]
+  },
+  {
+    "id": "item-hammer-4",
+    "label": "Mithril Çekiç",
+    "file": "weapons-v1.png",
+    "cols": 5,
+    "rows": 7,
+    "sheet": "weapons",
+    "col": 2,
+    "row": 4,
+    "rect": [
+      443,
+      828,
+      205,
+      213,
+      1060,
+      1484
+    ]
+  },
+  {
+    "id": "item-spear-4",
+    "label": "Mithril Mızrak",
+    "file": "weapons-v1.png",
+    "cols": 5,
+    "rows": 7,
+    "sheet": "weapons",
+    "col": 3,
+    "row": 4,
+    "rect": [
+      654,
+      832,
+      197,
+      214,
+      1060,
+      1484
+    ]
+  },
+  {
+    "id": "item-dagger-4",
+    "label": "Mithril Hançer",
+    "file": "weapons-v1.png",
+    "cols": 5,
+    "rows": 7,
+    "sheet": "weapons",
+    "col": 4,
+    "row": 4,
+    "rect": [
+      878,
+      855,
+      165,
+      192,
+      1060,
+      1484
+    ]
+  },
+  {
+    "id": "item-sword-5",
+    "label": "Ejder Dişi",
+    "file": "weapons-v1.png",
+    "cols": 5,
+    "rows": 7,
+    "sheet": "weapons",
+    "col": 0,
+    "row": 5,
+    "rect": [
+      15,
+      1044,
+      195,
+      217,
+      1060,
+      1484
+    ]
+  },
+  {
+    "id": "item-axe-5",
+    "label": "Ejder Baltası",
+    "file": "weapons-v1.png",
+    "cols": 5,
+    "rows": 7,
+    "sheet": "weapons",
+    "col": 1,
+    "row": 5,
+    "rect": [
+      230,
+      1043,
+      208,
+      217,
+      1060,
+      1484
+    ]
+  },
+  {
+    "id": "item-hammer-5",
+    "label": "Ejder Çekici",
+    "file": "weapons-v1.png",
+    "cols": 5,
+    "rows": 7,
+    "sheet": "weapons",
+    "col": 2,
+    "row": 5,
+    "rect": [
+      440,
+      1048,
+      204,
+      206,
+      1060,
+      1484
+    ]
+  },
+  {
+    "id": "item-spear-5",
+    "label": "Ejder Mızrağı",
+    "file": "weapons-v1.png",
+    "cols": 5,
+    "rows": 7,
+    "sheet": "weapons",
+    "col": 3,
+    "row": 5,
+    "rect": [
+      648,
+      1043,
+      210,
+      212,
+      1060,
+      1484
+    ]
+  },
+  {
+    "id": "item-dagger-5",
+    "label": "Ejder Pençesi",
+    "file": "weapons-v1.png",
+    "cols": 5,
+    "rows": 7,
+    "sheet": "weapons",
+    "col": 4,
+    "row": 5,
+    "rect": [
+      873,
+      1067,
+      172,
+      193,
+      1060,
+      1484
+    ]
+  },
+  {
+    "id": "item-sword-6",
+    "label": "Yıldız Kılıcı",
+    "file": "weapons-v1.png",
+    "cols": 5,
+    "rows": 7,
+    "sheet": "weapons",
+    "col": 0,
+    "row": 6,
+    "rect": [
+      13,
+      1250,
+      185,
+      217,
+      1060,
+      1484
+    ]
+  },
+  {
+    "id": "item-axe-6",
+    "label": "Yıldız Baltası",
+    "file": "weapons-v1.png",
+    "cols": 5,
+    "rows": 7,
+    "sheet": "weapons",
+    "col": 1,
+    "row": 6,
+    "rect": [
+      236,
+      1253,
+      207,
+      217,
+      1060,
+      1484
+    ]
+  },
+  {
+    "id": "item-hammer-6",
+    "label": "Yıldız Çekici",
+    "file": "weapons-v1.png",
+    "cols": 5,
+    "rows": 7,
+    "sheet": "weapons",
+    "col": 2,
+    "row": 6,
+    "rect": [
+      442,
+      1249,
+      210,
+      218,
+      1060,
+      1484
+    ]
+  },
+  {
+    "id": "item-spear-6",
+    "label": "Yıldız Mızrağı",
+    "file": "weapons-v1.png",
+    "cols": 5,
+    "rows": 7,
+    "sheet": "weapons",
+    "col": 3,
+    "row": 6,
+    "rect": [
+      646,
+      1249,
+      210,
+      218,
+      1060,
+      1484
+    ]
+  },
+  {
+    "id": "item-dagger-6",
+    "label": "Yıldız Hançeri",
+    "file": "weapons-v1.png",
+    "cols": 5,
+    "rows": 7,
+    "sheet": "weapons",
+    "col": 4,
+    "row": 6,
+    "rect": [
+      883,
+      1267,
+      162,
+      196,
+      1060,
+      1484
+    ]
+  },
+  {
+    "id": "item-helmet-0",
+    "label": "Deri Başlık",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 0,
+    "row": 0,
+    "rect": [
+      24,
+      41,
+      121,
+      119,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-armor-0",
+    "label": "Kumaş Gömlek",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 1,
+    "row": 0,
+    "rect": [
+      170,
+      32,
+      134,
+      135,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-boots-0",
+    "label": "Sandalet",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 2,
+    "row": 0,
+    "rect": [
+      319,
+      55,
+      146,
+      101,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-ring-0",
+    "label": "Bakır Yüzük",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 3,
+    "row": 0,
+    "rect": [
+      497,
+      53,
+      111,
+      92,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-amulet-0",
+    "label": "Ahşap Tılsım",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 4,
+    "row": 0,
+    "rect": [
+      653,
+      30,
+      111,
+      141,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-cape-0",
+    "label": "Yırtık Pelerin",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 5,
+    "row": 0,
+    "rect": [
+      785,
+      27,
+      148,
+      144,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-shield-0",
+    "label": "Tahta Kalkan",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 6,
+    "row": 0,
+    "rect": [
+      953,
+      31,
+      126,
+      137,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-gloves-0",
+    "label": "Bez Eldiven",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 7,
+    "row": 0,
+    "rect": [
+      1109,
+      43,
+      150,
+      116,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-belt-0",
+    "label": "İp Kuşak",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 8,
+    "row": 0,
+    "rect": [
+      1274,
+      53,
+      121,
+      112,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-helmet-1",
+    "label": "Demir Miğfer",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 0,
+    "row": 1,
+    "rect": [
+      24,
+      186,
+      114,
+      132,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-armor-1",
+    "label": "Deri Zırh",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 1,
+    "row": 1,
+    "rect": [
+      163,
+      184,
+      149,
+      142,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-boots-1",
+    "label": "Deri Çizme",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 2,
+    "row": 1,
+    "rect": [
+      320,
+      190,
+      144,
+      137,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-ring-1",
+    "label": "Gümüş Yüzük",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 3,
+    "row": 1,
+    "rect": [
+      495,
+      212,
+      115,
+      95,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-amulet-1",
+    "label": "Kemik Kolye",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 4,
+    "row": 1,
+    "rect": [
+      645,
+      183,
+      121,
+      142,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-cape-1",
+    "label": "Gezgin Pelerini",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 5,
+    "row": 1,
+    "rect": [
+      786,
+      186,
+      151,
+      143,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-shield-1",
+    "label": "Demir Kalkan",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 6,
+    "row": 1,
+    "rect": [
+      953,
+      183,
+      135,
+      146,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-gloves-1",
+    "label": "Deri Eldiven",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 7,
+    "row": 1,
+    "rect": [
+      1114,
+      195,
+      144,
+      120,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-belt-1",
+    "label": "Deri Kemer",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 8,
+    "row": 1,
+    "rect": [
+      1272,
+      210,
+      128,
+      77,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-helmet-2",
+    "label": "Çelik Miğfer",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 0,
+    "row": 2,
+    "rect": [
+      25,
+      340,
+      113,
+      146,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-armor-2",
+    "label": "Zincir Zırh",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 1,
+    "row": 2,
+    "rect": [
+      156,
+      340,
+      163,
+      142,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-boots-2",
+    "label": "Demir Çizme",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 2,
+    "row": 2,
+    "rect": [
+      320,
+      347,
+      147,
+      145,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-ring-2",
+    "label": "Altın Yüzük",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 3,
+    "row": 2,
+    "rect": [
+      495,
+      367,
+      115,
+      97,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-amulet-2",
+    "label": "Gümüş Kolye",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 4,
+    "row": 2,
+    "rect": [
+      647,
+      343,
+      121,
+      140,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-cape-2",
+    "label": "Avcı Pelerini",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 5,
+    "row": 2,
+    "rect": [
+      778,
+      342,
+      161,
+      150,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-shield-2",
+    "label": "Kule Kalkanı",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 6,
+    "row": 2,
+    "rect": [
+      962,
+      333,
+      117,
+      159,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-gloves-2",
+    "label": "Zincir Eldiven",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 7,
+    "row": 2,
+    "rect": [
+      1108,
+      359,
+      142,
+      125,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-belt-2",
+    "label": "Perçinli Kemer",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 8,
+    "row": 2,
+    "rect": [
+      1263,
+      368,
+      143,
+      77,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-helmet-3",
+    "label": "Şövalye Miğferi",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 0,
+    "row": 3,
+    "rect": [
+      24,
+      497,
+      114,
+      147,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-armor-3",
+    "label": "Plaka Zırh",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 1,
+    "row": 3,
+    "rect": [
+      155,
+      495,
+      166,
+      149,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-boots-3",
+    "label": "Gezgin Çizmesi",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 2,
+    "row": 3,
+    "rect": [
+      321,
+      504,
+      147,
+      143,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-ring-3",
+    "label": "Yakut Yüzük",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 3,
+    "row": 3,
+    "rect": [
+      492,
+      519,
+      119,
+      103,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-amulet-3",
+    "label": "Zümrüt Kolye",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 4,
+    "row": 3,
+    "rect": [
+      643,
+      498,
+      121,
+      137,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-cape-3",
+    "label": "Gölge Pelerini",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 5,
+    "row": 3,
+    "rect": [
+      780,
+      493,
+      177,
+      167,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-shield-3",
+    "label": "Rün Kalkanı",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 6,
+    "row": 3,
+    "rect": [
+      964,
+      493,
+      122,
+      155,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-gloves-3",
+    "label": "Demir Eldiven",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 7,
+    "row": 3,
+    "rect": [
+      1114,
+      500,
+      146,
+      143,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-belt-3",
+    "label": "Savaşçı Kemeri",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 8,
+    "row": 3,
+    "rect": [
+      1269,
+      522,
+      136,
+      92,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-helmet-4",
+    "label": "Mithril Taç",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 0,
+    "row": 4,
+    "rect": [
+      15,
+      664,
+      136,
+      112,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-armor-4",
+    "label": "Mithril Zırh",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 1,
+    "row": 4,
+    "rect": [
+      161,
+      651,
+      162,
+      153,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-boots-4",
+    "label": "Rüzgâr Çizmesi",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 2,
+    "row": 4,
+    "rect": [
+      329,
+      651,
+      142,
+      154,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-ring-4",
+    "label": "Elmas Yüzük",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 3,
+    "row": 4,
+    "rect": [
+      492,
+      669,
+      122,
+      117,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-amulet-4",
+    "label": "Ruh Kolyesi",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 4,
+    "row": 4,
+    "rect": [
+      633,
+      650,
+      151,
+      145,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-cape-4",
+    "label": "Kraliyet Pelerini",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 5,
+    "row": 4,
+    "rect": [
+      772,
+      648,
+      193,
+      165,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-shield-4",
+    "label": "Mithril Kalkan",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 6,
+    "row": 4,
+    "rect": [
+      960,
+      644,
+      139,
+      158,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-gloves-4",
+    "label": "Rün Eldiveni",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 7,
+    "row": 4,
+    "rect": [
+      1111,
+      661,
+      146,
+      144,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-belt-4",
+    "label": "Şampiyon Kemeri",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 8,
+    "row": 4,
+    "rect": [
+      1264,
+      678,
+      146,
+      110,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-helmet-5",
+    "label": "Ejder Miğferi",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 0,
+    "row": 5,
+    "rect": [
+      21,
+      803,
+      130,
+      144,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-armor-5",
+    "label": "Ejder Pulu Zırh",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 1,
+    "row": 5,
+    "rect": [
+      167,
+      810,
+      161,
+      138,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-boots-5",
+    "label": "Ejder Çizmesi",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 2,
+    "row": 5,
+    "rect": [
+      326,
+      812,
+      142,
+      135,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-ring-5",
+    "label": "Kadim Yüzük",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 3,
+    "row": 5,
+    "rect": [
+      492,
+      819,
+      121,
+      118,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-amulet-5",
+    "label": "Kadim Kolye",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 4,
+    "row": 5,
+    "rect": [
+      640,
+      807,
+      127,
+      135,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-cape-5",
+    "label": "Anka Pelerini",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 5,
+    "row": 5,
+    "rect": [
+      770,
+      811,
+      190,
+      158,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-shield-5",
+    "label": "Ejder Kalkanı",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 6,
+    "row": 5,
+    "rect": [
+      956,
+      805,
+      135,
+      145,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-gloves-5",
+    "label": "Ejder Pençeleri",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 7,
+    "row": 5,
+    "rect": [
+      1118,
+      812,
+      132,
+      137,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-belt-5",
+    "label": "Kadim Kemer",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 8,
+    "row": 5,
+    "rect": [
+      1262,
+      827,
+      145,
+      106,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-helmet-6",
+    "label": "Yıldız Tacı",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 0,
+    "row": 6,
+    "rect": [
+      19,
+      953,
+      141,
+      117,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-armor-6",
+    "label": "Yıldız Zırhı",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 1,
+    "row": 6,
+    "rect": [
+      165,
+      953,
+      165,
+      141,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-boots-6",
+    "label": "Yıldız Adımları",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 2,
+    "row": 6,
+    "rect": [
+      330,
+      949,
+      141,
+      143,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-ring-6",
+    "label": "Yıldız Mührü",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 3,
+    "row": 6,
+    "rect": [
+      484,
+      953,
+      130,
+      126,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-amulet-6",
+    "label": "Yıldız Kalbi",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 4,
+    "row": 6,
+    "rect": [
+      638,
+      953,
+      137,
+      135,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-cape-6",
+    "label": "Yıldız Örtüsü",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 5,
+    "row": 6,
+    "rect": [
+      766,
+      949,
+      180,
+      145,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-shield-6",
+    "label": "Yıldız Siperi",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 6,
+    "row": 6,
+    "rect": [
+      945,
+      949,
+      152,
+      150,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-gloves-6",
+    "label": "Yıldız Eldiveni",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 7,
+    "row": 6,
+    "rect": [
+      1111,
+      956,
+      151,
+      136,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "item-belt-6",
+    "label": "Yıldız Kuşağı",
+    "file": "equipment-v1.png",
+    "cols": 9,
+    "rows": 7,
+    "sheet": "equipment",
+    "col": 8,
+    "row": 6,
+    "rect": [
+      1263,
+      974,
+      149,
+      117,
+      1422,
+      1106
+    ]
+  },
+  {
+    "id": "skill-powerStrike",
+    "label": "Güçlü Vuruş",
+    "file": "powers-v1.png",
+    "cols": 8,
+    "rows": 6,
+    "sheet": "powers",
+    "col": 0,
+    "row": 0,
+    "rect": [
+      10,
+      22,
+      168,
+      165,
+      1448,
+      1086
+    ]
+  },
+  {
+    "id": "skill-frenzy",
+    "label": "Öfke",
+    "file": "powers-v1.png",
+    "cols": 8,
+    "rows": 6,
+    "sheet": "powers",
+    "col": 1,
+    "row": 0,
+    "rect": [
+      196,
+      22,
+      153,
+      165,
+      1448,
+      1086
+    ]
+  },
+  {
+    "id": "skill-goldRush",
+    "label": "Altın Yağmuru",
+    "file": "powers-v1.png",
+    "cols": 8,
+    "rows": 6,
+    "sheet": "powers",
+    "col": 2,
+    "row": 0,
+    "rect": [
+      372,
+      16,
+      156,
+      171,
+      1448,
+      1086
+    ]
+  },
+  {
+    "id": "skill-divineHeal",
+    "label": "İlahi Şifa",
+    "file": "powers-v1.png",
+    "cols": 8,
+    "rows": 6,
+    "sheet": "powers",
+    "col": 3,
+    "row": 0,
+    "rect": [
+      543,
+      27,
+      180,
+      161,
+      1448,
+      1086
+    ]
+  },
+  {
+    "id": "skill-meteor",
+    "label": "Kıyamet Meteoru",
+    "file": "powers-v1.png",
+    "cols": 8,
+    "rows": 6,
+    "sheet": "powers",
+    "col": 4,
+    "row": 0,
+    "rect": [
+      738,
+      25,
+      159,
+      162,
+      1448,
+      1086
+    ]
+  },
+  {
+    "id": "branch-combat",
+    "label": "Savaş",
+    "file": "powers-v1.png",
+    "cols": 8,
+    "rows": 6,
+    "sheet": "powers",
+    "col": 5,
+    "row": 0,
+    "rect": [
+      921,
+      35,
+      151,
+      150,
+      1448,
+      1086
+    ]
+  },
+  {
+    "id": "branch-survival",
+    "label": "Hayatta Kalma",
+    "file": "powers-v1.png",
+    "cols": 8,
+    "rows": 6,
+    "sheet": "powers",
+    "col": 6,
+    "row": 0,
+    "rect": [
+      1087,
+      27,
+      183,
+      154,
+      1448,
+      1086
+    ]
+  },
+  {
+    "id": "branch-wealth",
+    "label": "Servet",
+    "file": "powers-v1.png",
+    "cols": 8,
+    "rows": 6,
+    "sheet": "powers",
+    "col": 7,
+    "row": 0,
+    "rect": [
+      1281,
+      32,
+      151,
+      153,
+      1448,
+      1086
+    ]
+  },
+  {
+    "id": "branch-gear",
+    "label": "Teçhizat",
+    "file": "powers-v1.png",
+    "cols": 8,
+    "rows": 6,
+    "sheet": "powers",
+    "col": 0,
+    "row": 1,
+    "rect": [
+      12,
+      203,
+      166,
+      162,
+      1448,
+      1086
+    ]
+  },
+  {
+    "id": "branch-arcane",
+    "label": "Büyü",
+    "file": "powers-v1.png",
+    "cols": 8,
+    "rows": 6,
+    "sheet": "powers",
+    "col": 1,
+    "row": 1,
+    "rect": [
+      192,
+      197,
+      165,
+      168,
+      1448,
+      1086
+    ]
+  },
+  {
+    "id": "upgrade-power",
+    "label": "Güç",
+    "file": "powers-v1.png",
+    "cols": 8,
+    "rows": 6,
+    "sheet": "powers",
+    "col": 2,
+    "row": 1,
+    "rect": [
+      373,
+      198,
+      154,
+      172,
+      1448,
+      1086
+    ]
+  },
+  {
+    "id": "upgrade-vitality",
+    "label": "Dayanıklılık",
+    "file": "powers-v1.png",
+    "cols": 8,
+    "rows": 6,
+    "sheet": "powers",
+    "col": 3,
+    "row": 1,
+    "rect": [
+      542,
+      210,
+      183,
+      160,
+      1448,
+      1086
+    ]
+  },
+  {
+    "id": "upgrade-defense",
+    "label": "Savunma",
+    "file": "powers-v1.png",
+    "cols": 8,
+    "rows": 6,
+    "sheet": "powers",
+    "col": 4,
+    "row": 1,
+    "rect": [
+      749,
+      197,
+      137,
+      173,
+      1448,
+      1086
+    ]
+  },
+  {
+    "id": "upgrade-regen",
+    "label": "Yenilenme",
+    "file": "powers-v1.png",
+    "cols": 8,
+    "rows": 6,
+    "sheet": "powers",
+    "col": 5,
+    "row": 1,
+    "rect": [
+      909,
+      197,
+      180,
+      173,
+      1448,
+      1086
+    ]
+  },
+  {
+    "id": "upgrade-haste",
+    "label": "Çeviklik",
+    "file": "powers-v1.png",
+    "cols": 8,
+    "rows": 6,
+    "sheet": "powers",
+    "col": 6,
+    "row": 1,
+    "rect": [
+      1091,
+      203,
+      165,
+      162,
+      1448,
+      1086
+    ]
+  },
+  {
+    "id": "upgrade-precision",
+    "label": "Keskin Göz",
+    "file": "powers-v1.png",
+    "cols": 8,
+    "rows": 6,
+    "sheet": "powers",
+    "col": 7,
+    "row": 1,
+    "rect": [
+      1272,
+      202,
+      173,
+      168,
+      1448,
+      1086
+    ]
+  },
+  {
+    "id": "upgrade-brutality",
+    "label": "Vahşet",
+    "file": "powers-v1.png",
+    "cols": 8,
+    "rows": 6,
+    "sheet": "powers",
+    "col": 0,
+    "row": 2,
+    "rect": [
+      20,
+      379,
+      159,
+      163,
+      1448,
+      1086
+    ]
+  },
+  {
+    "id": "upgrade-greed",
+    "label": "Açgözlülük",
+    "file": "powers-v1.png",
+    "cols": 8,
+    "rows": 6,
+    "sheet": "powers",
+    "col": 1,
+    "row": 2,
+    "rect": [
+      196,
+      378,
+      168,
+      165,
+      1448,
+      1086
+    ]
+  },
+  {
+    "id": "upgrade-fortune",
+    "label": "Talih",
+    "file": "powers-v1.png",
+    "cols": 8,
+    "rows": 6,
+    "sheet": "powers",
+    "col": 2,
+    "row": 2,
+    "rect": [
+      378,
+      383,
+      164,
+      160,
+      1448,
+      1086
+    ]
+  },
+  {
+    "id": "upgrade-vampirism",
+    "label": "Vampirizm",
+    "file": "powers-v1.png",
+    "cols": 8,
+    "rows": 6,
+    "sheet": "powers",
+    "col": 3,
+    "row": 2,
+    "rect": [
+      559,
+      384,
+      150,
+      154,
+      1448,
+      1086
+    ]
+  },
+  {
+    "id": "upgrade-slayer",
+    "label": "Dev Avcısı",
+    "file": "powers-v1.png",
+    "cols": 8,
+    "rows": 6,
+    "sheet": "powers",
+    "col": 4,
+    "row": 2,
+    "rect": [
+      729,
+      364,
+      174,
+      182,
+      1448,
+      1086
+    ]
+  },
+  {
+    "id": "upgrade-evasion",
+    "label": "Gölge Adım",
+    "file": "powers-v1.png",
+    "cols": 8,
+    "rows": 6,
+    "sheet": "powers",
+    "col": 5,
+    "row": 2,
+    "rect": [
+      915,
+      378,
+      170,
+      168,
+      1448,
+      1086
+    ]
+  },
+  {
+    "id": "tree-c1",
+    "label": "Keskin Kılıç",
+    "file": "powers-v1.png",
+    "cols": 8,
+    "rows": 6,
+    "sheet": "powers",
+    "col": 6,
+    "row": 2,
+    "rect": [
+      1100,
+      379,
+      160,
+      167,
+      1448,
+      1086
+    ]
+  },
+  {
+    "id": "tree-c2",
+    "label": "Ölümcül Odak",
+    "file": "powers-v1.png",
+    "cols": 8,
+    "rows": 6,
+    "sheet": "powers",
+    "col": 7,
+    "row": 2,
+    "rect": [
+      1286,
+      379,
+      143,
+      167,
+      1448,
+      1086
+    ]
+  },
+  {
+    "id": "tree-c3",
+    "label": "Boss Avcısı",
+    "file": "powers-v1.png",
+    "cols": 8,
+    "rows": 6,
+    "sheet": "powers",
+    "col": 0,
+    "row": 3,
+    "rect": [
+      14,
+      552,
+      150,
+      179,
+      1448,
+      1086
+    ]
+  },
+  {
+    "id": "tree-c4",
+    "label": "Zaman Kazanımı",
+    "file": "powers-v1.png",
+    "cols": 8,
+    "rows": 6,
+    "sheet": "powers",
+    "col": 1,
+    "row": 3,
+    "rect": [
+      196,
+      554,
+      158,
+      161,
+      1448,
+      1086
+    ]
+  },
+  {
+    "id": "tree-c5",
+    "label": "Vahşi Güç",
+    "file": "powers-v1.png",
+    "cols": 8,
+    "rows": 6,
+    "sheet": "powers",
+    "col": 2,
+    "row": 3,
+    "rect": [
+      371,
+      563,
+      162,
+      155,
+      1448,
+      1086
+    ]
+  },
+  {
+    "id": "tree-s1",
+    "label": "Demir Beden",
+    "file": "powers-v1.png",
+    "cols": 8,
+    "rows": 6,
+    "sheet": "powers",
+    "col": 3,
+    "row": 3,
+    "rect": [
+      551,
+      552,
+      167,
+      178,
+      1448,
+      1086
+    ]
+  },
+  {
+    "id": "tree-s2",
+    "label": "Kalkan Taşıyıcı",
+    "file": "powers-v1.png",
+    "cols": 8,
+    "rows": 6,
+    "sheet": "powers",
+    "col": 4,
+    "row": 3,
+    "rect": [
+      736,
+      552,
+      160,
+      180,
+      1448,
+      1086
+    ]
+  },
+  {
+    "id": "tree-s3",
+    "label": "Kaçış Ustası",
+    "file": "powers-v1.png",
+    "cols": 8,
+    "rows": 6,
+    "sheet": "powers",
+    "col": 5,
+    "row": 3,
+    "rect": [
+      915,
+      565,
+      166,
+      165,
+      1448,
+      1086
+    ]
+  },
+  {
+    "id": "tree-s4",
+    "label": "İlahi Şifa",
+    "file": "powers-v1.png",
+    "cols": 8,
+    "rows": 6,
+    "sheet": "powers",
+    "col": 6,
+    "row": 3,
+    "rect": [
+      1112,
+      559,
+      131,
+      165,
+      1448,
+      1086
+    ]
+  },
+  {
+    "id": "tree-s5",
+    "label": "Diken Zırh",
+    "file": "powers-v1.png",
+    "cols": 8,
+    "rows": 6,
+    "sheet": "powers",
+    "col": 7,
+    "row": 3,
+    "rect": [
+      1275,
+      556,
+      165,
+      168,
+      1448,
+      1086
+    ]
+  },
+  {
+    "id": "tree-w1",
+    "label": "Altın Kokusu",
+    "file": "powers-v1.png",
+    "cols": 8,
+    "rows": 6,
+    "sheet": "powers",
+    "col": 0,
+    "row": 4,
+    "rect": [
+      8,
+      747,
+      170,
+      143,
+      1448,
+      1086
+    ]
+  },
+  {
+    "id": "tree-w2",
+    "label": "Ruh Hasadı",
+    "file": "powers-v1.png",
+    "cols": 8,
+    "rows": 6,
+    "sheet": "powers",
+    "col": 1,
+    "row": 4,
+    "rect": [
+      198,
+      734,
+      160,
+      171,
+      1448,
+      1086
+    ]
+  },
+  {
+    "id": "tree-w3",
+    "label": "Altın Miras",
+    "file": "powers-v1.png",
+    "cols": 8,
+    "rows": 6,
+    "sheet": "powers",
+    "col": 2,
+    "row": 4,
+    "rect": [
+      368,
+      734,
+      168,
+      161,
+      1448,
+      1086
+    ]
+  },
+  {
+    "id": "tree-w4",
+    "label": "Hızlı Başlangıç",
+    "file": "powers-v1.png",
+    "cols": 8,
+    "rows": 6,
+    "sheet": "powers",
+    "col": 3,
+    "row": 4,
+    "rect": [
+      546,
+      738,
+      169,
+      134,
+      1448,
+      1086
+    ]
+  },
+  {
+    "id": "tree-w5",
+    "label": "Pazarlıkçı",
+    "file": "powers-v1.png",
+    "cols": 8,
+    "rows": 6,
+    "sheet": "powers",
+    "col": 4,
+    "row": 4,
+    "rect": [
+      729,
+      736,
+      175,
+      157,
+      1448,
+      1086
+    ]
+  },
+  {
+    "id": "tree-g1",
+    "label": "Geniş Çanta",
+    "file": "powers-v1.png",
+    "cols": 8,
+    "rows": 6,
+    "sheet": "powers",
+    "col": 5,
+    "row": 4,
+    "rect": [
+      905,
+      734,
+      183,
+      156,
+      1448,
+      1086
+    ]
+  },
+  {
+    "id": "tree-g2",
+    "label": "Eldiven Ustalığı",
+    "file": "powers-v1.png",
+    "cols": 8,
+    "rows": 6,
+    "sheet": "powers",
+    "col": 6,
+    "row": 4,
+    "rect": [
+      1102,
+      735,
+      152,
+      167,
+      1448,
+      1086
+    ]
+  },
+  {
+    "id": "tree-g3",
+    "label": "Kemer Tokası",
+    "file": "powers-v1.png",
+    "cols": 8,
+    "rows": 6,
+    "sheet": "powers",
+    "col": 7,
+    "row": 4,
+    "rect": [
+      1269,
+      743,
+      175,
+      150,
+      1448,
+      1086
+    ]
+  },
+  {
+    "id": "tree-g4",
+    "label": "Gezgin Pelerini",
+    "file": "powers-v1.png",
+    "cols": 8,
+    "rows": 6,
+    "sheet": "powers",
+    "col": 0,
+    "row": 5,
+    "rect": [
+      8,
+      897,
+      167,
+      175,
+      1448,
+      1086
+    ]
+  },
+  {
+    "id": "tree-g5",
+    "label": "Çifte Ganimet",
+    "file": "powers-v1.png",
+    "cols": 8,
+    "rows": 6,
+    "sheet": "powers",
+    "col": 1,
+    "row": 5,
+    "rect": [
+      190,
+      904,
+      170,
+      168,
+      1448,
+      1086
+    ]
+  },
+  {
+    "id": "tree-a1",
+    "label": "Büyü Akışı",
+    "file": "powers-v1.png",
+    "cols": 8,
+    "rows": 6,
+    "sheet": "powers",
+    "col": 2,
+    "row": 5,
+    "rect": [
+      374,
+      904,
+      159,
+      168,
+      1448,
+      1086
+    ]
+  },
+  {
+    "id": "tree-a2",
+    "label": "Altın Yağmuru",
+    "file": "powers-v1.png",
+    "cols": 8,
+    "rows": 6,
+    "sheet": "powers",
+    "col": 3,
+    "row": 5,
+    "rect": [
+      546,
+      896,
+      173,
+      169,
+      1448,
+      1086
+    ]
+  },
+  {
+    "id": "tree-a3",
+    "label": "Büyü Gücü",
+    "file": "powers-v1.png",
+    "cols": 8,
+    "rows": 6,
+    "sheet": "powers",
+    "col": 4,
+    "row": 5,
+    "rect": [
+      736,
+      906,
+      153,
+      164,
+      1448,
+      1086
+    ]
+  },
+  {
+    "id": "tree-a4",
+    "label": "Savaş Çağrısı",
+    "file": "powers-v1.png",
+    "cols": 8,
+    "rows": 6,
+    "sheet": "powers",
+    "col": 5,
+    "row": 5,
+    "rect": [
+      909,
+      908,
+      180,
+      164,
+      1448,
+      1086
+    ]
+  },
+  {
+    "id": "tree-a5",
+    "label": "Kıyamet Meteoru",
+    "file": "powers-v1.png",
+    "cols": 8,
+    "rows": 6,
+    "sheet": "powers",
+    "col": 6,
+    "row": 5,
+    "rect": [
+      1094,
+      906,
+      163,
+      164,
+      1448,
+      1086
+    ]
+  },
+  {
+    "id": "stat-thorns",
+    "label": "Diken",
+    "file": "powers-v1.png",
+    "cols": 8,
+    "rows": 6,
+    "sheet": "powers",
+    "col": 7,
+    "row": 5,
+    "rect": [
+      1275,
+      903,
+      161,
+      167,
+      1448,
+      1086
+    ]
+  },
+  {
+    "id": "menu-character",
+    "label": "Karakter",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 0,
+    "row": 0,
+    "rect": [
+      12,
+      19,
+      144,
+      144,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "menu-upgrades",
+    "label": "Yükseltmeler",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 1,
+    "row": 0,
+    "rect": [
+      174,
+      16,
+      129,
+      158,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "menu-skills",
+    "label": "Yetenekler",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 2,
+    "row": 0,
+    "rect": [
+      321,
+      33,
+      154,
+      125,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "menu-forge",
+    "label": "Demirci",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 3,
+    "row": 0,
+    "rect": [
+      483,
+      16,
+      146,
+      147,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "menu-shop",
+    "label": "Mağaza",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 4,
+    "row": 0,
+    "rect": [
+      635,
+      23,
+      145,
+      140,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "menu-achievements",
+    "label": "Başarımlar",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 5,
+    "row": 0,
+    "rect": [
+      788,
+      35,
+      148,
+      133,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "menu-prestige",
+    "label": "Ruh Ağacı",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 6,
+    "row": 0,
+    "rect": [
+      945,
+      19,
+      147,
+      155,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "settings",
+    "label": "Ayarlar",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 7,
+    "row": 0,
+    "rect": [
+      1108,
+      30,
+      131,
+      133,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "gold",
+    "label": "Altın",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 0,
+    "row": 1,
+    "rect": [
+      22,
+      190,
+      133,
+      132,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "soul",
+    "label": "Ruh",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 1,
+    "row": 1,
+    "rect": [
+      176,
+      184,
+      114,
+      141,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "health",
+    "label": "Can",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 2,
+    "row": 1,
+    "rect": [
+      333,
+      202,
+      132,
+      119,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "save",
+    "label": "Kaydet",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 3,
+    "row": 1,
+    "rect": [
+      489,
+      187,
+      133,
+      138,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "lock",
+    "label": "Kilit",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 4,
+    "row": 1,
+    "rect": [
+      656,
+      187,
+      101,
+      134,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "equip-best",
+    "label": "En İyileri Kuşan",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 5,
+    "row": 1,
+    "rect": [
+      795,
+      185,
+      145,
+      147,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "stats",
+    "label": "Statlar",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 6,
+    "row": 1,
+    "rect": [
+      958,
+      193,
+      125,
+      130,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "inventory",
+    "label": "Envanter",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 7,
+    "row": 1,
+    "rect": [
+      1100,
+      187,
+      139,
+      134,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "achievement-kills",
+    "label": "Avcı",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 0,
+    "row": 2,
+    "rect": [
+      11,
+      329,
+      149,
+      157,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "achievement-stage",
+    "label": "Kâşif",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 1,
+    "row": 2,
+    "rect": [
+      165,
+      336,
+      148,
+      149,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "achievement-boss",
+    "label": "Boss Avcısı",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 2,
+    "row": 2,
+    "rect": [
+      318,
+      336,
+      151,
+      149,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "achievement-elite",
+    "label": "Elit Avcı",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 3,
+    "row": 2,
+    "rect": [
+      472,
+      336,
+      150,
+      149,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "achievement-gold",
+    "label": "Zengin",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 4,
+    "row": 2,
+    "rect": [
+      629,
+      336,
+      150,
+      149,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "achievement-items",
+    "label": "Toplayıcı",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 5,
+    "row": 2,
+    "rect": [
+      786,
+      337,
+      150,
+      149,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "achievement-legend",
+    "label": "Efsane Peşinde",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 6,
+    "row": 2,
+    "rect": [
+      941,
+      336,
+      149,
+      150,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "achievement-enhance",
+    "label": "Demirci",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 7,
+    "row": 2,
+    "rect": [
+      1095,
+      337,
+      148,
+      148,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "achievement-skills",
+    "label": "Büyücü",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 0,
+    "row": 3,
+    "rect": [
+      10,
+      493,
+      151,
+      151,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "achievement-prestige",
+    "label": "Yeniden Doğan",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 1,
+    "row": 3,
+    "rect": [
+      161,
+      493,
+      152,
+      151,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "achievement-mythic",
+    "label": "Mitik Avcısı",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 2,
+    "row": 3,
+    "rect": [
+      317,
+      492,
+      151,
+      151,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "achievement-gear",
+    "label": "Tam Teçhizat",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 3,
+    "row": 3,
+    "rect": [
+      470,
+      493,
+      152,
+      151,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "achievement-weapons",
+    "label": "Silah Ustası",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 4,
+    "row": 3,
+    "rect": [
+      627,
+      493,
+      152,
+      151,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "achievement-traits",
+    "label": "Elit Uzmanı",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 5,
+    "row": 3,
+    "rect": [
+      785,
+      493,
+      152,
+      151,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "achievement-bestiary",
+    "label": "Canavar Bilgini",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 6,
+    "row": 3,
+    "rect": [
+      940,
+      494,
+      152,
+      150,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "achievement-maxHit",
+    "label": "Tek Vuruş",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 7,
+    "row": 3,
+    "rect": [
+      1095,
+      493,
+      150,
+      150,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "achievement-fastBoss",
+    "label": "Hızlı Cellat",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 0,
+    "row": 4,
+    "rect": [
+      10,
+      647,
+      150,
+      150,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "achievement-dodge",
+    "label": "Gölge",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 1,
+    "row": 4,
+    "rect": [
+      162,
+      648,
+      150,
+      149,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "achievement-playtime",
+    "label": "Sadık Maceracı",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 2,
+    "row": 4,
+    "rect": [
+      316,
+      648,
+      151,
+      149,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "achievement-tree",
+    "label": "Ruh Bahçıvanı",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 3,
+    "row": 4,
+    "rect": [
+      470,
+      648,
+      151,
+      149,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "achievement-upgrades",
+    "label": "Gelişim",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 4,
+    "row": 4,
+    "rect": [
+      625,
+      648,
+      150,
+      149,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "chest-wood",
+    "label": "Tahta Sandık",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 5,
+    "row": 4,
+    "rect": [
+      786,
+      666,
+      144,
+      124,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "chest-iron",
+    "label": "Demir Sandık",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 6,
+    "row": 4,
+    "rect": [
+      942,
+      666,
+      143,
+      124,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "chest-gold",
+    "label": "Altın Sandık",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 7,
+    "row": 4,
+    "rect": [
+      1096,
+      656,
+      149,
+      136,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "potion",
+    "label": "Can İksiri",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 0,
+    "row": 5,
+    "rect": [
+      24,
+      810,
+      116,
+      140,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "elixir-wrath",
+    "label": "Öfke İksiri",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 1,
+    "row": 5,
+    "rect": [
+      178,
+      807,
+      120,
+      140,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "elixir-ironskin",
+    "label": "Demir Deri İksiri",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 2,
+    "row": 5,
+    "rect": [
+      334,
+      808,
+      113,
+      136,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "elixir-fortune",
+    "label": "Altın İksiri",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 3,
+    "row": 5,
+    "rect": [
+      483,
+      808,
+      117,
+      136,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "elixir-luck",
+    "label": "Şans Parşömeni",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 4,
+    "row": 5,
+    "rect": [
+      625,
+      810,
+      152,
+      138,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "gift",
+    "label": "Ganimet",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 5,
+    "row": 5,
+    "rect": [
+      790,
+      802,
+      136,
+      148,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "gamepad",
+    "label": "Oyun",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 6,
+    "row": 5,
+    "rect": [
+      942,
+      825,
+      140,
+      107,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "keyboard",
+    "label": "Kısayollar",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 7,
+    "row": 5,
+    "rect": [
+      1096,
+      841,
+      153,
+      90,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "refresh",
+    "label": "Yenile",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 0,
+    "row": 6,
+    "rect": [
+      26,
+      965,
+      120,
+      125,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "sort",
+    "label": "Sırala",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 1,
+    "row": 6,
+    "rect": [
+      182,
+      971,
+      120,
+      104,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "auto",
+    "label": "Otomatik",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 2,
+    "row": 6,
+    "rect": [
+      318,
+      955,
+      142,
+      143,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "combat",
+    "label": "Savaş",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 3,
+    "row": 6,
+    "rect": [
+      479,
+      963,
+      131,
+      125,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "boss",
+    "label": "Boss",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 4,
+    "row": 6,
+    "rect": [
+      632,
+      971,
+      152,
+      113,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "info",
+    "label": "Bilgi",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 5,
+    "row": 6,
+    "rect": [
+      822,
+      964,
+      88,
+      132,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "sound",
+    "label": "Ses",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 6,
+    "row": 6,
+    "rect": [
+      963,
+      960,
+      111,
+      128,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "warning",
+    "label": "Uyarı",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 7,
+    "row": 6,
+    "rect": [
+      1105,
+      965,
+      134,
+      116,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "export",
+    "label": "Dışa Aktar",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 0,
+    "row": 7,
+    "rect": [
+      24,
+      1108,
+      137,
+      123,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "import",
+    "label": "İçe Aktar",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 1,
+    "row": 7,
+    "rect": [
+      186,
+      1108,
+      120,
+      123,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "reset",
+    "label": "Sıfırla",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 2,
+    "row": 7,
+    "rect": [
+      335,
+      1103,
+      125,
+      128,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "confirm",
+    "label": "Onayla",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 3,
+    "row": 7,
+    "rect": [
+      482,
+      1111,
+      125,
+      103,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "close",
+    "label": "Kapat",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 4,
+    "row": 7,
+    "rect": [
+      650,
+      1111,
+      120,
+      120,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "expand",
+    "label": "Menüyü Aç",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 5,
+    "row": 7,
+    "rect": [
+      799,
+      1131,
+      122,
+      82,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "collapse",
+    "label": "Menüyü Gizle",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 6,
+    "row": 7,
+    "rect": [
+      954,
+      1124,
+      123,
+      80,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "link",
+    "label": "Ön Koşul",
+    "file": "interface-v1.png",
+    "cols": 8,
+    "rows": 8,
+    "sheet": "interface",
+    "col": 7,
+    "row": 7,
+    "rect": [
+      1100,
+      1104,
+      134,
+      122,
+      1254,
+      1254
+    ]
+  }
+]

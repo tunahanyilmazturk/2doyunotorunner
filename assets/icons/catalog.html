@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Idle Runner — İkon Koleksiyonu</title>
+  <link rel="stylesheet" href="../../css/fonts.css">
+  <link rel="stylesheet" href="../../css/icons.css">
+  <style>
+    * { box-sizing: border-box; }
+    body { margin:0; background:#18131e; color:#efe2c4; font-family:Arial,sans-serif; }
+    main { max-width:1260px; margin:auto; padding:40px 28px; }
+    header { border-bottom:1px solid #51405b; padding-bottom:24px; margin-bottom:24px; }
+    .eyebrow { color:#d7aa58; font-size:12px; letter-spacing:3px; }
+    h1 { font-family:'Pixelify Sans',monospace; font-size:38px; margin:10px 0; }
+    p { color:#b7a8bc; line-height:1.6; }
+    a { color:#78d6b0; }
+    .controls { display:flex; gap:12px; flex-wrap:wrap; margin-top:24px; }
+    input,select { background:#2a2233; border:1px solid #635170; color:#efe2c4; padding:12px; font:inherit; }
+    input { min-width:240px; flex:1; }
+    section { display:grid; grid-template-columns:repeat(auto-fill,minmax(132px,1fr)); gap:12px; }
+    figure { margin:0; background:#282130; border:1px solid #493b53; padding:16px 8px 12px; text-align:center; min-height:142px; }
+    figure .pixel-icon { --icon-size:76px; }
+    figcaption { font-size:12px; line-height:1.4; padding-top:10px; }
+    small { display:block; color:#94839f; font-size:10px; margin-top:5px; overflow-wrap:anywhere; }
+    #count { color:#d7aa58; font-size:13px; }
+    @media(max-width:600px) { main { padding:24px 16px; } h1 { font-size:28px; } }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div class="eyebrow">IDLE RUNNER RPG · ÖZEL PİKSEL SANAT</div>
+      <h1>Macera, en küçük ayrıntıda.</h1>
+      <p>98 eşya görünümü, 5 yetenek, 12 yükseltme, 25 Ruh Ağacı düğümü, 21 başarım grubu ve arayüz simgeleri.<br>Şeffaf arka planlı dört görsel atlasında toplam 210 özel ikon.</p>
+      <a href="/">Oyuna dön →</a>
+      <div class="controls">
+        <input id="search" type="search" placeholder="İkon ara…" aria-label="İkon ara">
+        <select id="category" aria-label="Kategori">
+          <option value="all">Tüm koleksiyon</option>
+          <option value="weapons">Silahlar · 35</option>
+          <option value="equipment">Ekipman · 63</option>
+          <option value="powers">Yetenekler ve Ruh Ağacı · 48</option>
+          <option value="interface">Arayüz ve başarımlar · 64</option>
+        </select>
+      </div>
+      <p id="count" role="status"></p>
+    </header>
+    <section id="gallery" aria-label="İkon koleksiyonu"></section>
+  </main>
+  <script type="module" src="catalog.js"></script>
+</body>
+</html>

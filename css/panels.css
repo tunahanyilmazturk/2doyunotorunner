@@ -1,0 +1,1216 @@
+/* ---------- Alt menü (dock): sol dikey menü + içerik ---------- */
+.dock {
+  display: grid;
+  grid-template-columns: 212px minmax(0, 1fr);
+  min-height: 0;
+  background: var(--panel);
+  border: 2px solid var(--edge);
+  border-radius: var(--radius);
+  box-shadow: var(--bevel), var(--drop);
+  overflow: hidden;
+}
+
+.nav-rail {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px;
+  background: #241e2a;
+  border-right: 2px solid var(--edge);
+  box-shadow: inset -2px 0 0 var(--hi);
+  overflow-y: auto;
+}
+.nav-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 34px;
+  padding: 0 10px;
+  background: none;
+  border: 2px solid transparent;
+  border-radius: var(--radius);
+  color: var(--muted);
+  font-family: var(--font-pixel);
+  font-weight: 500;
+  font-size: 15px;
+  text-align: left;
+  cursor: pointer;
+  flex: 1 1 0;
+  max-height: 44px;
+}
+.nav-btn:hover {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.04);
+}
+.nav-btn.active {
+  color: var(--text);
+  background: var(--panel-2);
+  border-color: var(--edge);
+  box-shadow: var(--bevel), inset 4px 0 0 var(--gold);
+}
+.nav-icon {
+  font-size: 17px;
+  width: 22px;
+  text-align: center;
+}
+.nav-label {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.nav-badge {
+  min-width: 20px;
+  height: 18px;
+  padding: 0 4px;
+  border: 2px solid var(--edge);
+  border-radius: var(--radius);
+  background: var(--hp);
+  box-shadow: inset 1px 1px 0 #f07a72;
+  color: #fff;
+  font-size: 12px;
+  line-height: 14px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.dock-content {
+  min-height: 0;
+  overflow: auto;
+  padding: 10px 14px;
+}
+
+.section-title {
+  margin: 0 0 8px;
+  font-family: var(--font-pixel);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  text-shadow: 2px 2px 0 var(--edge);
+}
+.section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+.toolbar-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.toolbar label {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* ---------- Karakter: Ekipman | Envanter | Statlar ---------- */
+.character-layout {
+  display: grid;
+  grid-template-columns: 282px minmax(0, 1fr) 210px;
+  gap: 16px;
+  align-items: start;
+}
+.char-col {
+  min-width: 0;
+}
+/* 10 yuva: 5 sütun × 2 satır */
+.equip-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 50px);
+  gap: 6px;
+  margin-bottom: 10px;
+}
+.equip-grid .item-slot {
+  width: 50px;
+  height: 50px;
+}
+.equip-grid .slot-icon {
+  font-size: 22px;
+}
+.btn-block {
+  width: 100%;
+}
+
+.stat-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.stat-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: var(--bg-2);
+  font-size: 12px;
+}
+.stat-list li:nth-child(odd) {
+  background: transparent;
+}
+.stat-list li b {
+  color: #fff;
+  white-space: nowrap;
+}
+.stat-list .stat-dps {
+  background: linear-gradient(90deg, rgba(242, 193, 78, 0.2), transparent) !important;
+  font-size: 13px;
+}
+.stat-list .stat-dps b {
+  color: var(--gold);
+}
+.stat-list kbd {
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 800;
+  background: var(--panel-2);
+  border: 2px solid var(--edge);
+  box-shadow: var(--bevel-sunk);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  padding: 0 6px;
+}
+
+/* ---------- Envanter ---------- */
+.inv-count {
+  font-weight: 800;
+}
+.inv-count.full {
+  color: var(--bad);
+}
+.inventory-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(52px, 1fr));
+  gap: 6px;
+}
+.inventory-grid .item-slot {
+  aspect-ratio: 1;
+}
+
+/* ---------- Mağaza ---------- */
+.potion-card,
+.prestige-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--bg-2);
+  border: 2px solid var(--edge);
+  box-shadow: var(--bevel-sunk);
+  border-radius: var(--radius);
+  padding: 8px 10px;
+}
+.potion-icon,
+.prestige-icon {
+  font-size: 30px;
+}
+.potion-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.potion-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+.potion-actions .btn {
+  flex: 1;
+  min-width: 0;
+}
+.potion-card {
+  flex-wrap: wrap;
+}
+
+.shop-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 6px;
+}
+.shop-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--bg-2);
+  border: 2px solid var(--edge);
+  box-shadow: var(--bevel-sunk);
+  border-left: 3px solid var(--rarity);
+  border-radius: var(--radius);
+  padding: 6px;
+}
+.shop-card .item-slot {
+  width: 46px;
+  height: 46px;
+  flex: none;
+}
+.shop-card-info {
+  flex: 1;
+  min-width: 0;
+}
+.shop-name {
+  font-weight: 800;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.shop-card.sold {
+  opacity: 0.45;
+}
+
+/* ---------- Yükseltmeler ---------- */
+.upgrade-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(255px, 1fr));
+  gap: 6px;
+}
+.upgrade-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--bg-2);
+  border: 2px solid var(--edge);
+  box-shadow: var(--bevel-sunk);
+  border-radius: var(--radius);
+  padding: 5px 8px;
+}
+.upgrade-row .btn-buy {
+  min-width: 70px;
+  padding: 5px 8px;
+  font-size: 12px;
+}
+.up-name b,
+.up-effect {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.upgrade-row.maxed {
+  border-color: #6a5a20;
+}
+.up-icon {
+  font-size: 22px;
+  width: 30px;
+  text-align: center;
+}
+.up-info {
+  flex: 1;
+  min-width: 0;
+}
+.up-name {
+  display: flex;
+  gap: 6px;
+  align-items: baseline;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.up-level {
+  flex: none;
+}
+.up-level {
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 800;
+}
+.up-effect {
+  font-size: 12px;
+}
+.up-effect .up {
+  color: var(--good);
+  font-weight: 800;
+}
+.mode-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+/* ---------- Yeniden doğuş ---------- */
+.prestige-card {
+  font-size: 18px;
+}
+.prestige-card b {
+  color: var(--soul);
+}
+.prestige-pending {
+  margin: 0 0 10px;
+  padding: 10px;
+  border-radius: var(--radius);
+  background: rgba(197, 139, 255, 0.12);
+  border: 1px dashed var(--soul);
+}
+.prestige-pending b {
+  color: var(--soul);
+}
+
+/* ---------- Ayarlar ---------- */
+.button-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.save-area {
+  width: 100%;
+  height: 120px;
+  background: var(--bg);
+  color: var(--text);
+  border: 2px solid var(--edge);
+  box-shadow: var(--bevel-sunk);
+  border-radius: 6px;
+  font-family: monospace;
+  font-size: 11px;
+  padding: 8px;
+  user-select: text;
+}
+
+/* ---------- İki sütunlu sekme düzeni (dikey alandan tasarruf) ---------- */
+.split {
+  display: grid;
+  grid-template-columns: minmax(240px, 300px) minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+}
+.split > * {
+  min-width: 0;
+}
+.split p {
+  margin: 8px 0 0;
+}
+.stat-list.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 10px;
+}
+.stat-list.two-col li:nth-child(odd) {
+  background: var(--bg-2);
+}
+.stat-list.two-col li:nth-child(4n + 3),
+.stat-list.two-col li:nth-child(4n + 4) {
+  background: transparent;
+}
+
+/* ---------- Yetenekler ---------- */
+.skill-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 8px;
+}
+.skill-card {
+  --c: var(--accent);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 10px;
+  background: var(--bg-2);
+  border: 2px solid var(--edge);
+  box-shadow: var(--bevel-sunk);
+  border-top: 3px solid var(--c);
+  border-radius: var(--radius);
+}
+.skill-card.locked {
+  opacity: 0.55;
+}
+.skill-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.skill-icon {
+  font-size: 26px;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--c) 22%, transparent);
+  border: 1px solid var(--c);
+}
+.skill-desc {
+  font-size: 12px;
+  min-height: 32px;
+}
+.skill-desc b {
+  color: var(--c);
+}
+.skill-next {
+  color: var(--muted);
+  font-size: 11px;
+}
+.skill-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+}
+
+/* ---------- Demirci ---------- */
+.forge-intro {
+  margin-bottom: 8px;
+}
+.forge-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 6px;
+}
+.forge-row {
+  --rarity: var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px;
+  background: var(--bg-2);
+  border: 2px solid var(--edge);
+  box-shadow: var(--bevel-sunk);
+  border-left: 3px solid var(--rarity);
+  border-radius: var(--radius);
+}
+.forge-row .item-slot {
+  width: 46px;
+  height: 46px;
+  flex: none;
+}
+.forge-row.empty {
+  opacity: 0.5;
+}
+.forge-info {
+  flex: 1;
+  min-width: 0;
+}
+.forge-pips {
+  display: flex;
+  gap: 2px;
+  margin: 3px 0;
+}
+.forge-pips span {
+  width: 8px;
+  height: 5px;
+  border-radius: 2px;
+  background: var(--border);
+}
+.forge-pips span.on {
+  background: #ffb03a;
+  box-shadow: 0 0 4px #ffb03a;
+}
+
+/* ---------- Başarımlar ---------- */
+.ach-summary {
+  margin-bottom: 8px;
+  font-size: 13px;
+}
+.ach-summary b {
+  color: var(--gold);
+}
+.ach-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 6px;
+}
+.ach-card {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  background: var(--bg-2);
+  border: 2px solid var(--edge);
+  box-shadow: var(--bevel-sunk);
+  border-radius: var(--radius);
+  opacity: 0.8;
+}
+.ach-card.done {
+  opacity: 1;
+  border-color: #8a6d1e;
+  background: linear-gradient(90deg, rgba(255, 211, 77, 0.12), var(--bg-2));
+}
+.ach-icon {
+  font-size: 22px;
+  width: 30px;
+  text-align: center;
+  filter: grayscale(1);
+}
+.ach-card.done .ach-icon {
+  filter: none;
+}
+.ach-info {
+  flex: 1;
+  min-width: 0;
+}
+.ach-info b,
+.ach-info .muted {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ach-bar {
+  height: 13px;
+  margin-top: 3px;
+}
+.ach-bar .fill {
+  background: linear-gradient(180deg, #ffd34d, #c98b12);
+}
+.ach-bar span {
+  font-size: 9px;
+  line-height: 11px;
+}
+
+/* ---------- Ayarlar penceresi ---------- */
+.settings-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.settings-grid .check {
+  margin-bottom: 6px;
+  font-size: 13px;
+  color: var(--text);
+}
+.settings-grid .section-title {
+  margin-top: 12px;
+}
+.settings-grid section > .section-title:first-child {
+  margin-top: 0;
+}
+
+/* Dar dock'ta statlar sütunu alta iner */
+@media (max-width: 1250px) {
+  .character-layout {
+    grid-template-columns: 282px minmax(0, 1fr);
+  }
+  .stats-col {
+    grid-column: 1 / -1;
+  }
+  .stats-col .stat-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .dock {
+    grid-template-columns: 1fr;
+  }
+  .nav-rail {
+    flex-direction: row;
+    overflow-x: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-btn {
+    flex: none;
+    width: auto;
+  }
+  .split,
+  .settings-grid,
+  .character-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.ach-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 6px;
+}
+.ach-pips {
+  display: flex;
+  gap: 2px;
+  flex: none;
+}
+.ach-pips span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--border);
+}
+.ach-pips span.on {
+  background: var(--gold);
+  box-shadow: 0 0 4px var(--gold);
+}
+
+/* ---------- Tema ayrıntıları: piksel yazı tipindeki başlıklar ve sayılar ---------- */
+.inv-count,
+.up-name b,
+.up-level,
+.skill-card .up-name b,
+.shop-name,
+.ach-info b,
+.ach-summary,
+.prestige-card,
+.stat-list li b {
+  font-family: var(--font-pixel);
+}
+.up-name b,
+.shop-name,
+.ach-info b {
+  font-size: 15px;
+  font-weight: 600;
+}
+.up-level {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--good);
+}
+.stat-list li b {
+  font-size: 13px;
+  font-weight: 500;
+}
+.inv-count {
+  font-size: 15px;
+}
+.stats-col .stat-list li {
+  padding: 1px 8px;
+}
+.stats-col .section-title,
+.equip-col .section-title {
+  margin-bottom: 6px;
+}
+
+/* ---------- 10 yuva + 20 başarım grubu için sıkıştırma ---------- */
+.inventory-grid {
+  grid-template-columns: repeat(auto-fill, minmax(48px, 1fr));
+  gap: 5px;
+}
+.inv-col .hint {
+  margin-top: 5px;
+}
+.stats-col .stat-list li {
+  line-height: 1.25;
+}
+
+.forge-list {
+  grid-template-columns: repeat(auto-fill, minmax(255px, 1fr));
+  gap: 5px;
+}
+.forge-row {
+  padding: 4px 6px;
+  gap: 8px;
+}
+.forge-row .item-slot {
+  width: 40px;
+  height: 40px;
+}
+.forge-row .slot-icon {
+  font-size: 18px;
+}
+.forge-row .btn-buy {
+  min-width: 0;
+  padding: 4px 8px;
+  font-size: 13px;
+}
+.forge-intro {
+  margin-bottom: 6px;
+}
+
+/* Başarım kartı: üstte ad + kademeler + sayı, altta açıklama ve ince çubuk */
+.ach-grid {
+  grid-template-columns: repeat(auto-fill, minmax(205px, 1fr));
+  gap: 5px;
+}
+.ach-card {
+  padding: 4px 7px 5px;
+  gap: 7px;
+}
+.ach-icon {
+  font-size: 18px;
+  width: 24px;
+}
+.ach-info .muted {
+  font-size: 11px;
+  line-height: 1.3;
+}
+.ach-bar {
+  height: 6px;
+  margin-top: 3px;
+  border-width: 1px;
+}
+.ach-bar span {
+  display: none;
+}
+.ach-count {
+  margin-left: auto;
+  font-family: var(--font-pixel);
+  font-size: 12px;
+  color: var(--muted);
+}
+.ach-card.done .ach-count {
+  color: var(--gold);
+}
+.skill-grid {
+  grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));
+}
+.ach-grid {
+  grid-template-columns: repeat(auto-fill, minmax(188px, 1fr));
+}
+.ach-progress {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 2px;
+}
+.ach-progress .ach-bar {
+  flex: 1;
+  margin-top: 0;
+}
+.ach-count {
+  margin-left: 0;
+  font-size: 11px;
+}
+.ach-info b {
+  font-size: 13px;
+}
+.ach-info .muted {
+  font-size: 10.5px;
+}
+.ach-pips span {
+  width: 6px;
+  height: 6px;
+}
+.ach-grid {
+  gap: 4px;
+}
+
+/* =========================================================================
+   Ruh Ağacı: 5 dal × 5 düğüm (soldan sağa) + sağda yeniden doğuş ve ayrıntı
+   ========================================================================= */
+.tree-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 290px;
+  gap: 14px;
+  align-items: start;
+}
+.tree {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.tree-row {
+  --branch: var(--good);
+  display: flex;
+  align-items: center;
+}
+.tree-branch {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 138px;
+  flex: none;
+  font-family: var(--font-pixel);
+  font-size: 14px;
+  color: var(--branch);
+  text-shadow: 1px 1px 0 var(--edge);
+}
+.tree-branch-icon {
+  font-size: 16px;
+}
+/* Düğümler arası bağlantı çizgisi: önceki düğüm alınınca dalın rengiyle dolar */
+.tree-link {
+  flex: 1;
+  min-width: 10px;
+  max-width: 64px;
+  height: 4px;
+  background: var(--bg-2);
+  border-top: 1px solid var(--edge);
+  border-bottom: 1px solid var(--edge);
+}
+.tree-link.on {
+  background: var(--branch);
+}
+.tree-node {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  background: var(--bg-2);
+  border: 2px solid var(--edge);
+  border-radius: var(--radius);
+  box-shadow: var(--bevel-sunk);
+  cursor: pointer;
+}
+.tree-icon {
+  font-size: 20px;
+}
+.tree-node.locked {
+  filter: grayscale(1) brightness(0.6);
+}
+.tree-node.owned {
+  background: color-mix(in srgb, var(--branch) 28%, var(--panel-2));
+  box-shadow: inset 2px 2px 0 color-mix(in srgb, var(--branch) 60%, #fff), inset -2px -2px 0 var(--lo);
+}
+.tree-node.maxed {
+  border-color: var(--gold);
+}
+.tree-node.affordable {
+  outline: 2px solid var(--gold);
+  outline-offset: 1px;
+  animation: blink 1.2s steps(2) infinite;
+}
+.tree-node.selected {
+  outline: 2px solid var(--text);
+  outline-offset: 2px;
+  animation: none;
+}
+.tree-level {
+  position: absolute;
+  right: 2px;
+  bottom: 1px;
+  font-family: var(--font-pixel);
+  font-size: 10px;
+  color: var(--text);
+  text-shadow: 1px 1px 0 var(--edge), -1px 0 0 var(--edge);
+}
+.tree-cross {
+  position: absolute;
+  left: 1px;
+  top: -1px;
+  font-size: 9px;
+}
+
+.tree-side {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.prestige-box {
+  padding: 8px 10px;
+  background: var(--bg-2);
+  border: 2px solid var(--edge);
+  border-radius: var(--radius);
+  box-shadow: inset 0 0 0 2px var(--soul), var(--bevel-sunk);
+}
+.tree-souls {
+  font-family: var(--font-pixel);
+  font-size: 20px;
+  color: var(--soul);
+  text-shadow: 2px 2px 0 var(--edge);
+}
+.tree-pending {
+  margin: 4px 0 6px;
+  font-size: 12px;
+  line-height: 1.35;
+}
+.tree-pending b {
+  color: var(--soul);
+}
+.prestige-box .btn-prestige {
+  padding: 6px;
+  font-size: 15px;
+}
+.tree-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 10px;
+  background: var(--bg-2);
+  border: 2px solid var(--edge);
+  border-radius: var(--radius);
+  box-shadow: var(--bevel-sunk);
+}
+.tree-detail-head {
+  --branch: var(--good);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.tree-detail-head b {
+  font-family: var(--font-pixel);
+  font-size: 16px;
+  color: var(--branch);
+}
+.tree-detail-icon {
+  font-size: 24px;
+}
+.tree-effect {
+  font-size: 12px;
+  line-height: 1.4;
+}
+.tree-next {
+  color: var(--good);
+}
+.tree-reqs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  font-size: 11px;
+}
+.tree-reqs .req.ok {
+  color: var(--good);
+}
+.tree-reqs .req.no {
+  color: var(--bad);
+}
+.tt-next {
+  color: var(--good);
+}
+.tt-req {
+  color: var(--bad);
+  margin-top: 3px;
+}
+
+/* Kilitli ekipman yuvası */
+.item-slot.slot-locked {
+  cursor: pointer;
+  background: repeating-linear-gradient(45deg, var(--bg-2) 0 5px, #1c1622 5px 10px);
+}
+.item-slot.slot-locked::after {
+  content: '🔒';
+  position: absolute;
+  right: 2px;
+  bottom: 1px;
+  font-size: 11px;
+}
+
+@media (max-width: 1250px) {
+  .tree-layout {
+    grid-template-columns: minmax(0, 1fr) 250px;
+  }
+  .tree-branch {
+    width: 112px;
+    font-size: 13px;
+  }
+}
+@media (max-width: 900px) {
+  .tree-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- 5 yetenek, 21 başarım grubu ve Ruh Ağacı için sıkıştırma ---------- */
+.skill-grid {
+  grid-template-columns: repeat(auto-fill, minmax(196px, 1fr));
+  gap: 6px;
+}
+.skill-card {
+  padding: 6px 8px;
+  gap: 4px;
+}
+.skill-icon {
+  width: 34px;
+  height: 34px;
+  font-size: 22px;
+}
+.skill-desc {
+  min-height: 0;
+}
+.skill-card .btn-buy {
+  min-width: 0;
+  padding: 4px 8px;
+  font-size: 13px;
+}
+.ach-grid {
+  grid-template-columns: repeat(auto-fill, minmax(172px, 1fr));
+}
+.stats-col .stat-list li {
+  padding: 0 8px;
+  line-height: 1.2;
+}
+.prestige-box,
+.tree-detail {
+  padding: 6px 9px;
+}
+.tree-detail {
+  gap: 4px;
+}
+.tree-pending {
+  margin: 2px 0 5px;
+}
+.tree-side {
+  gap: 6px;
+}
+/* Envanter Ruh Ağacı ile 50 yuvaya kadar büyür: ızgara kendi içinde kayar */
+.inventory-grid {
+  max-height: calc(var(--panels-h) - 96px);
+  overflow-y: auto;
+  padding-right: 2px;
+}
+/* Yeniden doğuş kutusu: Ruh + buton yan yana */
+.prestige-box {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: 8px;
+  align-items: center;
+}
+.prestige-box .tree-souls {
+  grid-column: 1;
+}
+.prestige-box .muted {
+  grid-column: 1;
+  font-size: 11px;
+}
+.prestige-box .btn-prestige {
+  grid-column: 2;
+  grid-row: 1 / 3;
+  width: auto;
+  padding: 6px 10px;
+  font-size: 14px;
+}
+.prestige-box .tree-pending {
+  grid-column: 1 / -1;
+  margin: 4px 0 0;
+}
+
+/* ---------- Yükseltmeler: kilometre taşı çubuğu + otomatik alım ---------- */
+.up-mile {
+  height: 3px;
+  margin-top: 2px;
+  background: var(--bg-2);
+  border-radius: 1px;
+  overflow: hidden;
+}
+.up-mile span {
+  display: block;
+  height: 100%;
+  background: var(--gold);
+}
+.up-star {
+  color: var(--gold);
+  font-weight: 600;
+}
+.up-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.up-actions input {
+  accent-color: var(--good);
+}
+.auto-check {
+  color: var(--text);
+  font-family: var(--font-pixel);
+  font-size: 13px;
+}
+.auto-check.disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* ---------- Mağaza: alt sekmeler, sandıklar, iksirler ---------- */
+.subnav {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+.subnav-btn {
+  padding: 4px 12px;
+  background: var(--panel-2);
+  color: var(--muted);
+  border: 2px solid var(--edge);
+  border-radius: var(--radius);
+  box-shadow: var(--bevel);
+  font-family: var(--font-pixel);
+  font-size: 14px;
+  cursor: pointer;
+}
+.subnav-btn.active {
+  background: var(--bg-2);
+  color: var(--text);
+  box-shadow: var(--bevel-sunk), inset 0 -3px 0 var(--gold);
+}
+.shop-page .section-head {
+  margin-bottom: 6px;
+}
+.chest-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+.chest-card {
+  --c: var(--gold);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 8px;
+  text-align: center;
+  background: var(--bg-2);
+  border: 2px solid var(--edge);
+  border-top: 4px solid var(--c);
+  border-radius: var(--radius);
+  box-shadow: var(--bevel-sunk);
+}
+.chest-card b {
+  font-family: var(--font-pixel);
+  font-size: 16px;
+  color: var(--c);
+}
+.chest-icon {
+  font-size: 34px;
+  line-height: 1;
+}
+.chest-result {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+  min-height: 52px;
+}
+.chest-result .item-slot {
+  width: 46px;
+  height: 46px;
+}
+.elixir-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 6px;
+}
+.elixir-card {
+  --c: var(--good);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 8px;
+  background: var(--bg-2);
+  border: 2px solid var(--edge);
+  border-left: 4px solid var(--c);
+  border-radius: var(--radius);
+  box-shadow: var(--bevel-sunk);
+}
+.elixir-icon {
+  font-size: 24px;
+}
+.elixir-info {
+  flex: 1;
+  min-width: 0;
+}
+.elixir-info b {
+  font-family: var(--font-pixel);
+  font-size: 14px;
+  font-weight: 600;
+}
+.elixir-info .check {
+  font-size: 11px;
+}
+.elixir-timer {
+  font-size: 11px;
+  color: var(--good);
+}
+.elixir-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.elixir-actions .btn-buy {
+  min-width: 0;
+  padding: 3px 8px;
+  font-size: 13px;
+}
+.upgrade-list {
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}

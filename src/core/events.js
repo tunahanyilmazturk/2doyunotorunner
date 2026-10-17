@@ -1,0 +1,50 @@
+// Sistemler arası iletişim için olay isimleri. Sistemler birbirini doğrudan
+// çağırmak yerine EventBus üzerinden haberleşir.
+export const Events = Object.freeze({
+  GOLD_CHANGED: 'gold:changed',
+  GOLD_GAINED: 'gold:gained',
+
+  MONSTER_SPAWNED: 'monster:spawned',
+  MONSTER_KILLED: 'monster:killed',
+  BOSS_SPAWNED: 'boss:spawned',
+  BOSS_FAILED: 'boss:failed',
+
+  DAMAGE_DEALT: 'combat:damageDealt',
+  PLAYER_ATTACK: 'combat:playerAttack',
+  PLAYER_HIT: 'combat:playerHit',
+  PLAYER_DODGED: 'combat:playerDodged',
+  HEAVY_WARNING: 'combat:heavyWarning',
+  PLAYER_DIED: 'player:died',
+  PLAYER_RESPAWNED: 'player:respawned',
+
+  STAGE_CHANGED: 'stage:changed',
+  STAGE_PROGRESS: 'stage:progress',
+  BIOME_CHANGED: 'stage:biomeChanged',
+
+  INVENTORY_CHANGED: 'inventory:changed',
+  EQUIPMENT_CHANGED: 'equipment:changed',
+  STATS_CHANGED: 'stats:changed',
+  LOOT_DROPPED: 'loot:dropped',
+  ITEM_SOLD: 'item:sold',
+
+  UPGRADE_BOUGHT: 'upgrade:bought',
+  SHOP_REFRESHED: 'shop:refreshed',
+  CHEST_OPENED: 'shop:chestOpened',
+  POTIONS_CHANGED: 'potion:changed',
+  POTION_USED: 'potion:used',
+
+  SKILL_CAST: 'skill:cast',
+  SKILLS_CHANGED: 'skill:changed',
+  BUFFS_CHANGED: 'skill:buffsChanged',
+  ITEM_ENHANCED: 'item:enhanced',
+  ACHIEVEMENT_UNLOCKED: 'achievement:unlocked',
+
+  PRESTIGE: 'prestige:done',
+  TREE_CHANGED: 'tree:changed',
+  PRESTIGE_READY: 'prestige:ready',
+  PRESTIGE_ADVICE: 'prestige:advice',
+  OFFLINE_REWARD: 'offline:reward',
+  SETTINGS_CHANGED: 'settings:changed',
+  GAME_SAVED: 'game:saved',
+  TOAST: 'ui:toast',
+});

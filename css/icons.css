@@ -1,0 +1,61 @@
+/* Original generated pixel art. Layout stays independent from atlas resolution. */
+.pixel-icon {
+  position: relative;
+  display: inline-block;
+  width: var(--icon-size, 1.5em);
+  height: var(--icon-size, 1.5em);
+  flex: 0 0 auto;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+  pointer-events: none;
+}
+.pixel-icon-art {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+}
+.nav-icon { width: 32px; display: grid; place-items: center; }
+.nav-icon .pixel-icon { --icon-size: 32px; }
+.nav-btn { min-height: 42px; }
+.slot-icon { display: grid; place-items: center; }
+.slot-icon .pixel-icon { --icon-size: 42px; }
+.equip-grid .slot-icon .pixel-icon { --icon-size: 40px; }
+.forge-row .slot-icon .pixel-icon { --icon-size: 32px; }
+.slot-icon.ghost { opacity: .3; }
+.ab-icon { position: absolute; inset: 0; display: grid; place-items: center; line-height: 1; }
+.ab-icon .pixel-icon { --icon-size: 40px; }
+.action-btn.locked .ab-icon { opacity: .55; }
+.up-icon, .ach-icon { width: 42px; flex: 0 0 42px; }
+.up-icon .pixel-icon, .ach-icon .pixel-icon { --icon-size: 40px; }
+.ach-icon { filter: saturate(.7); }
+.ach-card.done .ach-icon { filter: drop-shadow(0 0 4px #d5aa5866); }
+.skill-icon { border-radius: 2px; width: 48px; height: 48px; flex: 0 0 48px; }
+.skill-icon .pixel-icon { --icon-size: 48px; }
+.skill-head > div:last-child { min-width: 0; }
+.skill-head .up-name { flex-wrap: wrap; gap: 2px 6px; white-space: normal; overflow: visible; }
+.skill-head .up-name b { overflow-wrap: anywhere; white-space: normal; overflow: visible; }
+.tree-icon .pixel-icon { --icon-size: 34px; }
+.tree-branch-icon .pixel-icon { --icon-size: 28px; }
+.tree-detail-icon .pixel-icon { --icon-size: 44px; }
+.chest-icon .pixel-icon { --icon-size: 72px; }
+.elixir-icon .pixel-icon { --icon-size: 52px; }
+.currency .ico .pixel-icon { --icon-size: 26px; }
+.hp-heart .pixel-icon { --icon-size: 28px; }
+.brand > .pixel-icon { --icon-size: 30px; margin-right: 4px; }
+.icon-btn .pixel-icon { --icon-size: 26px; }
+.loot-feed .pixel-icon { --icon-size: 28px; }
+.buff-chip .pixel-icon { --icon-size: 22px; }
+.slot-lock .pixel-icon, .slot-badge .pixel-icon, .ab-count .pixel-icon, .tree-cross .pixel-icon { --icon-size: 13px; }
+.section-title .pixel-icon, .tt-name .pixel-icon { --icon-size: 24px; }
+.save-indicator .pixel-icon, .hint .pixel-icon, .tt-footer .pixel-icon, .btn-buy .pixel-icon { --icon-size: 16px; }
+.stat-list .pixel-icon { --icon-size: 20px; }
+@media (max-width: 900px) {
+  .nav-icon .pixel-icon { --icon-size: 28px; }
+  .skill-icon { width: 38px; height: 38px; flex-basis: 38px; }
+  .skill-icon .pixel-icon { --icon-size: 38px; }
+  .slot-icon .pixel-icon, .equip-grid .slot-icon .pixel-icon { --icon-size: 34px; }
+}

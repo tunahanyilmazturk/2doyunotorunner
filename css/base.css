@@ -1,0 +1,142 @@
+/* =========================================================================
+   Tema: "16-bit macera" — zindan taşı paneller, pirinç çerçeveler, parşömen yazı.
+   Paneller yuvarlak kart değil, kabartmalı (bevel) piksel çerçevelerdir:
+   üst-sol açık kenar + alt-sağ koyu kenar + koyu dış hat.
+   ========================================================================= */
+:root {
+  /* Renkler */
+  --bg: #1a1520; /* sayfa: zindan */
+  --bg-2: #140f19; /* çukur alanlar: yuvalar, çubuklar */
+  --panel: #2e2735; /* taş panel */
+  --panel-2: #3b3244; /* kabarık taş: butonlar */
+  --hi: #574a63; /* kabartma ışık kenarı */
+  --lo: #120e16; /* kabartma gölge kenarı */
+  --edge: #0c080f; /* dış hat */
+  --border: #4a3f55;
+  --brass: #a9834a;
+  --text: #efe2c4; /* parşömen */
+  --muted: #a99bb5;
+  --gold: #f2c14e;
+  --soul: #b98cf0;
+  --hp: #d64045;
+  --good: #59c9a5; /* yeşim */
+  --bad: #e0625a;
+  --accent: #59c9a5;
+  --radius: 3px;
+
+  /* Kabartma gölgeleri */
+  --bevel: inset 2px 2px 0 var(--hi), inset -2px -2px 0 var(--lo);
+  --bevel-sunk: inset 2px 2px 0 var(--lo), inset -2px -2px 0 rgba(255, 255, 255, 0.05);
+  --drop: 0 3px 0 rgba(0, 0, 0, 0.35);
+
+  /* Yazı */
+  --font-pixel: 'Pixelify Sans', 'Trebuchet MS', system-ui, sans-serif;
+  --font-body: 'Jost', 'Segoe UI', system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  background-color: var(--bg);
+  /* İnce taş dokusu */
+  background-image: radial-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    radial-gradient(rgba(0, 0, 0, 0.25) 1px, transparent 1px);
+  background-size: 7px 7px, 11px 11px;
+  background-position: 0 0, 3px 5px;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 14px;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+}
+
+/* Tek ekran düzeni: üst bar + esnek oyun alanı + sabit yükseklikte alt menü.
+   Sayfa kaydırılmaz; uzun içerik sadece kendi paneli içinde kayar. */
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+}
+
+#app {
+  --panels-h: clamp(300px, 44vh, 420px);
+  height: 100vh;
+  height: 100dvh;
+  padding: 8px 12px 10px;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) var(--panels-h);
+  gap: 10px;
+}
+
+@media (max-width: 900px) {
+  html,
+  body {
+    height: auto;
+    overflow: auto;
+  }
+  #app {
+    height: auto;
+    grid-template-rows: auto auto auto;
+  }
+}
+
+button,
+select,
+input {
+  font-family: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+b,
+strong {
+  font-weight: 600;
+}
+
+.muted {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.hint {
+  color: var(--muted);
+  font-size: 11px;
+  margin-top: 8px;
+  text-align: center;
+}
+
+/* Piksel kaydırma çubuğu */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-2);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--panel-2);
+  box-shadow: var(--bevel);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "name": "idle-runner-rpg",
+  "version": "1.0.0",
+  "description": "Yatay auto-runner idle RPG — canavarları kes, altın topla, eşya kuşan.",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  }
+}

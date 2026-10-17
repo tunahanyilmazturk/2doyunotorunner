@@ -1,0 +1,212 @@
+# ⚔️ Idle Runner RPG
+
+Yatay ekranda soldan sağa koşan bir kahraman: önüne çıkan canavarları otomatik keser,
+altın ve eşya toplar. Altınla yükseltme ve eşya alır, envanterden eşya kuşanır,
+bossları yener, biyomlar arasında ilerler ve **Yeniden Doğuş** ile kalıcı güç kazanır.
+
+Saf JavaScript (ES modülleri) + Canvas 2D. Hiçbir bağımlılık veya build adımı yok.
+
+## Çalıştırma
+
+```bash
+npm start
+```
+
+Ardından tarayıcıda `http://localhost:5173` adresini aç.
+(ES modülleri `file://` üzerinden yüklenemediği için küçük bir Node sunucusu kullanılıyor.)
+
+## Özellikler
+
+- **Auto-runner savaş** — paralaks kayan dünya, temas olunca karşılıklı saldırı, kritik vuruş, can çalma
+- **5 biyom** (Orman, Çöl, Mağara, Buzul, Volkan), her biri kendi canavarları ve bossu ile; her 10 bölgede biyom değişir
+- **37 canavar** — 27 normal canavar ve 10 boss (her biyomda iki boss: 5. ve 10. bölgede), 7 farklı çizim şekli
+  (balçık, mantar, hayalet, insansı, dört ayaklı, uçan, yılan)
+- **Boss savaşları** — her 5 bölgede bir, 30 sn süre sınırı; kaybedersen "Boss'a Meydan Oku" ile tekrar dene
+- **Elit canavarlar** — %8 şansla çıkar; 3x can, 4x altın, daha iyi eşya. Her elit rastgele bir özellik taşır:
+  Hızlı, Dev, Zırhlı, Vampir, Çılgın veya Altın (parıltı rengi özelliği gösterir)
+- **Aktif yetenekler** — Güçlü Vuruş, Öfke, Altın Yağmuru, İlahi Şifa; oyun alanındaki çubuktan veya Q W E R ile, istersen otomatik
+- **Demirci** — kuşanılan eşyaları +1 … +15 güçlendirme (maksimum seviye nadirliğe bağlı)
+- **Başarımlar** — 20 grupta 60+ kademeli başarım (canavar bilgini, tam teçhizat, silah ustası, hızlı cellat…);
+  her biri kalıcı +%3 saldırı ve altın verir
+- **Eşya sistemi** — 10 yuva (Kask, Kolye, Pelerin, Silah, Kalkan, Zırh, Eldiven, Kemer, Yüzük, Çizme),
+  6 nadirlik (Sıradan → Mitik), 7 seviye kademesi, seviyeye göre ölçeklenen rastgele statlar
+- **5 silah türü** — Kılıç, Balta (+kritik hasar), Çekiç (+boss hasarı, en yüksek saldırı), Mızrak (+kritik şansı),
+  Hançer (+saldırı hızı); her biri karakterin elinde farklı çizilir
+- **Statlar** — saldırı, can, zırh, yenilenme, saldırı hızı, kritik, can çalma, altın, şans,
+  **kaçınma**, **diken** (vurulunca geri hasar) ve **boss hasarı**
+- **Envanter** — 30 yuva, kuşan / sat / kilitle / sırala / toplu sat / otomatik sat, "En İyileri Kuşan", kuşanılanla karşılaştırmalı tooltip, ▲ "daha iyi" işareti
+- **Görsel ekipman** — kuşandığın eşyaların nadirlik rengi karakterin üzerinde görünür (kılıç parlaması, pelerin, kask...)
+- **12 yükseltme** — x1 / x10 / MAX satın alma; **kilometre taşları** (her 25 seviyede etki ×2);
+  ilk yeniden doğuştan sonra **otomatik alım** (en ucuz işaretli yükseltmeyi kendiliğinden alır)
+- **Mağaza** — üç bölüm: **Eşyalar** (5 dakikada bir yenilenen vitrin, ▲ daha iyi işareti),
+  **Sandıklar** (Tahta / Demir / Altın: garanti nadirlikte eşya), **İksirler** (Can İksiri + 4 süreli iksir:
+  Öfke, Demir Deri, Altın, Şans Parşömeni; süreleri kayıtla korunur)
+- **Tehlikeli düşmanlar** — bosslar her 4., elitler her 5. saldırıda zırhı yarı delen **ağır vuruş** yapar;
+  öncesinde kırmızı parıltı ve "⚠ Ağır vuruş geliyor!" uyarısı çıkar
+- **Yeniden Doğuş + Ruh Ağacı** — 20. bölgeden sonra yeniden doğ (ilerleme durunca HUD öneri düğmesi çıkar), Ruh kazan ve 5 dallı, 25 düğümlü
+  teknoloji ağacında harca (aşağıya bak)
+- **Kabus döngüleri** — her 50 bölgede biyomlar baştan döner ama canavarlar ×6 can, ×3.5 saldırı, ×3 altınla gelir;
+  içerik hiç bitmez, her duvar yeniden doğmaya ve ağacı büyütmeye davet eder
+- **Çevrimdışı kazanç** — oyun kapalıyken / sekme arka plandayken altın (en fazla 8 saat)
+- **Kayıt** — otomatik kayıt, dışa/içe aktarma, sıfırlama
+- **Oyun hızı** — 1x / 2x / 3x
+- **Tek ekran düzeni** — sayfa kaymaz; sol menüde bildirim rozetleri (daha iyi eşya, alınabilir yükseltme, yeni başarım…)
+- **Gizlenebilir alt menü** — üst bardaki "▼ Menü" düğmesi veya **M** tuşu; gizliyken oyun alanı tüm ekranı kullanır
+- **HUD** — can, bölge plakası (10 öldürme hücresi), aktif yetenek/iksir süreleri, son ganimetler akışı
+
+## Ruh Ağacı
+
+Yeniden doğuşta altın, altın yükseltmeleri ve bölge sıfırlanır; Ruh kazanılır. Envanter, ekipman, yetenekler ve
+ağaç korunur. Kazanılan her Ruh ayrıca kalıcı **Ruh gücü** verir (+%0.5 saldırı/can/altın).
+Düğümler soldan sağa açılır (önceki düğümde en az 1 seviye gerekir); bazıları başka daldan da şart koşar.
+
+| Dal | Düğümler (soldan sağa) |
+|---|---|
+| ⚔️ Savaş | Saldırı % → Kritik şansı → Boss hasarı → Boss süresi + → Kritik hasarı |
+| 🛡️ Hayatta Kalma | Can % → **Kalkan yuvası** → Kaçınma → **İlahi Şifa** yeteneği → Diken |
+| 💰 Servet | Altın % → Ruh kazancı → Altın mirası → Başlangıç bölgesi → Fiyat indirimi |
+| 🎒 Teçhizat | **Envanter +5/sv.** → **Eldiven yuvası** → **Kemer yuvası** → **Pelerin yuvası** → Çifte ganimet |
+| ✨ Büyü | Bekleme süresi − → **Altın Yağmuru** yeteneği → Yetenek gücü → Otomatik boss denemesi → **Kıyamet Meteoru** (özel, sadece buradan) |
+
+Başlangıçta 6 ekipman yuvası açıktır; Kalkan, Eldiven, Kemer ve Pelerin ağaçtan açılır.
+
+## Menü ve Kısayollar
+
+| Sekme | Kısayol | İçerik |
+|---|---|---|
+| 🎒 Karakter | 1 | Ekipman, envanter, statlar |
+| ⬆️ Yükseltmeler | 2 | Altınla kalıcı (yeniden doğuşa kadar) stat yükseltmeleri |
+| ✨ Yetenekler | 3 | Yetenek öğrenme / yükseltme / otomatik kullanım |
+| 🔨 Demirci | 4 | Kuşanılan eşyaları güçlendirme |
+| 🏪 Mağaza | 5 | İksirler ve eşya vitrini |
+| 🏆 Başarımlar | 6 | İlerleme ve kalıcı bonuslar |
+| 🌳 Ruh Ağacı | 7 | Yeniden doğuş ve kalıcı yükseltme ağacı |
+
+Diğer kısayollar: **Q W E R T** yetenekler · **F** iksir · **B** ilerle / boss · **M** menüyü gizle/göster ·
+**Esc** ayarlar · **Ctrl+tık** eşya kilitle.
+Ayarlar, kayıt işlemleri ve istatistikler üst bardaki ⚙️ butonundadır.
+
+## Dosya Yapısı
+
+```
+├── index.html               Sayfa iskeleti (canvas + HUD + paneller)
+├── server.js                Bağımlılıksız statik sunucu
+├── assets/fonts/            Yerel yazı tipleri (woff2) + lisansları
+├── css/
+│   ├── fonts.css            @font-face tanımları (yerel yazı tipleri)
+│   ├── base.css             Tema token'ları (renk, kabartma, yazı tipi), genel stiller
+│   ├── hud.css              Üst bar + oyun alanı üstü bilgi katmanı
+│   ├── panels.css           Alt menü ve tüm sekme panelleri
+│   └── components.css       Buton, eşya kutusu, tooltip, toast, modal
+└── src/
+    ├── main.js              Giriş noktası
+    ├── config/
+    │   ├── constants.js     Ekran, zamanlama, envanter vb. sabitler
+    │   └── balance.js       TÜM denge formülleri (oyunu ayarlamak için burası)
+    ├── core/
+    │   ├── Game.js          Kompozisyon kökü: sistemleri kurar, tick sırasını belirler
+    │   ├── GameLoop.js      requestAnimationFrame döngüsü
+    │   ├── EventBus.js      Yayınla/abone ol
+    │   ├── events.js        Olay isimleri
+    │   ├── GameState.js     Kaydedilen durumun şekli + eski kayıt uyumluluğu
+    │   └── SaveManager.js   localStorage, dışa/içe aktarma
+    ├── data/                Saf veri — yeni içerik eklemek için
+    │   ├── monsters.js      Canavarlar ve bosslar
+    │   ├── eliteTraits.js   Elit canavar özellikleri
+    │   ├── soulTree.js      Ruh Ağacı dalları ve düğümleri
+    │   ├── shop.js          Mağaza kataloğu: süreli iksirler ve hazine sandıkları
+    │   ├── biomes.js        Biyomlar (renkler, süsleme, canavar havuzu)
+    │   ├── items.js         Eşya yuvaları, taban eşyalar ve silah türleri
+    │   ├── rarities.js      Nadirlikler
+    │   ├── stats.js         Stat tanımları
+    │   ├── upgrades.js      Yükseltmeler
+    │   ├── skills.js        Aktif yetenekler
+    │   └── achievements.js  Kademeli başarımlar
+    ├── entities/
+    │   ├── Entity.js        Ortak can/hasar/animasyon zamanı
+    │   ├── Player.js
+    │   └── Monster.js       Bölgeye göre ölçeklenen canavar (normal / elit / boss)
+    ├── systems/             Oyun mantığı (render'dan bağımsız)
+    │   ├── StatsSystem.js       Taban + yükseltme + ekipman + buff + ruh + başarım → nihai statlar
+    │   ├── CombatSystem.js      Temas, saldırılar, ölüm, yeniden doğma
+    │   ├── SpawnSystem.js       Canavar doğurma, bölge ilerlemesi, boss zamanlayıcı
+    │   ├── EconomySystem.js     Altın, saniyelik kazanç ortalaması
+    │   ├── LootSystem.js        Eşya düşürme
+    │   ├── ItemFactory.js       Eşya üretimi, nadirlik zarı, eşya puanı, güçlendirilmiş statlar
+    │   ├── InventorySystem.js   Ekle / sat / kilitle / sırala
+    │   ├── EquipmentSystem.js   Kuşan / çıkar / en iyileri kuşan
+    │   ├── SkillSystem.js       Yetenekler: bekleme süreleri, bufflar, otomatik kullanım
+    │   ├── ForgeSystem.js       Demirci: eşya güçlendirme
+    │   ├── AchievementSystem.js Başarım kontrolü
+    │   ├── UpgradeSystem.js     Toplu satın alma hesapları
+    │   ├── ShopSystem.js        Vitrin + iksir
+    │   ├── PotionSystem.js      Otomatik/manuel can iksiri
+    │   ├── ElixirSystem.js      Süreli iksirler (stat bonusu, kayıtla korunur)
+    │   ├── PrestigeSystem.js    Yeniden doğuş (Ruh hesabı, korunan altın, başlangıç bölgesi, danışman)
+    │   ├── SoulTreeSystem.js    Ruh Ağacı: satın alma, ön koşullar, perk/stat/yuva/yetenek etkileri
+    │   └── OfflineSystem.js     Çevrimdışı ödül
+    ├── render/
+    │   ├── Renderer.js          Çizim sırası, ekran sarsıntısı, afişler, can barları
+    │   ├── Background.js        Prosedürel paralaks biyom arka planı
+    │   ├── ParticleSystem.js    Partiküller (kıvılcım, altın, halka, kesik)
+    │   ├── FloatingTextSystem.js Hasar / altın yazıları
+    │   ├── EffectsController.js Olay → görsel efekt eşlemesi
+    │   ├── SpriteOutliner.js    Sprite'lara piksel dış hattı
+    │   └── sprites/             Prosedürel çizimler: oyuncu, süsleme ve monsters/ (şekil başına bir dosya)
+    ├── ui/
+    │   ├── UIManager.js         Sol menü, rozetler, kısayollar, modal/toast yönlendirme
+    │   ├── HUD.js               Altın, can, bölge, boss süresi, hız, yetenek/iksir çubuğu, bufflar
+    │   ├── SettingsModal.js     Ayarlar, kayıt işlemleri, kısayollar, istatistikler (⚙️)
+    │   ├── components/          Tooltip, Toast, Modal, ItemSlot
+    │   └── panels/              Karakter, Yükseltmeler, Yetenekler, Demirci, Mağaza, Başarımlar, Yeniden Doğuş
+    └── utils/                   format, random, math, dom yardımcıları
+```
+
+## Görsel Tasarım
+
+- **Piksel sanat dünyası:** Dünya, mantıksal birimin yarısı çözünürlükte ayrı bir tuvale çizilir ve yumuşatmasız büyütülür
+  (`render/Renderer.js`). Oyuncu ve canavarlar `SpriteOutliner` ile 1 piksellik koyu dış hat alır.
+  Yazılar, can barları ve afişler tam çözünürlükte üst katmana çizilir. Ayarlar → "Piksel sanat görünümü" ile kapatılabilir.
+- **Harita katmanları:** gökyüzü, güneş ışınları/yıldızlar, bulutlar, kenar ışıklı dağlar, pus, uzak siluetler,
+  yakın süslemeler, patikalı zemin, ortam partikülleri ve karakterlerin önünden geçen ön plan.
+- **Arayüz teması:** zindan taşı paneller, pirinç çerçeveler, parşömen yazı (`css/base.css` içindeki token'lar).
+  Yazı tipleri projeye gömülüdür (`assets/fonts/`, `css/fonts.css`): başlık/sayı için *Pixelify Sans*,
+  açıklamalar için *Jost*. İkisi de SIL Open Font License 1.1 ile lisanslıdır; internet gerekmez.
+
+## Mimari Notlar
+
+- **Durum ↔ çalışma anı ayrımı:** Kaydedilen her şey `game.state` içindeki düz bir JSON nesnesidir.
+  Oyuncu canı, canavarlar, partiküller kaydedilmez.
+- **Olay tabanlı iletişim:** Sistemler birbirini mümkün olduğunca doğrudan çağırmaz; `EventBus` üzerinden
+  haberleşir. Örn. `MONSTER_KILLED` olayını Ekonomi (altın), Loot (eşya), Spawn (ilerleme) ve
+  EffectsController (görsel) ayrı ayrı dinler.
+- **Mantık ve görsel ayrı:** `systems/` hiçbir çizim kodu içermez; `render/` oyun kurallarını bilmez.
+
+## İçerik Eklemek
+
+| Ne eklemek istiyorsun? | Nereye? |
+|---|---|
+| Yeni canavar | `src/data/monsters.js` → sonra `biomes.js`'te bir biyomun `monsters` listesine ekle |
+| Yeni canavar şekli | `src/render/sprites/monsters/` altına çizim fonksiyonu yaz, `index.js`'teki `SHAPES`'e ekle |
+| Yeni elit özelliği | `src/data/eliteTraits.js` |
+| Yeni silah türü | `src/data/items.js` → `WEAPON_KINDS` + `render/sprites/PlayerSprite.js` → `WEAPON_DRAWERS` |
+| Yeni biyom | `src/data/biomes.js` (gerekirse `render/sprites/DecorSprites.js`'e süsleme ekle) |
+| Yeni eşya tabanı / yuva | `src/data/items.js` |
+| Yeni stat | `src/data/stats.js` + `config/balance.js` (PLAYER_BASE) + `systems/StatsSystem.js` |
+| Yeni yükseltme | `src/data/upgrades.js` |
+| Yeni yetenek | `src/data/skills.js` (kind: strike / buff / heal) |
+| Yeni başarım | `src/data/achievements.js` |
+| Yeni Ruh Ağacı düğümü | `src/data/soulTree.js` (yeni perk anahtarıysa onu okuyan sisteme `game.tree.perk('anahtar')` ekle) |
+| Yeni menü sekmesi | `src/ui/panels/` altına panel yaz, `UIManager.js` içindeki `tabs` dizisine ekle |
+| Zorluk ayarı | `src/config/balance.js` (canavar büyümesi, ağır vuruş, Kabus çarpanları, Ruh eğrisi) |
+| Yeni iksir / sandık | `src/data/shop.js` |
+
+## Geliştirici İpuçları
+
+Tarayıcı konsolunda `game` nesnesine erişebilirsin:
+
+```js
+game.economy.addGold(1e6)      // altın ekle
+game.spawn.setStage(30)        // bölgeye ışınlan
+game.state.potions = 99
+```
