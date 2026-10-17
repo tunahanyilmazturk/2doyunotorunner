@@ -118,29 +118,104 @@
 /* ---------- Karakter: Ekipman | Envanter | Statlar ---------- */
 .character-layout {
   display: grid;
-  grid-template-columns: 282px minmax(0, 1fr) 210px;
+  grid-template-columns: 232px minmax(0, 1fr) 210px;
   gap: 16px;
   align-items: start;
 }
 .char-col {
   min-width: 0;
 }
-/* 10 yuva: 5 sütun × 2 satır */
-.equip-grid {
-  display: grid;
-  grid-template-columns: repeat(5, 50px);
-  gap: 6px;
-  margin-bottom: 10px;
+/* ---------- Ekipman: kağıt bebek (figürün iki yanında 5+5 yuva) ---------- */
+.equip-doll {
+  position: relative;
+  width: 228px;
+  height: 228px;
+  margin: 0 auto 6px;
+  background: radial-gradient(ellipse at 50% 76%, rgba(255, 255, 255, 0.06), transparent 62%), var(--bg-2);
+  border: 2px solid var(--edge);
+  border-radius: var(--radius);
+  box-shadow: var(--bevel-sunk);
 }
-.equip-grid .item-slot {
-  width: 50px;
-  height: 50px;
+.doll-canvas {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  image-rendering: pixelated;
+  pointer-events: none;
 }
-.equip-grid .slot-icon {
-  font-size: 22px;
+.doll-col {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.doll-left {
+  left: 3px;
+}
+.doll-right {
+  right: 3px;
+}
+.doll-col .item-slot {
+  width: 38px;
+  height: 38px;
+}
+.doll-col .slot-icon {
+  font-size: 17px;
 }
 .btn-block {
   width: 100%;
+}
+
+/* ---------- Aktif set bonusları (Karakter > Ekipman altı) ---------- */
+.set-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 10px;
+}
+.set-row {
+  --set: var(--border);
+  padding: 5px 7px 6px;
+  background: var(--bg-2);
+  border: 2px solid var(--edge);
+  border-left: 3px solid var(--set);
+  border-radius: var(--radius);
+}
+.set-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+  font-size: 12px;
+}
+.set-name {
+  font-family: var(--font-pixel);
+  color: var(--set);
+  font-weight: 700;
+}
+.set-pieces {
+  color: var(--muted);
+}
+.set-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 4px;
+}
+.set-chip {
+  padding: 1px 5px;
+  font-size: 11px;
+  color: var(--gold);
+  background: var(--bg);
+  border: 1px solid var(--lo);
+  border-radius: 3px;
+}
+.set-next {
+  margin-top: 4px;
+  font-size: 11px;
+  color: var(--muted);
 }
 
 .stat-list {
@@ -581,6 +656,25 @@
 .settings-grid .section-title {
   margin-top: 12px;
 }
+/* Ses düzeyi: onay kutularıyla aynı hizada ince kaydırıcı */
+.settings-grid .slider {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+  font-size: 13px;
+  color: var(--text);
+}
+.settings-grid .slider input[type='range'] {
+  flex: 1;
+  max-width: 150px;
+  accent-color: var(--gold);
+}
+.settings-grid .slider .value {
+  min-width: 34px;
+  text-align: right;
+  color: var(--muted, #a08a92);
+}
 .settings-grid section > .section-title:first-child {
   margin-top: 0;
 }
@@ -588,7 +682,7 @@
 /* Dar dock'ta statlar sütunu alta iner */
 @media (max-width: 1250px) {
   .character-layout {
-    grid-template-columns: 282px minmax(0, 1fr);
+    grid-template-columns: 232px minmax(0, 1fr);
   }
   .stats-col {
     grid-column: 1 / -1;

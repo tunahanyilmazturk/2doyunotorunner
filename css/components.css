@@ -172,6 +172,23 @@
   color: var(--muted);
   white-space: nowrap;
 }
+/* Set parçası: üst kenarda elmas işaret (yuva köşelerindeki diğer rozetlerle çakışmaz) */
+.item-slot.has-set {
+  --set: var(--border);
+}
+.item-slot.has-set::before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: 50%;
+  width: 7px;
+  height: 7px;
+  margin-left: -4px;
+  background: var(--set);
+  border: 1px solid var(--edge);
+  box-shadow: 0 0 5px var(--set);
+  transform: rotate(45deg);
+}
 
 @keyframes rarity-glow {
   from {
@@ -228,6 +245,30 @@
 }
 .tt-compare .down {
   color: var(--bad);
+}
+/* ---------- Tooltip: set bloğu ---------- */
+.tt-set {
+  --set: var(--hi);
+  border-top: 2px solid var(--lo);
+  border-left: 3px solid var(--set);
+  margin-top: 7px;
+  padding: 6px 0 0 7px;
+}
+.tt-set ul {
+  margin-top: 3px;
+}
+.tt-set li {
+  color: var(--muted);
+  font-size: 12px;
+}
+.tt-set li.on {
+  color: #ffd98a;
+}
+.tt-set li.gain {
+  color: var(--good);
+}
+.tt-gain {
+  color: var(--good);
 }
 .tt-footer {
   display: flex;

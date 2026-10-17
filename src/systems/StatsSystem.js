@@ -1,10 +1,13 @@
 import { Balance, PLAYER_BASE } from '../config/balance.js';
 import { Events } from '../core/events.js';
+import { activeSetBonuses } from '../data/sets.js';
 import { UPGRADES, upgradeValue } from '../data/upgrades.js';
 import { getItemStats } from './ItemFactory.js';
 
-// Taban statlar + yükseltmeler + ekipman + yetenek buffları + Ruh Ağacı + Ruh gücü + başarım → nihai statlar.
+// Taban statlar + yükseltmeler + ekipman + set bonusları + yetenek buffları +
+// Ruh Ağacı + Ruh gücü + başarım → nihai statlar.
 // Ruh Ağacı'nın saldırı/can/altın yüzdeleri ayrı bir çarpan olarak uygulanır (ekipmanla toplanmaz).
+// Set bonusları eşya statlarıyla aynı kefeye girer (ikisi de "kuşanılan teçhizat").
 // Sonuç önbelleğe alınır; sadece ilgili olaylarda yeniden hesaplanır.
 export class StatsSystem {
   constructor(game) {
@@ -36,6 +39,10 @@ export class StatsSystem {
     for (const item of Object.values(state.equipment)) {
       if (!item) continue;
       for (const [key, value] of Object.entries(getItemStats(item))) raw[key] = (raw[key] || 0) + value;
+    }
+    // Set bonusları: aynı setten 2/4/6 parça kuşanmanın karşılığı
+    for (const [key, value] of Object.entries(activeSetBonuses(state.equipment).stats)) {
+      raw[key] = (raw[key] || 0) + value;
     }
     const buffs = this.game.skills?.activeModifiers() ?? {};
     for (const [key, value] of Object.entries(buffs)) raw[key] = (raw[key] || 0) + value;

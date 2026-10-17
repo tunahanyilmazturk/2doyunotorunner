@@ -90,7 +90,7 @@ export class ShopPanel {
           createItemSlot(item, {
             ui,
             badge: locked ? '🔒' : better ? '▲' : null,
-            tooltip: () => ({ equipped: game.state.equipment[item.slot], priceLabel: `Fiyat: 🪙 ${formatNumber(offer.price)}` }),
+            tooltip: () => ({ equipped: game.state.equipment[item.slot], equipment: game.state.equipment, priceLabel: `Fiyat: 🪙 ${formatNumber(offer.price)}` }),
           }),
           el('div', { class: 'shop-card-info' }, [
             el('div', { class: 'shop-name', style: { color: rarity.color }, text: itemDisplayName(item) }),
@@ -128,7 +128,7 @@ export class ShopPanel {
     this.chestResult.classList.remove('muted');
     this.chestResult.replaceChildren(
       el('span', { text: 'Sandıktan çıktı: ' }),
-      createItemSlot(item, { ui: this.ui, tooltip: () => ({ equipped: this.game.state.equipment[item.slot] }) }),
+      createItemSlot(item, { ui: this.ui, tooltip: () => ({ equipped: this.game.state.equipment[item.slot], equipment: this.game.state.equipment }) }),
       el('b', { style: { color: rarity.color }, text: `${rarity.name} ${itemDisplayName(item)}` })
     );
     this.ui.toast.show(`🎁 ${rarity.name} ${item.name}`, item.tier >= 4 ? 'gold' : 'loot', 2200);

@@ -30,7 +30,10 @@ export class LootSystem {
     }
   }
 
-  /** Düşen eşyayı otomatik satış ayarına ve envanter durumuna göre işler. */
+  /**
+   * Düşen eşyayı otomatik satış ayarına ve envanter durumuna göre işler.
+   * Set parçaları oto-satıştan MUAFTIR: koleksiyon eşyası istemeden kaybolmamalı.
+   */
   receive(item, at, { autoSell = true } = {}) {
     const state = this.game.state;
     state.stats.itemsFound++;
@@ -39,7 +42,7 @@ export class LootSystem {
     let autoSold = false;
     let full = false;
 
-    if (autoSell && item.tier <= state.settings.autoSellTier) {
+    if (autoSell && !item.set && item.tier <= state.settings.autoSellTier) {
       autoSold = true;
     } else if (this.game.inventory.add(item) < 0) {
       autoSold = true;

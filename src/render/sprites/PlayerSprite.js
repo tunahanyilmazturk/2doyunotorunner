@@ -400,3 +400,319 @@ function drawArm(ctx, x, y, angle, sleeve, hand) {
   ctx.fillRect(-2.5, 10, 5, 4);
   ctx.restore();
 }
+
+// ============================================================================
+// Karakter paneli: önden duran "kağıt bebek"
+// ============================================================================
+// Dünyadaki şövalye yandan çizilir; panelde ise kuşanılan on parçanın hepsinin
+// okunabildiği önden bir figür kullanılır:
+//   kask → miğfer + sorguç   kolye → göğüs taşı    pelerin → omuzların ardı
+//   zırh → göğüs plakası     kemer → kemer         eldiven → eller
+//   çizme → ayaklar          kalkan → sol el       silah → sağ elde dik
+//   yüzük → silah elinde taş
+// Birimler dünya sprite'ıyla aynı: ayak tabanı y=0, gövde merkezi x=0, yukarı -y.
+
+const DOLL = {
+  angle: -1.5, // silah açısı: elden yukarı, neredeyse dik
+  levelCap: 20, // bebekte silah uzunluğu bu seviyede sabitlenir
+  elbow: { x: 12, y: -30 }, // silah kolunun dirseği (dönen çerçevenin merkezi)
+  shield: { x: -17, y: -32 }, // kalkanın sol üst köşesi
+  pad: 4, // çerçevede kenar boşluğu (px)
+  // Çerçeve her durumda bu kutuyu kapsar; uzun silah kutuyu büyütür.
+  minBox: { minX: -23, maxX: 23, minY: -80, maxY: 2 },
+};
+
+/** Silahın elden uzağa uzandığı boy (yerel x) ve gövde yarı kalınlığı (yerel y). */
+const WEAPON_TIP = {
+  sword: { forward: 25, side: 2.5 },
+  axe: { forward: 16, side: 12 },
+  hammer: { forward: 17, side: 8 },
+  spear: { forward: 14, side: 3.5 },
+  dagger: { forward: 21, side: 2.5 },
+};
+
+/** Bebekte silahı kısaltır: silah uzunluğu seviyeyle büyür ama panelde sabit kalır. */
+function dollWeapon(weapon) {
+  if (!weapon) return null;
+  const kind = WEAPON_REACH[weapon.kind] ? weapon.kind : 'sword';
+  return { ...weapon, kind, level: Math.min(weapon.level, DOLL.levelCap) };
+}
+
+/**
+ * Bebeğin çizildiği yerel kutu (birim). Saf fonksiyon: ölçekleme de testler de
+ * bunu kullanır. Kutu en az DOLL.minBox kadardır, uzun silah kutuyu büyütür.
+ * @param {object} equipment state.equipment
+ */
+export function playerDollBox(equipment) {
+  const box = { ...DOLL.minBox };
+  const weapon = dollWeapon(equipment.weapon);
+  if (weapon) {
+    const tip = WEAPON_TIP[weapon.kind];
+    const reach = WEAPON_REACH[weapon.kind] + weapon.level * 0.2;
+    const cos = Math.cos(DOLL.angle);
+    const sin = Math.sin(DOLL.angle);
+    for (const lx of [-8, 0, reach + tip.forward]) {
+      for (const ly of [-tip.side, tip.side]) {
+        const x = DOLL.elbow.x + lx * cos - ly * sin;
+        const y = DOLL.elbow.y + lx * sin + ly * cos;
+        box.minX = Math.min(box.minX, x);
+        box.maxX = Math.max(box.maxX, x);
+        box.minY = Math.min(box.minY, y);
+        box.maxY = Math.max(box.maxY, y);
+      }
+    }
+  }
+  return box;
+}
+
+/**
+ * Karakter panelindeki kağıt bebek: kuşanılan eşyalarla birlikte önden duran
+ * figürü, verilen kutuya sığacak ölçekte çizer. Kutu (0,0) sol üsttür.
+ */
+export function drawPlayerDoll(ctx, equipment, w, h) {
+  const box = playerDollBox(equipment);
+  const scale = Math.min((w - DOLL.pad * 2) / (box.maxX - box.minX), (h - DOLL.pad * 2) / (box.maxY - box.minY));
+  ctx.save();
+  ctx.translate(w / 2 - ((box.minX + box.maxX) / 2) * scale, h / 2 - ((box.minY + box.maxY) / 2) * scale);
+  ctx.scale(scale, scale);
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+  ctx.beginPath();
+  ctx.ellipse(0, 1, 15, 3.5, 0, 0, Math.PI * 2);
+  ctx.fill();
+  drawDollFigure(ctx, equipment);
+  ctx.restore();
+}
+
+/** Bebek katmanlarının çözülmüş renkleri (nadirlik tonları dahil). */
+function dollColors(equipment) {
+  const armorTint = rarityColor(equipment.armor);
+  const body = armorTint ? mix(STEEL, armorTint, 0.45) : TUNIC;
+  return {
+    armored: !!armorTint,
+    armorTint,
+    body,
+    sleeve: armorTint ? darken(body, 0.2) : darken(TUNIC, 0.15),
+    helmet: rarityColor(equipment.helmet),
+    cape: rarityColor(equipment.cape),
+    belt: equipment.belt ? mix('#3a2418', rarityColor(equipment.belt), 0.5) : '#3a2418',
+    boot: equipment.boots ? mix(LEATHER, rarityColor(equipment.boots), 0.5) : LEATHER,
+    glove: equipment.gloves ? mix(LEATHER, rarityColor(equipment.gloves), 0.55) : SKIN,
+    amulet: rarityColor(equipment.amulet),
+    shield: rarityColor(equipment.shield),
+    gem: rarityColor(equipment.ring) ?? '#c33',
+  };
+}
+
+/** Pelerin (yoksa omuz atkısı) — gövdenin arkasında. */
+function dollCape(ctx, c) {
+  if (!c.cape) {
+    ctx.fillStyle = SCARF;
+    ctx.fillRect(-9, -54, 18, 5);
+    ctx.fillStyle = darken(SCARF, 0.25);
+    ctx.fillRect(-9, -50, 18, 1);
+    return;
+  }
+  ctx.fillStyle = darken(c.cape, 0.28);
+  ctx.beginPath();
+  ctx.moveTo(-10, -53);
+  ctx.lineTo(10, -53);
+  ctx.quadraticCurveTo(17, -30, 14, -10);
+  ctx.lineTo(-14, -10);
+  ctx.quadraticCurveTo(-17, -30, -10, -53);
+  ctx.closePath();
+  ctx.fill();
+  ctx.fillStyle = darken(c.cape, 0.06);
+  ctx.beginPath();
+  ctx.moveTo(-6, -53);
+  ctx.lineTo(6, -53);
+  ctx.quadraticCurveTo(11, -30, 9, -14);
+  ctx.lineTo(-9, -14);
+  ctx.quadraticCurveTo(-11, -30, -6, -53);
+  ctx.closePath();
+  ctx.fill();
+}
+
+/** Bacaklar + çizmeler. */
+function dollLegs(ctx, c) {
+  ctx.fillStyle = PANTS;
+  ctx.fillRect(-7, -30, 6, 22);
+  ctx.fillRect(1, -30, 6, 22);
+  ctx.fillStyle = darken(PANTS, 0.28);
+  ctx.fillRect(-7, -30, 2, 22);
+  ctx.fillRect(1, -30, 2, 22);
+  ctx.fillStyle = c.boot;
+  ctx.fillRect(-9, -9, 8, 9);
+  ctx.fillRect(1, -9, 8, 9);
+  ctx.fillStyle = lighten(c.boot, 0.18);
+  ctx.fillRect(-9, -9, 8, 1);
+  ctx.fillRect(1, -9, 8, 1);
+  ctx.fillStyle = darken(c.boot, 0.32);
+  ctx.fillRect(-9, -2, 8, 2);
+  ctx.fillRect(1, -2, 8, 2);
+}
+
+/** Gövde (zırh plakası ve omuzluklarla). */
+function dollTorso(ctx, c) {
+  ctx.fillStyle = c.body;
+  ctx.fillRect(-11, -52, 22, 26);
+  ctx.fillStyle = darken(c.body, 0.25);
+  ctx.fillRect(-11, -52, 3, 26);
+  ctx.fillStyle = lighten(c.body, 0.22);
+  ctx.fillRect(6, -50, 5, 22);
+  if (!c.armored) return;
+  const plate = mix(STEEL, c.armorTint, 0.55);
+  ctx.fillStyle = plate;
+  ctx.fillRect(-9, -51, 18, 21);
+  ctx.fillStyle = lighten(plate, 0.25);
+  ctx.fillRect(5, -51, 4, 21);
+  ctx.fillStyle = darken(plate, 0.3);
+  ctx.fillRect(-9, -51, 2, 21);
+  ctx.fillRect(-9, -40, 18, 2);
+  ctx.fillRect(-9, -31, 18, 1);
+}
+
+/** Kollar: sol kol her zaman sarkar; silah varsa sağ kol dirsekten yukarı kıvrılır. */
+function dollArms(ctx, c, armed) {
+  const hanging = (cx) => {
+    ctx.fillStyle = c.sleeve;
+    ctx.fillRect(cx - 2.5, -52, 5, 21);
+    ctx.fillStyle = c.glove;
+    ctx.fillRect(cx - 2.5, -31, 5, 5);
+  };
+  hanging(-12.5);
+  if (armed) {
+    ctx.fillStyle = c.sleeve;
+    ctx.fillRect(10, -52, 5, 23);
+  } else {
+    hanging(12.5);
+  }
+  if (!c.armored) return;
+  const pauldron = mix(STEEL, c.armorTint, 0.45);
+  ctx.fillStyle = pauldron;
+  ctx.fillRect(-15, -54, 8, 6);
+  ctx.fillRect(7, -54, 8, 6);
+  ctx.fillStyle = darken(pauldron, 0.28);
+  ctx.fillRect(-15, -49, 8, 1);
+  ctx.fillRect(7, -49, 8, 1);
+}
+
+/** Kemer + toka. */
+function dollBelt(ctx, c) {
+  ctx.fillStyle = c.belt;
+  ctx.fillRect(-11, -31, 22, 4);
+  ctx.fillStyle = darken(c.belt, 0.35);
+  ctx.fillRect(-11, -28, 22, 1);
+  ctx.fillStyle = '#e0b84a';
+  ctx.fillRect(-3, -31, 6, 4);
+  ctx.fillStyle = darken('#e0b84a', 0.4);
+  ctx.fillRect(-1, -30, 2, 2);
+}
+
+/** Boyun + kafa; kask varsa miğfer ve sorguç. */
+function dollHead(ctx, c) {
+  ctx.fillStyle = SKIN_SHADE;
+  ctx.fillRect(-3, -57, 6, 6);
+  ctx.fillStyle = SKIN;
+  ctx.fillRect(-6, -68, 12, 12);
+  ctx.fillStyle = SKIN_SHADE;
+  ctx.fillRect(-6, -58, 12, 2);
+  ctx.fillStyle = '#1d1420';
+  ctx.fillRect(-4, -64, 2, 2);
+  ctx.fillRect(2, -64, 2, 2);
+  ctx.fillStyle = SKIN_SHADE;
+  ctx.fillRect(-1, -60, 3, 1);
+  if (!c.helmet) {
+    ctx.fillStyle = HAIR;
+    ctx.fillRect(-7, -70, 14, 4);
+    ctx.fillRect(-7, -68, 3, 9);
+    ctx.fillRect(4, -68, 3, 9);
+    ctx.fillStyle = lighten(HAIR, 0.22);
+    ctx.fillRect(-3, -70, 6, 2);
+    return;
+  }
+  const steel = mix(STEEL, c.helmet, 0.45);
+  ctx.fillStyle = steel;
+  ctx.fillRect(-8, -72, 16, 10);
+  ctx.fillRect(-8, -62, 3, 7);
+  ctx.fillRect(5, -62, 3, 7);
+  ctx.fillStyle = lighten(steel, 0.28);
+  ctx.fillRect(-6, -71, 12, 2);
+  ctx.fillStyle = darken(steel, 0.3);
+  ctx.fillRect(-8, -66, 16, 2);
+  ctx.fillRect(-8, -56, 3, 1);
+  ctx.fillRect(5, -56, 3, 1);
+  ctx.fillStyle = '#1d1420';
+  ctx.fillRect(-5, -64, 4, 2);
+  ctx.fillRect(1, -64, 4, 2);
+  // Sorguç
+  ctx.fillStyle = c.helmet;
+  ctx.beginPath();
+  ctx.moveTo(-1, -72);
+  ctx.quadraticCurveTo(-7, -79, -13, -75);
+  ctx.lineTo(-6, -69);
+  ctx.closePath();
+  ctx.fill();
+  ctx.fillStyle = lighten(c.helmet, 0.3);
+  ctx.fillRect(-5, -73, 3, 2);
+}
+
+/** Kolye: zincir + göğüs taşı. */
+function dollAmulet(ctx, c) {
+  if (!c.amulet) return;
+  ctx.fillStyle = '#e0b84a';
+  ctx.fillRect(-6, -51, 1, 4);
+  ctx.fillRect(5, -51, 1, 4);
+  ctx.fillRect(-5, -48, 10, 1);
+  ctx.fillStyle = c.amulet;
+  ctx.fillRect(-3, -47, 6, 6);
+  ctx.fillStyle = lighten(c.amulet, 0.4);
+  ctx.fillRect(-2, -46, 2, 2);
+}
+
+/** Yüzük: altın bant + taş. */
+function dollRing(ctx, x, y, gem) {
+  ctx.fillStyle = '#e0b84a';
+  ctx.fillRect(x, y, 4, 2);
+  ctx.fillStyle = gem;
+  ctx.fillRect(x + 1, y - 2, 2, 2);
+}
+
+/** Kalkan sol elde. */
+function dollShieldHand(ctx, c) {
+  if (!c.shield) return;
+  drawShield(ctx, DOLL.shield.x, DOLL.shield.y, c.shield);
+}
+
+/** Sağ kol: silahı dik tutar; silah yoksa kol sarkar ve yüzük görünür. */
+function dollWeaponArm(ctx, c, weapon) {
+  if (!weapon) {
+    dollRing(ctx, 10, -29, c.gem);
+    return;
+  }
+  ctx.save();
+  ctx.translate(DOLL.elbow.x, DOLL.elbow.y);
+  ctx.rotate(DOLL.angle);
+  ctx.fillStyle = c.sleeve;
+  ctx.fillRect(0, -3, 8, 6);
+  ctx.fillStyle = c.glove;
+  ctx.fillRect(8, -2.5, 5, 5);
+  dollRing(ctx, 9, -4, c.gem);
+  WEAPON_DRAWERS[weapon.kind](ctx, WEAPON_REACH[weapon.kind] + weapon.level * 0.2, getRarity(weapon.tier).color, c.gem, weapon);
+  ctx.restore();
+}
+
+/** Bebeği katman katman çizer (yerel birimler, ayak tabanı 0,0). */
+function drawDollFigure(ctx, equipment) {
+  const c = dollColors(equipment);
+  const weapon = dollWeapon(equipment.weapon);
+  dollCape(ctx, c);
+  dollLegs(ctx, c);
+  dollTorso(ctx, c);
+  dollArms(ctx, c, !!weapon);
+  // Silah başın arkasında kalır: geniş başlı balta/çekiçte kafa örtülmesin.
+  dollWeaponArm(ctx, c, weapon);
+  dollBelt(ctx, c);
+  dollHead(ctx, c);
+  dollAmulet(ctx, c);
+  dollShieldHand(ctx, c);
+}

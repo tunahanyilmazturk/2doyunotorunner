@@ -49,7 +49,7 @@ export class ForgePanel {
       const now = getItemStats(item)[primary];
       const next = item.enhance < max ? getItemStats({ ...item, enhance: (item.enhance || 0) + 1 })[primary] : null;
       row.node = el('div', { class: 'forge-row', style: { '--rarity': rarity.color } }, [
-        createItemSlot(item, { ui, tooltip: {} }),
+        createItemSlot(item, { ui, tooltip: { equipment: game.state.equipment } }),
         el('div', { class: 'forge-info' }, [
           el('div', { class: 'shop-name', style: { color: rarity.color }, text: itemDisplayName(item) }),
           el('div', { class: 'forge-pips' }, Array.from({ length: max }, (_, i) => el('span', { class: i < (item.enhance || 0) ? 'on' : '' }))),

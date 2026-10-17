@@ -26,21 +26,31 @@ Beş haritanın hareketli önizlemesi: sunucu açıkken `/tools/map-preview.html
 - **5 biyom** (Orman, Çöl, Mağara, Buzul, Volkan), her biri kendi canavarları ve bossu ile; her 10 bölgede biyom değişir
 - **37 canavar** — 27 normal canavar ve 10 boss (her biyomda iki boss: 5. ve 10. bölgede), 7 farklı çizim şekli
   (balçık, mantar, hayalet, insansı, dört ayaklı, uçan, yılan)
-- **Boss savaşları** — her 5 bölgede bir, 30 sn süre sınırı; kaybedersen "Boss'a Meydan Oku" ile tekrar dene
+- **Boss savaşları** — her 5 bölgede bir; süre sınırı bölgeyle uzar (45 sn'den başlar, her 5 bölgede +2 sn).
+  Kalan can mevcut DPS ile eritilemeyecekse sayaç kırmızıya döner ve "yetişmez" yazar
 - **Elit canavarlar** — %8 şansla çıkar; 3x can, 4x altın, daha iyi eşya. Her elit rastgele bir özellik taşır:
   Hızlı, Dev, Zırhlı, Vampir, Çılgın veya Altın (parıltı rengi özelliği gösterir)
 - **Aktif yetenekler** — Güçlü Vuruş, Öfke, Altın Yağmuru, İlahi Şifa; oyun alanındaki çubuktan veya Q W E R ile, istersen otomatik
 - **Demirci** — kuşanılan eşyaları +1 … +15 güçlendirme (maksimum seviye nadirliğe bağlı)
-- **Başarımlar** — 20 grupta 60+ kademeli başarım (canavar bilgini, tam teçhizat, silah ustası, hızlı cellat…);
+- **Başarımlar** — 23 grupta 70+ kademeli başarım (canavar bilgini, tam teçhizat, set kuşanan, silah ustası, hızlı cellat…);
   her biri kalıcı +%3 saldırı ve altın verir
 - **Eşya sistemi** — 10 yuva (Kask, Kolye, Pelerin, Silah, Kalkan, Zırh, Eldiven, Kemer, Yüzük, Çizme),
   6 nadirlik (Sıradan → Mitik), 7 seviye kademesi, seviyeye göre ölçeklenen rastgele statlar
+- **Eşya setleri** — 5 set (Kızıl Nişan, Buzul Siperi, Fırtına Örtüsü, Yaşam Yemini, Kâhin Gözü), her biri 6 yuva kapsar.
+  Nadir ve üstü eşyalar set parçası olabilir (nadirlik arttıkça şans artar); aynı setten **2 / 4 / 6 parça**
+  kuşanınca kademeli bonus açılır. Parçalar yuva kenarındaki elmasla işaretlenir, Karakter sekmesinde
+  aktif bonuslar özetlenir ve tooltip "kuşanılırsa kaç parça olur"u gösterir. Set parçaları **oto-satıştan muaftır**
 - **5 silah türü** — Kılıç, Balta (+kritik hasar), Çekiç (+boss hasarı, en yüksek saldırı), Mızrak (+kritik şansı),
   Hançer (+saldırı hızı); her biri karakterin elinde farklı çizilir
 - **Statlar** — saldırı, can, zırh, yenilenme, saldırı hızı, kritik, can çalma, altın, şans,
   **kaçınma**, **diken** (vurulunca geri hasar) ve **boss hasarı**
-- **Envanter** — 30 yuva, kuşan / sat / kilitle / sırala / toplu sat / otomatik sat, "En İyileri Kuşan", kuşanılanla karşılaştırmalı tooltip, ▲ "daha iyi" işareti
+- **Envanter** — 30 yuva, kuşan / sat / kilitle / sırala / toplu sat / otomatik sat (set parçaları hariç),
+  "En İyileri Kuşan", kuşanılanla karşılaştırmalı tooltip, ▲ "daha iyi" işareti
 - **Görsel ekipman** — kuşandığın eşyaların nadirlik rengi karakterin üzerinde görünür (kılıç parlaması, pelerin, kask...)
+- **Kağıt bebek (Karakter sekmesi)** — ekipman 5+5 dikey dizilir, ortada kuşanılan on parçayı
+  anlık gösteren önden bir figür durur: kask, zırh, omuzluk, kolye, kemer, eldiven, çizme, pelerin,
+  sol elde kalkan, sağ elde silah (silah türü kendi çizimiyle). Yuvalar figürün gövde hizasına
+  denk gelir (kask baş, kemer bel, çizme ayak); kilitli yuvalar figürde boş kalır
 - **12 yükseltme** — x1 / x10 / MAX satın alma; **kilometre taşları** (her 25 seviyede etki ×2);
   ilk yeniden doğuştan sonra **otomatik alım** (en ucuz işaretli yükseltmeyi kendiliğinden alır)
 - **Mağaza** — üç bölüm: **Eşyalar** (5 dakikada bir yenilenen vitrin, ▲ daha iyi işareti),
@@ -52,8 +62,13 @@ Beş haritanın hareketli önizlemesi: sunucu açıkken `/tools/map-preview.html
   teknoloji ağacında harca (aşağıya bak)
 - **Kabus döngüleri** — her 50 bölgede biyomlar baştan döner ama canavarlar ×6 can, ×3.5 saldırı, ×3 altınla gelir;
   içerik hiç bitmez, her duvar yeniden doğmaya ve ağacı büyütmeye davet eder
-- **Çevrimdışı kazanç** — oyun kapalıyken / sekme arka plandayken altın (en fazla 8 saat)
-- **Kayıt** — otomatik kayıt, dışa/içe aktarma, sıfırlama
+- **Çevrimdışı kazanç** — oyun kapalıyken altın (en fazla 8 saat). Sekme arka plana atıldığında oyun
+  tamamen durur ve ödül tek seferlik verilir; arka planda sessizce kazanç birikmez
+- **Duraklatma** — üst bardaki ⏸ düğmesi veya **P** tuşu; duraklatırken ilerleme kaydedilir
+- **Ses** — vuruş, kritik, boss, eşya, yetenek, yeniden doğuş için prosedürel ses efektleri.
+  Hazır ses dosyası yok; hepsi osilatörle üretilir. Ayarlardan kapatılabilir, düzeyi kaydırıcıyla ayarlanır
+- **Kayıt** — otomatik kayıt, dışa/içe aktarma, sıfırlama. İçe aktarılan kayıtlar doğrulanır:
+  bilinmeyen alanlar, geçersiz yuvalar ve şişirilmiş değerler temizlenir
 - **Oyun hızı** — 1x / 2x / 3x
 - **Tek ekran düzeni** — sayfa kaymaz; sol menüde bildirim rozetleri (daha iyi eşya, alınabilir yükseltme, yeni başarım…)
 - **Gizlenebilir alt menü** — üst bardaki "▼ Menü" düğmesi veya **M** tuşu; gizliyken oyun alanı tüm ekranı kullanır
@@ -88,7 +103,7 @@ Başlangıçta 6 ekipman yuvası açıktır; Kalkan, Eldiven, Kemer ve Pelerin a
 | 🌳 Ruh Ağacı | 7 | Yeniden doğuş ve kalıcı yükseltme ağacı |
 
 Diğer kısayollar: **Q W E R T** yetenekler · **F** iksir · **B** ilerle / boss · **M** menüyü gizle/göster ·
-**Esc** ayarlar · **Ctrl+tık** eşya kilitle.
+**P** duraklat/devam et · **Esc** ayarlar · **Ctrl+tık** eşya kilitle.
 Ayarlar, kayıt işlemleri ve istatistikler üst bardaki ⚙️ butonundadır.
 
 ## Dosya Yapısı
@@ -97,6 +112,11 @@ Ayarlar, kayıt işlemleri ve istatistikler üst bardaki ⚙️ butonundadır.
 ├── index.html               Sayfa iskeleti (canvas + HUD + paneller)
 ├── server.js                Bağımlılıksız statik sunucu
 ├── assets/fonts/            Yerel yazı tipleri (woff2) + lisansları
+├── test/                    node:test paketi (npm test) — denge, kayıt, setler, veri tutarlılığı
+├── tools/                   Geliştirici araçları
+│   ├── balance-model.mjs    Denge modeli (oyunun gerçek formülleriyle ölçüm)
+│   ├── balance-probe.mjs    Denge raporu (npm run balance)
+│   └── map-preview.html     Beş haritanın hareketli önizlemesi
 ├── css/
 │   ├── fonts.css            @font-face tanımları (yerel yazı tipleri)
 │   ├── base.css             Tema token'ları (renk, kabartma, yazı tipi), genel stiller
@@ -113,7 +133,8 @@ Ayarlar, kayıt işlemleri ve istatistikler üst bardaki ⚙️ butonundadır.
     │   ├── GameLoop.js      requestAnimationFrame döngüsü
     │   ├── EventBus.js      Yayınla/abone ol
     │   ├── events.js        Olay isimleri
-    │   ├── GameState.js     Kaydedilen durumun şekli + eski kayıt uyumluluğu
+    │   ├── GameState.js     Kaydedilen durumun şekli (varsayılanlar)
+    │   ├── saveIntegrity.js Sürüm geçişleri + kayıt doğrulama (dışarıdan gelen kaydı temizler)
     │   └── SaveManager.js   localStorage, dışa/içe aktarma
     ├── data/                Saf veri — yeni içerik eklemek için
     │   ├── monsters.js      Canavarlar ve bosslar
@@ -122,6 +143,7 @@ Ayarlar, kayıt işlemleri ve istatistikler üst bardaki ⚙️ butonundadır.
     │   ├── shop.js          Mağaza kataloğu: süreli iksirler ve hazine sandıkları
     │   ├── biomes.js        Biyomlar (renkler, süsleme, canavar havuzu)
     │   ├── items.js         Eşya yuvaları, taban eşyalar ve silah türleri
+    │   ├── sets.js          Eşya setleri (2/4/6 parça bonusları) ve parça sayma
     │   ├── rarities.js      Nadirlikler
     │   ├── stats.js         Stat tanımları
     │   ├── upgrades.js      Yükseltmeler
@@ -132,12 +154,12 @@ Ayarlar, kayıt işlemleri ve istatistikler üst bardaki ⚙️ butonundadır.
     │   ├── Player.js
     │   └── Monster.js       Bölgeye göre ölçeklenen canavar (normal / elit / boss)
     ├── systems/             Oyun mantığı (render'dan bağımsız)
-    │   ├── StatsSystem.js       Taban + yükseltme + ekipman + buff + ruh + başarım → nihai statlar
+    │   ├── StatsSystem.js       Taban + yükseltme + ekipman + set bonusu + buff + ruh + başarım → nihai statlar
     │   ├── CombatSystem.js      Temas, saldırılar, ölüm, yeniden doğma
     │   ├── SpawnSystem.js       Canavar doğurma, bölge ilerlemesi, boss zamanlayıcı
     │   ├── EconomySystem.js     Altın, saniyelik kazanç ortalaması
     │   ├── LootSystem.js        Eşya düşürme
-    │   ├── ItemFactory.js       Eşya üretimi, nadirlik zarı, eşya puanı, güçlendirilmiş statlar
+    │   ├── ItemFactory.js       Eşya üretimi, nadirlik zarı, set zarı, eşya puanı, güçlendirilmiş statlar
     │   ├── InventorySystem.js   Ekle / sat / kilitle / sırala
     │   ├── EquipmentSystem.js   Kuşan / çıkar / en iyileri kuşan
     │   ├── SkillSystem.js       Yetenekler: bekleme süreleri, bufflar, otomatik kullanım
@@ -149,7 +171,8 @@ Ayarlar, kayıt işlemleri ve istatistikler üst bardaki ⚙️ butonundadır.
     │   ├── ElixirSystem.js      Süreli iksirler (stat bonusu, kayıtla korunur)
     │   ├── PrestigeSystem.js    Yeniden doğuş (Ruh hesabı, korunan altın, başlangıç bölgesi, danışman)
     │   ├── SoulTreeSystem.js    Ruh Ağacı: satın alma, ön koşullar, perk/stat/yuva/yetenek etkileri
-    │   └── OfflineSystem.js     Çevrimdışı ödül
+    │   ├── OfflineSystem.js     Çevrimdışı ödül
+    │   └── AudioSystem.js       Prosedürel ses efektleri (olaylara abone olur, dosya yok)
     ├── render/
     │   ├── Renderer.js          Çizim sırası, ekran sarsıntısı, afişler, can barları
     │   ├── Background.js        Prosedürel paralaks biyom arka planı
@@ -158,7 +181,7 @@ Ayarlar, kayıt işlemleri ve istatistikler üst bardaki ⚙️ butonundadır.
     │   ├── FloatingTextSystem.js Hasar / altın yazıları
     │   ├── EffectsController.js Olay → görsel efekt eşlemesi
     │   ├── SpriteOutliner.js    Sprite'lara piksel dış hattı
-    │   └── sprites/             Prosedürel çizimler: oyuncu, süsleme ve monsters/ (şekil başına bir dosya)
+    │   └── sprites/             Prosedürel çizimler: oyuncu (dünya + paneldeki kağıt bebek), süsleme ve monsters/ (şekil başına bir dosya)
     ├── ui/
     │   ├── UIManager.js         Sol menü, rozetler, kısayollar, modal/toast yönlendirme
     │   ├── HUD.js               Altın, can, bölge, boss süresi, hız, yetenek/iksir çubuğu, bufflar
@@ -198,14 +221,42 @@ Ayarlar, kayıt işlemleri ve istatistikler üst bardaki ⚙️ butonundadır.
 | Yeni silah türü | `src/data/items.js` → `WEAPON_KINDS` + `render/sprites/PlayerSprite.js` → `WEAPON_DRAWERS` |
 | Yeni biyom | `src/data/biomes.js` (gerekirse `render/sprites/DecorSprites.js`'e süsleme ekle) |
 | Yeni eşya tabanı / yuva | `src/data/items.js` |
+| Yeni eşya seti | `src/data/sets.js` → 6 yuva + 2/4/6 bonusları; bonuslar **yüzde** statı olmalı (düz statlar yüksek seviyede değersiz kalır). Simge gerekiyorsa mevcut bir simgeyi paylaştır (`ui/icons.js`) |
+| Yeni eşya tabanı | `src/data/items.js` |
+| Yeni eşya yuvası | `src/data/items.js` (`SLOTS`) + `ui/panels/CharacterPanel.js` (`DOLL_SLOTS_LEFT/RIGHT`) + `render/sprites/PlayerSprite.js` (`playerDollBox` taban kutusu) + `core/saveIntegrity.js` (`sanitizeItem`) |
 | Yeni stat | `src/data/stats.js` + `config/balance.js` (PLAYER_BASE) + `systems/StatsSystem.js` |
 | Yeni yükseltme | `src/data/upgrades.js` |
 | Yeni yetenek | `src/data/skills.js` (kind: strike / buff / heal) |
 | Yeni başarım | `src/data/achievements.js` |
 | Yeni Ruh Ağacı düğümü | `src/data/soulTree.js` (yeni perk anahtarıysa onu okuyan sisteme `game.tree.perk('anahtar')` ekle) |
 | Yeni menü sekmesi | `src/ui/panels/` altına panel yaz, `UIManager.js` içindeki `tabs` dizisine ekle |
-| Zorluk ayarı | `src/config/balance.js` (canavar büyümesi, ağır vuruş, Kabus çarpanları, Ruh eğrisi) |
+| Zorluk ayarı | `src/config/balance.js` (canavar büyümesi, ağır vuruş, Kabus çarpanları, Ruh eğrisi). Etkisini `npm run balance` ile ölç; `test/balance-curve.test.js` eğrinin sözleşmesini korur |
 | Yeni iksir / sandık | `src/data/shop.js` |
+| Yeni ses efekti | `src/systems/AudioSystem.js` içindeki `RECIPES` (osilatör tarifi) + `EVENT_SOUNDS` (hangi olay hangi sesi çalar) |
+
+## Testler ve Denge
+
+```bash
+npm test           # node:test — denge eğrisi, kayıt doğrulama, eşya setleri, kağıt bebek çerçevesi, ses eşlemesi, veri tutarlılığı
+npm run balance    # Bölge bölge güç tablosu ve duvarların yeri
+npm run balance 60 120   # yalnızca 60-120 aralığını göster (duvarlar tüm eğriden hesaplanır)
+```
+
+`tools/balance-model.mjs` oyunun gerçek formüllerini (`balance.js`, `upgrades.js`, `monsters.js`) kullanır;
+ekipman, yetenek ve Ruh Ağacı modellenmez, yani çıkan sonuç **alt sınırdır**. Modelin koruduğu kararlar:
+
+1. **Boss sayacı, can duvarından önce gelmez.** Aksi halde oyuncu öldürülemeyen bir düşman yerine
+   görünmez bir sayaçla durur.
+2. **İlk yeniden doğuş (20. bölge) ekipmansız da erişilebilir.** Duvar 29-31 civarındadır.
+3. **Canavar gücü oyuncudan hızlı büyür**, böylece yeniden doğuş anlamlı kalır.
+
+Bu sözleşmeler testle kilitlidir; bir denge değişikliği bunları bozarsa `npm test` kırılır.
+
+**Setler ve denge:** set bonusları yüzde statı olduğu için eşya statlarıyla **toplanır**, ayrı çarpan değildir;
+dolayısıyla denge modelini (ekipmansız alt sınır) kaydırmaz. Aynı sebeple 6 parçalık bir set, yüksek bölgelerde
+tek bir iyi eşyadan daha değerli kalır. Set puanlaması (`ItemFactory.setPieceRating`) setin tüm bonusunu son
+kademenin parça sayısına böler: "En İyileri Kuşan" ve ▲ işareti böylece set parçalarını görmezden gelmez.
+Kaba bir tahmindir — tek parça bulan oyuncu için bonus gerçekte sıfırdır.
 
 ## Geliştirici İpuçları
 

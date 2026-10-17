@@ -1,6 +1,7 @@
 import { Balance } from '../config/balance.js';
-import { ITEM_BASES, SLOT_ORDER, WEAPON_KINDS, getBaseName } from '../data/items.js';
+import { ITEM_BASES, SLOT_ORDER, WEAPON_KINDS } from '../data/items.js';
 import { RARITIES, getRarity } from '../data/rarities.js';
+import { SET_MAP, isSetForSlot, itemName, rollSet } from '../data/sets.js';
 import { STAT_DEFS } from '../data/stats.js';
 import { pick, rand, shuffle, weightedPick } from '../utils/random.js';
 
@@ -27,10 +28,11 @@ export function rollStat(key, level, rarity, mult = 1) {
 /**
  * Yeni eşya üretir.
  * @param {object} state  oyun durumu (benzersiz id için)
- * @param {{level:number, slot?:string, slots?:string[], kind?:string, tier?:number, luck?:number, minTier?:number}} opts
+ * @param {{level:number, slot?:string, slots?:string[], kind?:string, tier?:number, luck?:number, minTier?:number, set?:string}} opts
  *   slots: yuva belirtilmezse aralarından rastgele seçilecek yuvalar (varsayılan: hepsi)
+ *   set:   o yuvaya uymayan bir set zorlanırsa sessizce atılır (kayıt/doğrulama güvenliği)
  */
-export function createItem(state, { level, slot, slots = SLOT_ORDER, kind, tier, luck = 0, minTier = 0 }) {
+export function createItem(state, { level, slot, slots = SLOT_ORDER, kind, tier, luck = 0, minTier = 0, set }) {
   slot = slot ?? pick(slots);
   const rarity = tier !== undefined ? getRarity(tier) : rollRarity(luck, minTier);
   const base = ITEM_BASES[slot];
@@ -46,34 +48,68 @@ export function createItem(state, { level, slot, slots = SLOT_ORDER, kind, tier,
     kind = undefined;
   }
 
+  const setId = set !== undefined ? (isSetForSlot(set, slot) ? set : undefined) : rollSet(slot, rarity.tier);
+
   const stats = { [base.primary]: rollStat(base.primary, level, rarity, primaryMult) };
   const extraCount = rarity.affixes - 1;
   const pool = shuffle(base.affixPool.filter((k) => k !== base.primary && !guaranteed.includes(k)));
   const extras = [...guaranteed, ...pool].slice(0, Math.max(extraCount, guaranteed.length));
   for (const key of extras) stats[key] = rollStat(key, level, rarity);
 
-  return {
+  const item = {
     id: state.nextItemId++,
     slot,
     ...(kind ? { kind } : {}),
-    name: getBaseName(slot, level, kind),
+    name: itemName(slot, level, kind, setId),
     tier: rarity.tier,
     level,
     stats,
     value: Balance.itemValue(level, rarity.valueMult),
   };
+  if (setId) item.set = setId;
+  return item;
+}
+
+/** Statın referans seviyedeki "tipik" değeri (puanlama ölçeği). */
+function statTypical(key, refLevel) {
+  const def = STAT_DEFS[key];
+  if (!def) return 0;
+  return def.scaling === 'flat' ? def.base * Balance.itemFlatScale(refLevel) : def.base + def.perLevel * refLevel;
+}
+
+/**
+ * Bir set parçasının puana katkısı: setin tüm bonuslarının puanı, son kademenin
+ * parça sayısına bölünür. Böylece parça başına beklenen değer çıkar ve otomatik
+ * kuşanma/sıralama set parçalarını görmezden gelmez.
+ *
+ * Kaba bir tahmindir: yalnızca tek parça bulan oyuncu için bonus gerçekte sıfırdır.
+ * Set bonusları yüzde olduğu için bu katkı düşük seviyede daha büyüktür; bu doğru
+ * yöndedir (düşük seviyede +%6 saldırı, eşyanın kendisinden daha değerlidir).
+ */
+export function setPieceRating(setId, refLevel) {
+  const set = SET_MAP[setId];
+  if (!set) return 0;
+  const required = set.bonuses[set.bonuses.length - 1].pieces;
+  let total = 0;
+  for (const tier of set.bonuses) {
+    for (const [key, value] of Object.entries(tier.stats)) {
+      const typical = statTypical(key, refLevel);
+      if (typical > 0) total += value / typical;
+    }
+  }
+  return total / required;
 }
 
 /**
  * Eşyanın kaba güç puanı. Statlar, verilen referans seviyedeki "tipik" değere
  * bölünerek normalize edilir; böylece farklı stat türleri karşılaştırılabilir.
+ * Set parçaları, setin beklenen bonus değeri kadar ek puan alır.
  */
 export function itemRating(item, refLevel) {
-  let score = 0;
+  let score = item.set ? setPieceRating(item.set, refLevel) : 0;
   for (const [key, value] of Object.entries(getItemStats(item))) {
-    const def = STAT_DEFS[key];
-    if (!def) continue;
-    const typical = def.scaling === 'flat' ? def.base * Balance.itemFlatScale(refLevel) : def.base + def.perLevel * refLevel;
+    const typical = statTypical(key, refLevel);
+    if (!typical) continue;
     score += value / typical;
   }
   return score;

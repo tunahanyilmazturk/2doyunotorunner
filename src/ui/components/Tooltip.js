@@ -1,9 +1,11 @@
 import { decorateIcons, iconHTML, itemArtKey } from '../icons.js';
 import { itemTypeName } from '../../data/items.js';
 import { getRarity } from '../../data/rarities.js';
+import { SET_MAP, countSetPieces } from '../../data/sets.js';
 import { STAT_DEFS, formatStatLine } from '../../data/stats.js';
 import { getItemStats, itemDisplayName, itemMaxEnhance, itemSellValue } from '../../systems/ItemFactory.js';
 import { formatNumber } from '../../utils/format.js';
+import { escapeHtml } from '../../utils/dom.js';
 
 // Fareyi takip eden bilgi kutusu (eşyalar için kuşanılanla karşılaştırmalı).
 export class Tooltip {
@@ -11,7 +13,7 @@ export class Tooltip {
     this.el = document.getElementById('tooltip');
   }
 
-  showItem(item, event, { equipped = null, hint = '', priceLabel = null } = {}) {
+  showItem(item, event, { equipped = null, equipment = null, hint = '', priceLabel = null } = {}) {
     const rarity = getRarity(item.tier);
     const stats = getItemStats(item);
     const lines = Object.entries(stats)
@@ -32,13 +34,16 @@ export class Tooltip {
           return `<li class="${cls}">${d > 0 ? '▲' : '▼'} ${val}${def.percent ? '%' : ''} ${def.label}</li>`;
         })
         .join('');
-      compare = `<div class="tt-compare"><div class="tt-sub">Kuşanılana göre (${itemDisplayName(equipped)}):</div><ul>${diffs || '<li>Fark yok</li>'}</ul></div>`;
+      compare = `<div class="tt-compare"><div class="tt-sub">Kuşanılana göre (${escapeHtml(itemDisplayName(equipped))}):</div><ul>${diffs || '<li>Fark yok</li>'}</ul></div>`;
     }
 
+    // Eşya adı/türü kaçış karakterlerinden geçer: kayıt dosyasından gelen metin
+    // innerHTML'e ham girmesin (savunma derinliği; ad zaten doğrulanırken yeniden üretilir).
     this.el.innerHTML = `
-      <div class="tt-name" style="color:${rarity.color}">${iconHTML(itemArtKey(item))} ${itemDisplayName(item)}${item.locked ? ' 🔒' : ''}</div>
-      <div class="tt-sub">${rarity.name} ${itemTypeName(item)} · Sv.${item.level} · Güçlendirme ${item.enhance || 0}/${itemMaxEnhance(item)}</div>
+      <div class="tt-name" style="color:${rarity.color}">${iconHTML(itemArtKey(item))} ${escapeHtml(itemDisplayName(item))}${item.locked ? ' 🔒' : ''}</div>
+      <div class="tt-sub">${escapeHtml(rarity.name)} ${escapeHtml(itemTypeName(item))} · Sv.${item.level} · Güçlendirme ${item.enhance || 0}/${itemMaxEnhance(item)}</div>
       <ul class="tt-stats">${lines}</ul>
+      ${this.setBlock(item, equipment)}
       ${compare}
       <div class="tt-footer">
         <span>${priceLabel ?? `Satış: 🪙 ${formatNumber(itemSellValue(item))}`}</span>
@@ -48,6 +53,36 @@ export class Tooltip {
     decorateIcons(this.el);
     this.el.hidden = false;
     this.move(event);
+  }
+
+  /**
+   * Set bilgisi: parça sayısı, eşikler ve "kuşanılırsa" durumu.
+   * `equipment` verilmezse yalnızca hangi kademelerin açık olduğu gösterilir.
+   */
+  setBlock(item, equipment) {
+    const set = item.set ? SET_MAP[item.set] : null;
+    if (!set) return '';
+    const total = set.slots.length;
+    const now = equipment ? (countSetPieces(equipment)[set.id] || 0) : 0;
+    // Eşya zaten kuşanılıyorsa bu yuva hesaba katıldığı için sonuç değişmez.
+    const projected = equipment ? (countSetPieces({ ...equipment, [item.slot]: item })[set.id] || 0) : now;
+    const gains = projected > now;
+
+    const rows = set.bonuses
+      .map((b) => {
+        const on = projected >= b.pieces;
+        const gained = on && now < b.pieces;
+        const stats = Object.entries(b.stats)
+          .map(([k, v]) => escapeHtml(formatStatLine(k, v)))
+          .join(' · ');
+        return `<li class="${on ? 'on' : ''}${gained ? ' gain' : ''}"><b>${b.pieces} parça</b> ${stats}</li>`;
+      })
+      .join('');
+    const label = gains ? `${now} → ${projected}/${total} <span class="tt-gain">kuşanılırsa</span>` : `${now}/${total}`;
+    return `<div class="tt-set" style="--set:${set.color}">
+      <div class="tt-sub">${set.icon} <b>${escapeHtml(set.name)}</b> ${label}</div>
+      <ul>${rows}</ul>
+    </div>`;
   }
 
   showText(html, event) {

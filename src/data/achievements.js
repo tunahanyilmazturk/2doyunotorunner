@@ -2,6 +2,7 @@ import { formatNumber } from '../utils/format.js';
 import { ELITE_TRAITS } from './eliteTraits.js';
 import { WEAPON_KINDS } from './items.js';
 import { ALL_MONSTER_COUNT } from './monsters.js';
+import { countSetPieces } from './sets.js';
 import { UPGRADES } from './upgrades.js';
 
 // Başarımlar: ilerleme state'ten okunur, hedefe ulaşınca kalıcı olarak açılır.
@@ -46,7 +47,19 @@ export const ACHIEVEMENTS = [
   ...tiered('playtime', '⏳', 'Sadık Maceracı', (t) => `${t / 3600} saat oyna`, (s) => s.stats.playTime, [3600, 5 * 3600, 24 * 3600]),
   ...tiered('tree', '🌳', 'Ruh Bahçıvanı', (t) => `Ruh Ağacı'nda ${t} düğüm aç`, (s) => Object.values(s.tree).filter((l) => l > 0).length, [5, 15, 25]),
   ...tiered('upgrades', '⬆️', 'Gelişim', (t) => `Toplam ${t} yükseltme seviyesi al`, (s) => UPGRADES.reduce((n, u) => n + (s.upgrades[u.id] || 0), 0), [50, 250, 1000]),
+  ...tiered('sets', '💠', 'Set Kuşanan', (t) => `Aynı setten ${t} parça kuşan`, maxSetPieces, [2, 4, 6]),
+  ...tiered('setTypes', '🔷', 'Koleksiyoncu', (t) => `${t} farklı setten en az 2 parça kuşan`, setTypesWorn, [2, 4, 5]),
 ];
+
+/** En kalabalık tek setin parça sayısı. */
+function maxSetPieces(s) {
+  return Math.max(0, ...Object.values(countSetPieces(s.equipment)));
+}
+
+/** En az 2 parçası kuşanılmış farklı set sayısı. */
+function setTypesWorn(s) {
+  return Object.values(countSetPieces(s.equipment)).filter((n) => n >= 2).length;
+}
 
 /** Tam teçhizat: her kademe tüm yuvaların daha yüksek nadirlikte dolmasını ister. */
 function gearTiers() {
