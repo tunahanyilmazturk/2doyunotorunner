@@ -45,6 +45,7 @@ export const Events = Object.freeze({
   PRESTIGE_ADVICE: 'prestige:advice',
   OFFLINE_REWARD: 'offline:reward',
   SETTINGS_CHANGED: 'settings:changed',
+  PAUSE_CHANGED: 'game:pauseChanged',
   GAME_SAVED: 'game:saved',
   TOAST: 'ui:toast',
 });

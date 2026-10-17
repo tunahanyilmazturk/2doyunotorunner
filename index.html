@@ -29,6 +29,7 @@
         </div>
         <div class="topbar-right">
           <span id="save-indicator" class="save-indicator">💾 Kaydedildi</span>
+          <button id="pause-btn" class="icon-btn" title="Duraklat / Devam et (P)" aria-label="Duraklat"></button>
           <div class="speed-controls" id="speed-controls" title="Oyun hızı"></div>
           <button id="dock-toggle" class="dock-toggle" title="Alt menüyü gizle / göster (M)"></button>
           <button id="settings-btn" class="icon-btn" title="Ayarlar ve İstatistikler (Esc)">⚙️</button>
@@ -66,6 +67,14 @@
           </div>
         </div>
         <div class="action-bar" id="action-bar"></div>
+        <div class="pause-overlay" id="pause-overlay" hidden>
+          <div class="pause-card">
+            <div class="pause-icon">⏸</div>
+            <div class="pause-title">Duraklatıldı</div>
+            <div class="pause-hint">Devam etmek için <b>P</b> tuşuna bas veya aşağıdaki düğmeye dokun</div>
+            <button id="pause-resume" class="btn btn-primary">▶ Devam Et</button>
+          </div>
+        </div>
       </section>
 
       <main class="dock">

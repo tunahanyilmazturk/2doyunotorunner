@@ -29,3 +29,26 @@ export function el(tag, props = {}, children = []) {
 }
 
 export const $ = (selector, root = document) => root.querySelector(selector);
+
+/** HTML'e gömülecek metni kaçış karakterleriyle güvenli hale getirir. */
+export function escapeHtml(value) {
+  return String(value).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+}
+
+// Her düğüme en son yazdığımız metni hatırlar. `textContent` ataması düğümün
+// metin çocuğunu silip yeniden oluşturur; bu da MutationObserver'ı tetikleyip
+// simge taramasını baştan çalıştırır. Her karede aynı değeri yazmamak bu
+// döngüyü tamamen ortadan kaldırır.
+const lastText = new WeakMap();
+
+/**
+ * Değer değişmediyse DOM'a dokunmaz (kare başına gereksiz düğüm kurulumunu önler).
+ * Simge dönüşümü metni sildiği için karşılaştırma DOM'a değil, önbelleğe göre yapılır.
+ */
+export function setText(node, value) {
+  const text = String(value);
+  if (lastText.get(node) === text) return text;
+  lastText.set(node, text);
+  node.textContent = text;
+  return text;
+}

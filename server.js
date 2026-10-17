@@ -24,7 +24,9 @@ http
     let urlPath = decodeURIComponent(new URL(req.url, 'http://localhost').pathname);
     if (urlPath === '/') urlPath = '/index.html';
     const filePath = path.normalize(path.join(root, urlPath));
-    if (!filePath.startsWith(root)) {
+    // Kök dizin ve altı dışındaki her şeyi reddet. `startsWith(root)` tek başına
+    // yetmez: "2d" köküne "2d-evil" gibi kardeş klasörler de eşleşir (yol geçişi).
+    if (filePath !== root && !filePath.startsWith(root + path.sep)) {
       res.writeHead(403);
       return res.end('Forbidden');
     }

@@ -5,6 +5,9 @@ import { UPGRADES } from '../data/upgrades.js';
 
 // Kaydedilen her şey bu düz (JSON'a çevrilebilir) nesnede yaşar.
 // Çalışma anı nesneleri (oyuncu canı, canavarlar, partiküller) burada tutulmaz.
+//
+// Okuma/doğrulama ve sürüm geçişleri `core/saveIntegrity.js` içindedir;
+// burası yalnızca "olması gereken şekli" tanımlar.
 export function createDefaultState() {
   return {
     version: SAVE_VERSION,
@@ -39,6 +42,8 @@ export function createDefaultState() {
       autoBuy: false, // yükseltmeleri otomatik al (ilk yeniden doğuştan sonra açılır)
       dockCollapsed: false, // alt menü gizli mi
       autoSellTier: -1, // -1: kapalı, 0: Sıradan, 1: ≤ Kaliteli ...
+      audio: true, // ses efektleri
+      volume: 0.7, // 0..1
     },
 
     stats: {
@@ -66,27 +71,4 @@ export function createDefaultState() {
     nextItemId: 1,
     lastSave: Date.now(),
   };
-}
-
-/** Eski kayıtları yeni varsayılanlarla birleştirir (ileri uyumluluk). */
-export function mergeWithDefaults(saved) {
-  const defaults = createDefaultState();
-  const merged = deepMerge(defaults, saved);
-  // Envanter en az taban boyutta olmalı; Ruh Ağacı ile büyümüş envanter korunur
-  const length = Math.max(INVENTORY_SIZE, saved?.inventory?.length ?? 0);
-  merged.inventory = Array.from({ length }, (_, i) => saved?.inventory?.[i] ?? null);
-  // Eski kayıtlarda Ruh pasif bonustu; kazanılmış Ruh miktarını kayıp sayma
-  if (saved && saved.soulsEarned === undefined) merged.soulsEarned = merged.souls;
-  return merged;
-}
-
-function deepMerge(base, override) {
-  if (override === undefined || override === null) return base;
-  if (Array.isArray(base)) return Array.isArray(override) ? override : base;
-  if (typeof base !== 'object' || base === null) return typeof override === typeof base ? override : base;
-  const out = { ...base };
-  for (const key of Object.keys(override)) {
-    out[key] = key in base ? deepMerge(base[key], override[key]) : override[key];
-  }
-  return out;
 }

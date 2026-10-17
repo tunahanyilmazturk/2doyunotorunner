@@ -5,6 +5,7 @@ import { FloatingTextSystem } from '../render/FloatingTextSystem.js';
 import { ParticleSystem } from '../render/ParticleSystem.js';
 import { Renderer } from '../render/Renderer.js';
 import { AchievementSystem } from '../systems/AchievementSystem.js';
+import { AudioSystem } from '../systems/AudioSystem.js';
 import { CombatSystem } from '../systems/CombatSystem.js';
 import { EconomySystem } from '../systems/EconomySystem.js';
 import { ElixirSystem } from '../systems/ElixirSystem.js';
@@ -58,6 +59,7 @@ export class Game {
     this.shop = new ShopSystem(this);
     this.prestige = new PrestigeSystem(this);
     this.offline = new OfflineSystem(this);
+    this.audio = new AudioSystem(this); // olaylara abone olur, sesleri kendi üretir
 
     // Görsel katman
     this.particles = new ParticleSystem();
@@ -70,10 +72,36 @@ export class Game {
 
     this.saveTimer = 0;
     this.savingDisabled = false; // sıfırlama/içe aktarmada eski durumun tekrar yazılmasını engeller
+    // Duraklatma nedenleri: 'user' (düğme/kısayol), 'hidden' (sekme arka planda).
+    // Herhangi biri etkinken döngü tamamen durur; böylece arka planda hem
+    // simülasyon hem çevrimdışı ödül aynı anda işlemez.
+    this.pauseReasons = new Set();
     this.loop = new GameLoop(
       (dt) => this.update(dt),
       (dt) => this.renderer.render(dt)
     );
+  }
+
+  get isPaused() {
+    return this.pauseReasons.size > 0;
+  }
+
+  /** Oyunu duraklatır/devam ettirir. @returns {boolean} şu an duraklatılmış mı */
+  setPaused(reason, value) {
+    if (value) this.pauseReasons.add(reason);
+    else this.pauseReasons.delete(reason);
+    const paused = this.pauseReasons.size > 0;
+    if (paused) {
+      this.saveGame(); // duraklatırken ilerlemeyi kaybetme
+      this.loop.stop();
+    } else this.loop.start();
+    this.bus.emit(Events.PAUSE_CHANGED, { paused, reasons: [...this.pauseReasons] });
+    return paused;
+  }
+
+  /** Kullanıcı duraklatmasını aç/kapat. */
+  togglePause() {
+    return this.setPaused('user', !this.pauseReasons.has('user'));
   }
 
   start() {

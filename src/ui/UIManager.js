@@ -1,4 +1,5 @@
 import { Events } from '../core/events.js';
+import { SET_MAP } from '../data/sets.js';
 import { SKILLS } from '../data/skills.js';
 import { $, el } from '../utils/dom.js';
 import { formatNumber, formatTime } from '../utils/format.js';
@@ -59,11 +60,18 @@ export class UIManager {
     this.dockToggle.addEventListener('click', () => this.setDockCollapsed(!this.game.state.settings.dockCollapsed));
     this.setDockCollapsed(!!this.game.state.settings.dockCollapsed);
 
+    this.pauseBtn = $('#pause-btn');
+    this.pauseOverlay = $('#pause-overlay');
+    this.pauseBtn.addEventListener('click', () => this.game.togglePause());
+    $('#pause-resume').addEventListener('click', () => this.game.togglePause());
+
     const { bus } = this.game;
+    bus.on(Events.PAUSE_CHANGED, ({ paused, reasons }) => this.updatePauseUi(paused, reasons));
     bus.on(Events.TOAST, ({ text, type }) => this.toast.show(text, type));
     bus.on(Events.OFFLINE_REWARD, (r) => this.showOfflineReward(r));
     bus.on(Events.LOOT_DROPPED, ({ item, autoSold, full }) => {
       if (full) this.toast.show('Envanter dolu! Eşya otomatik satıldı.', 'error', 1800);
+      else if (!autoSold && item.set) this.toast.show(`💠 ${SET_MAP[item.set].name} parçası: ${item.name}`, 'loot', 2600);
       else if (!autoSold && item.tier >= 3) this.toast.show(`Yeni eşya: ${item.name}`, 'loot', 2200);
     });
     bus.on(Events.ACHIEVEMENT_UNLOCKED, ({ achievement, silent }) => {
@@ -77,6 +85,7 @@ export class UIManager {
       this.toast.show(`✨ Yeniden doğuş açıldı! Şimdi doğarsan +${formatNumber(souls)} Ruh (Ruh Ağacı)`, 'gold', 4000)
     );
     this.updateBadges();
+    this.updatePauseUi(this.game.isPaused, [...this.game.pauseReasons]);
   }
 
   buildNav() {
@@ -121,6 +130,7 @@ export class UIManager {
       else if (key === 'F') game.potions.use();
       else if (key === 'M') this.setDockCollapsed(!game.state.settings.dockCollapsed);
       else if (key === 'B') game.spawn.challengeBoss();
+      else if (key === 'P') game.togglePause();
       else {
         const skill = SKILLS.find((s) => s.key === key);
         if (!skill) return;
@@ -139,7 +149,19 @@ export class UIManager {
     this.tooltip.hide();
   }
 
+  /** Duraklatma düğmesi, kaplama ve menü görünürlüğünü eşitler. */
+  updatePauseUi(paused, reasons = []) {
+    const byUser = paused && reasons.includes('user');
+    this.pauseBtn.textContent = paused ? '▶' : '⏸';
+    this.pauseBtn.classList.toggle('active', paused);
+    this.pauseBtn.setAttribute('aria-label', paused ? 'Devam et' : 'Duraklat');
+    this.pauseBtn.title = paused ? 'Devam et (P)' : 'Duraklat (P)';
+    // Kaplama yalnızca kullanıcı duraklatmasında görünür; sekme gizliyken zaten görünmez.
+    this.pauseOverlay.hidden = !byUser;
+  }
+
   showTab(id) {
+    if (this.activeTab !== id) this.game.audio?.play('ui');
     // Kapalı menüde bir sekme seçilirse menüyü aç (ilk kurulumda değil)
     if (this.dockToggle && this.game.state.settings.dockCollapsed) this.setDockCollapsed(false);
     this.activeTab = id;

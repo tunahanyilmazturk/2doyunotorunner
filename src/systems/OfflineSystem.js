@@ -3,6 +3,10 @@ import { Events } from '../core/events.js';
 
 // Oyun kapalıyken veya sekme arka plandayken geçen süre için altın ödülü.
 // Hesap: geçen süre × ortalama saniyelik kazanç × verim.
+//
+// Sekme gizlendiğinde döngü tamamen durdurulur (game.setPaused('hidden')). Aksi halde
+// hem yavaşlatılmış simülasyon hem çevrimdışı ödül aynı aralık için çalışır ve
+// oyuncu hak etmediği kazancı alır.
 export class OfflineSystem {
   constructor(game) {
     this.game = game;
@@ -11,8 +15,9 @@ export class OfflineSystem {
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) {
         this.hiddenAt = Date.now();
-        game.saveGame();
+        game.setPaused('hidden', true); // içinde saveGame() çağrılır
       } else if (this.hiddenAt) {
+        game.setPaused('hidden', false);
         this.grant((Date.now() - this.hiddenAt) / 1000);
         this.hiddenAt = 0;
       }

@@ -1,12 +1,14 @@
 import { SAVE_KEY } from '../config/constants.js';
-import { createDefaultState, mergeWithDefaults } from './GameState.js';
+import { createDefaultState } from './GameState.js';
+import { migrate } from './saveIntegrity.js';
 
 export class SaveManager {
   load() {
     try {
       const raw = localStorage.getItem(SAVE_KEY);
       if (!raw) return createDefaultState();
-      return mergeWithDefaults(JSON.parse(raw));
+      // migrate(): sürüm adımları + tam doğrulama (bkz. core/saveIntegrity.js)
+      return migrate(JSON.parse(raw));
     } catch (err) {
       console.warn('[SaveManager] Kayıt okunamadı, yeni oyun başlatılıyor.', err);
       return createDefaultState();
@@ -36,8 +38,8 @@ export class SaveManager {
     return btoa(unescape(encodeURIComponent(JSON.stringify(state))));
   }
 
+  /** Dışarıdan gelen (güvenilmeyen) kayıt kodunu okur ve doğrular. */
   importString(str) {
-    const parsed = JSON.parse(decodeURIComponent(escape(atob(str.trim()))));
-    return mergeWithDefaults(parsed);
+    return migrate(JSON.parse(decodeURIComponent(escape(atob(str.trim())))));
   }
 }

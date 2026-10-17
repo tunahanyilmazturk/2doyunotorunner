@@ -1,5 +1,6 @@
 import { iconToken } from './icons.js';
 import { Events } from '../core/events.js';
+import { TREE_NODES } from '../data/soulTree.js';
 import { el } from '../utils/dom.js';
 import { formatNumber, formatTime } from '../utils/format.js';
 
@@ -7,6 +8,7 @@ const SHORTCUTS = [
   ['1 – 7', 'Menü sekmeleri'],
   ['Q W E R T', 'Yetenekler'],
   ['M', 'Alt menüyü gizle / göster'],
+  ['P', 'Duraklat / devam et'],
   ['F', 'Can iksiri'],
   ['B', "İlerle / Boss'a meydan oku"],
   ['Esc', 'Ayarlar / pencereyi kapat'],
@@ -38,6 +40,12 @@ export class SettingsModal {
           settings.pixelArt = v;
           game.bus.emit(Events.SETTINGS_CHANGED, settings);
         }),
+        toggle('Ses efektleri', settings.audio !== false, (v) => {
+          settings.audio = v;
+          game.bus.emit(Events.SETTINGS_CHANGED, settings);
+          if (v) game.audio?.play('ui');
+        }),
+        this.volumeRow(settings),
         toggle('Tüm yetenekleri otomatik kullan', Object.values(game.state.skillAuto).every(Boolean), (v) => {
           for (const id of Object.keys(game.state.skillAuto)) game.skills.setAuto(id, v);
         }),
@@ -65,6 +73,26 @@ export class SettingsModal {
     this.ui.modal.show({ title: '⚙️ Ayarlar', body, wide: true, buttons: [{ label: 'Kapat', class: 'btn-primary' }] });
   }
 
+  /** Ses düzeyi kaydırıcısı; oynatırken kısa bir örnek ses çalar. */
+  volumeRow(settings) {
+    const { game } = this;
+    const value = el('span', { class: 'value', text: `${Math.round((settings.volume ?? 0.7) * 100)}%` });
+    const range = el('input', {
+      type: 'range',
+      min: '0',
+      max: '1',
+      step: '0.05',
+      value: String(settings.volume ?? 0.7),
+      oninput: (e) => {
+        settings.volume = Number(e.target.value);
+        value.textContent = `${Math.round(settings.volume * 100)}%`;
+        game.bus.emit(Events.SETTINGS_CHANGED, settings);
+        game.audio?.play('ui');
+      },
+    });
+    return el('label', { class: 'slider' }, [range, 'Ses düzeyi', value]);
+  }
+
   statsList() {
     const { state } = this.game;
     const s = state.stats;
@@ -82,7 +110,7 @@ export class SettingsModal {
       ['Ölüm', formatNumber(s.deaths)],
       ['Yeniden doğuş', formatNumber(s.prestiges)],
       ['Kazanılan Ruh', formatNumber(state.soulsEarned)],
-      ['Ruh Ağacı düğümü', `${this.game.tree.purchasedCount} / 25`],
+      ['Ruh Ağacı düğümü', `${this.game.tree.purchasedCount} / ${TREE_NODES.length}`],
     ];
     return el('ul', { class: 'stat-list compact' }, rows.map(([k, v]) => el('li', {}, [el('span', { text: k }), el('b', { text: String(v) })])));
   }
