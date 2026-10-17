@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Idle Runner — Dünya Atlası</title>
+  <link rel="stylesheet" href="../css/fonts.css">
+  <style>
+    * { box-sizing:border-box; }
+    body { margin:0; color:#efe2c4; background:#18151f; font-family:'Jost',sans-serif; }
+    main { max-width:1440px; margin:auto; padding:24px; }
+    header { display:flex; align-items:center; gap:24px; margin-bottom:20px; }
+    h1 { font:32px 'Pixelify Sans',monospace; margin:0; }
+    header p { color:#ad9eb4; margin:4px 0 0; }
+    .actions { margin-left:auto; display:flex; gap:10px; align-items:center; }
+    a { color:#8fd4b0; }
+    button { padding:9px 16px; border:1px solid #8c7752; background:#3b3040; color:#efe2c4; font:inherit; cursor:pointer; }
+    .atlas { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:22px; }
+    figure { margin:0; border:1px solid #55465b; background:#251f2d; }
+    canvas { width:100%; aspect-ratio:12/5; display:block; image-rendering:pixelated; }
+    figcaption { padding:10px 14px 12px; }
+    h2 { margin:0 0 3px; font:21px 'Pixelify Sans',monospace; color:#e8cf96; }
+    figcaption p { margin:0; color:#b4a9ba; font-size:13px; }
+    @media(max-width:800px) { .atlas { grid-template-columns:1fr; } header { flex-wrap:wrap; } .actions { margin-left:0; } }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div><h1>Dünya Atlası</h1><p>Yol boyunca keşfedilecek beş farklı diyar.</p></div>
+      <div class="actions"><a href="/">Oyuna dön</a><button id="motion" aria-pressed="false">Hareketi durdur</button></div>
+    </header>
+    <div class="atlas" id="atlas"></div>
+  </main>
+  <script type="module" src="map-preview.js"></script>
+</body>
+</html>

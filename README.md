@@ -15,9 +15,14 @@ npm start
 Ardından tarayıcıda `http://localhost:5173` adresini aç.
 (ES modülleri `file://` üzerinden yüklenemediği için küçük bir Node sunucusu kullanılıyor.)
 
+Beş haritanın hareketli önizlemesi: sunucu açıkken `/tools/map-preview.html` adresini aç.
+
 ## Özellikler
 
 - **Auto-runner savaş** — paralaks kayan dünya, temas olunca karşılıklı saldırı, kritik vuruş, can çalma
+- **Katmanlı haritalar** — biyoma özel kalıntılar, uzak yapılar, su yansımaları, dokulu yollar ve yol kenarı fenerleri;
+  ormanda ateş böcekleri, çölde piramitler, mağarada kristaller ve yeraltı şelaleleri, buzulda kutup ışıkları,
+  volkanda dumanlı kraterler ve lav damarları. Süsleme ve zemin çizimleri önbelleğe alınır.
 - **5 biyom** (Orman, Çöl, Mağara, Buzul, Volkan), her biri kendi canavarları ve bossu ile; her 10 bölgede biyom değişir
 - **37 canavar** — 27 normal canavar ve 10 boss (her biyomda iki boss: 5. ve 10. bölgede), 7 farklı çizim şekli
   (balçık, mantar, hayalet, insansı, dört ayaklı, uçan, yılan)
@@ -148,6 +153,7 @@ Ayarlar, kayıt işlemleri ve istatistikler üst bardaki ⚙️ butonundadır.
     ├── render/
     │   ├── Renderer.js          Çizim sırası, ekran sarsıntısı, afişler, can barları
     │   ├── Background.js        Prosedürel paralaks biyom arka planı
+    │   ├── EnvironmentLayer.js  Önbellekli çevre katmanları, su, yol dokuları ve atmosfer
     │   ├── ParticleSystem.js    Partiküller (kıvılcım, altın, halka, kesik)
     │   ├── FloatingTextSystem.js Hasar / altın yazıları
     │   ├── EffectsController.js Olay → görsel efekt eşlemesi

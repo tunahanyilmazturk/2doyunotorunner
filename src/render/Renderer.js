@@ -135,6 +135,7 @@ export class Renderer {
       this.low.height = h;
     }
     const lc = this.lowCtx;
+    lc.imageSmoothingEnabled = game.state.settings.pixelArt === false;
     lc.setTransform(1, 0, 0, 1, 0, 0);
     lc.clearRect(0, 0, w, h);
     lc.setTransform(pr, 0, 0, pr, 0, 0);

@@ -1,15 +1,15 @@
 import { BASE_VIEW_WIDTH, GAME_HEIGHT, GROUND_Y } from '../config/constants.js';
 import { BIOMES } from '../data/biomes.js';
-import { darken, lighten, withAlpha } from '../utils/color.js';
+import { lighten, withAlpha } from '../utils/color.js';
 import { hash } from '../utils/random.js';
-import { DECOR_DRAWERS } from './sprites/DecorSprites.js';
+import { EnvironmentLayer } from './EnvironmentLayer.js';
 
 const H = GAME_HEIGHT;
 
 /**
  * Prosedürel paralaks arka plan. Katmanlar (uzaktan yakına):
- *   gökyüzü → yıldız/güneş ışınları → bulutlar → uzak dağlar (kenar ışıklı) → pus
- *   → orta tepeler → uzak siluetler → pus → yakın süslemeler → zemin → ortam partikülleri
+ *   gökyüzü / kutup ışıkları → uzak manzara → orman / su → biyom kalıntıları
+ *   → orta / yakın süslemeler → dokulu yol ve toprak → ortam partikülleri
  *   ... sprite'lar ... → ön plan (karakterlerin önünden geçer)
  * Biyom değişiminde eski ve yeni biyom çapraz geçişle karışır.
  */
@@ -20,6 +20,7 @@ export class Background {
     this.transition = 1;
     this.time = 0;
     this.w = BASE_VIEW_WIDTH; // görünür mantıksal genişlik (Renderer ayarlar)
+    this.environment = new EnvironmentLayer();
   }
 
   setBiome(index) {
@@ -57,16 +58,23 @@ export class Background {
   drawBiome(ctx, biome, distance) {
     this.drawSky(ctx, biome);
     if (biome.stars) this.drawStars(ctx, biome);
+    if (biome.id === 'tundra') this.environment.aurora(ctx, this.w, this.time);
     this.drawCelestial(ctx, biome);
     if (biome.id !== 'cave') this.drawClouds(ctx, biome, distance);
-    this.drawRidge(ctx, biome.far, distance * 0.08, 205, [50, 0.0035, 30, 0.011, 14, 0.027], biome.id === 'tundra');
-    this.drawHaze(ctx, biome, 150, 0.5);
-    this.drawRidge(ctx, biome.mid, distance * 0.22, 258, [30, 0.006, 16, 0.014, 6, 0.031], false);
-    if (biome.id === 'cave') this.drawCeiling(ctx, biome, distance * 0.45);
-    this.drawDecorLayer(ctx, biome, distance * 0.4, 90, 0.5, GROUND_Y - 22, 31);
-    this.drawHaze(ctx, biome, 230, 0.4);
-    this.drawDecorLayer(ctx, biome, distance * 0.65, 160, 0.9, GROUND_Y - 6, 11);
-    this.drawGround(ctx, biome, distance);
+    this.drawRidge(ctx, biome.far, distance * 0.07, 238, [30, 0.0035, 19, 0.011, 9, 0.027], biome.id === 'tundra');
+    this.environment.distant(ctx, biome, distance, this.w, this.time);
+    this.drawHaze(ctx, biome, 160, .28);
+    this.drawRidge(ctx, biome.mid, distance * 0.18, 283, [13, 0.006, 9, 0.014, 4, 0.031], false);
+    this.environment.decor(ctx, biome, distance, this.w, 'far');
+    this.environment.water(ctx, biome, distance, this.w, this.time);
+    this.environment.landmarks(ctx, biome, distance, this.w);
+    this.drawHaze(ctx, biome, 262, .12);
+    this.environment.decor(ctx, biome, distance, this.w, 'middle');
+    if (biome.id === 'cave') this.drawCeiling(ctx, biome, distance * .45);
+    this.environment.decor(ctx, biome, distance, this.w, 'near');
+    this.environment.ground(ctx, biome, distance, this.w);
+    this.environment.verge(ctx, biome, distance, this.w);
+    this.environment.motes(ctx, biome, this.w, this.time, distance);
     this.drawAmbient(ctx, biome, distance);
   }
 
@@ -121,7 +129,7 @@ export class Background {
 
     if (biome.rays) {
       ctx.save();
-      ctx.globalAlpha = 0.07 + Math.sin(this.time * 0.6) * 0.02;
+      ctx.globalAlpha *= 0.07 + Math.sin(this.time * 0.6) * 0.02;
       ctx.fillStyle = '#fff6d8';
       for (let i = 0; i < 5; i++) {
         const a = 1.9 + i * 0.22 + Math.sin(this.time * 0.2 + i) * 0.02;
@@ -217,72 +225,6 @@ export class Background {
     for (let i = start; i < start + this.w / spacing + 3; i++) {
       const x = i * spacing - offset;
       ctx.fillRect(x + 4, 20, 3, 10 + hash(i) * 20);
-    }
-  }
-
-  drawDecorLayer(ctx, biome, offset, spacing, scale, baseY, seed) {
-    const drawer = DECOR_DRAWERS[biome.decor];
-    if (!drawer) return;
-    const start = Math.floor(offset / spacing) - 1;
-    for (let i = start; i < start + this.w / spacing + 3; i++) {
-      if (hash(i + seed) < 0.25) continue;
-      const x = i * spacing - offset + hash(i * 3 + seed) * spacing * 0.6;
-      const s = scale * (0.75 + hash(i * 7 + seed) * 0.5);
-      drawer(ctx, x, baseY, s, biome, this.time + i);
-    }
-  }
-
-  drawGround(ctx, biome, distance) {
-    const w = this.w;
-    // Toprak katmanları
-    ctx.fillStyle = biome.ground;
-    ctx.fillRect(0, GROUND_Y, w, H - GROUND_Y);
-    ctx.fillStyle = darken(biome.ground, 0.12);
-    ctx.fillRect(0, GROUND_Y + 34, w, 6);
-    ctx.fillStyle = darken(biome.ground, 0.22);
-    ctx.fillRect(0, GROUND_Y + 52, w, H - GROUND_Y - 52);
-
-    // Patika
-    ctx.fillStyle = biome.path;
-    ctx.fillRect(0, GROUND_Y + 6, w, 12);
-    ctx.fillStyle = lighten(biome.path, 0.15);
-    ctx.fillRect(0, GROUND_Y + 6, w, 2);
-
-    // Taşlar ve çakıllar (zeminle aynı hızda kayar)
-    const spacing = 58;
-    const off = distance % spacing;
-    for (let x = -off - spacing; x < w + spacing; x += spacing) {
-      const i = Math.floor((x + distance) / spacing);
-      const sy = GROUND_Y + 24 + hash(i) * 26;
-      const sw = 8 + hash(i + 1) * 14;
-      ctx.fillStyle = biome.groundLine;
-      ctx.fillRect(x, sy, sw, 4);
-      ctx.fillStyle = lighten(biome.ground, 0.12);
-      ctx.fillRect(x, sy - 1, sw * 0.6, 1);
-      if (hash(i + 4) > 0.6) {
-        ctx.fillStyle = lighten(biome.path, 0.25);
-        ctx.fillRect(x + 20, GROUND_Y + 10 + hash(i + 5) * 5, 3, 2);
-      }
-    }
-
-    // Üst kenar: çimen/kar/kum şeridi ve sarkan tutamlar
-    ctx.fillStyle = darken(biome.groundTop, 0.2);
-    ctx.fillRect(0, GROUND_Y - 2, w, 8);
-    ctx.fillStyle = biome.groundTop;
-    ctx.fillRect(0, GROUND_Y - 4, w, 6);
-    const tuft = 14;
-    const tOff = distance % tuft;
-    for (let x = -tOff - tuft; x < w + tuft; x += tuft) {
-      const i = Math.floor((x + distance) / tuft);
-      const hang = 2 + hash(i) * 5;
-      ctx.fillStyle = darken(biome.groundTop, 0.2);
-      ctx.fillRect(x, GROUND_Y + 4, 4, hang);
-      if (hash(i + 2) > 0.55) {
-        ctx.fillStyle = biome.groundTop;
-        const up = 3 + hash(i + 3) * 6;
-        ctx.fillRect(x + 6, GROUND_Y - 4 - up, 2, up);
-        ctx.fillRect(x + 9, GROUND_Y - 4 - up * 0.6, 2, up * 0.6);
-      }
     }
   }
 
