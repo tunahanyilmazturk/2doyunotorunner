@@ -1,4 +1,4 @@
-import { BOSS_EVERY, KILLS_PER_STAGE, SPAWN_DELAY, SPAWN_MARGIN } from '../config/constants.js';
+import { BOSS_EVERY, KILLS_PER_STAGE, PLAYER_ATTACK_RANGE, SPAWN_DELAY, SPAWN_MARGIN } from '../config/constants.js';
 import { Balance } from '../config/balance.js';
 import { Events } from '../core/events.js';
 import { getBiome, getBiomeIndex } from '../data/biomes.js';
@@ -39,6 +39,8 @@ export class SpawnSystem {
         if (m.removable) this.current = null;
       } else {
         if (m.state === 'approach') m.x -= (this.game.world.scrollSpeed + m.speed * this.game.world.speedScale) * dt;
+        // Savaşta olan canavar temas mesafesine kadar yürür (menzilli oyuncuya yaklaşır)
+        else if (m.state === 'fight' && this.game.combat.gapTo(m) > PLAYER_ATTACK_RANGE) m.x -= m.speed * this.game.world.speedScale * dt;
         if (this.bossActive && !this.game.player.dead) {
           this.bossTimer -= dt;
           if (this.bossTimer <= 0) this.failBoss();

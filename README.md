@@ -52,6 +52,9 @@ Beş haritanın hareketli önizlemesi: sunucu açıkken `/tools/map-preview.html
 - **Eşya setleri** — 9 set, her biri 6 yuva kapsar. Genel setler: Kızıl Nişan, Buzul Siperi, Fırtına Örtüsü, Yaşam Yemini,
   Kâhin Gözü. Sınıf temalı setler: Avcı Yemini (Okçu), Arkana Cüppesi (Büyücü), Gölge Mirası (Suikastçı), Kutsal Mühür (Şifacı).
   Bonuslar yüzde statlarıdır ve 2 / 4 / 6 parçada kademeli açılır.
+- **Sınıfa özel saldırılar** — Okçu oku gererek uzaktan (300 px) ok atar, Büyücü asasını kaldırıp menzilden büyü küresi fırlatır;
+  mermiler hedefe uçar ve varınca hasar verir. Suikastçı atılarak, Şifacı altın yay çizerek yakın dövüşte vurur.
+  Menzilli sınıflarda canavar menzile girince durmaz, temas mesafesine kadar yürür.
 - **Karakter sınıfları** — Savaşçı (varsayılan), Okçu, Büyücü, Suikastçı, Şifacı. Her sınıf kendi silah türünü ve zırh sınıfını kuşanır;
   diğer sınıfların eşyaları envanterde durur ama kuşanılamaz. Sınıf açmak **Kule Mührü** (🔷) harcar; her Boss Kulesi kat geçişi 1 mühür verir. Sınıflar **elmasla** (💎) da açılabilir.
 - **Elmas** (💎) — bosslardan (%35), Boss Kulesi kat geçişlerinden, haftalık/aylık/günlük hedef bonuslarından ve başarımlardan kazanılır.

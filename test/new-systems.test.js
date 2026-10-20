@@ -676,3 +676,26 @@ test('ayarlar: tuş atamaları kayıtta doğrulanır (ayrılmış ve çakışan 
   base.settings.autosaveSeconds = 7;
   assert.equal(sanitizeSave(base).settings.autosaveSeconds, 10, 'izinsiz otomatik kayıt aralığı varsayılana döner');
 });
+
+test('saldırı: her sınıfın saldırı tarzı ve animasyonu tanımlı; menzilliler uzaktan vurur', async () => {
+  const { ProjectileSystem } = await import('../src/systems/ProjectileSystem.js');
+  const anims = new Set(['swing', 'dash', 'holy', 'draw', 'cast']);
+  for (const c of CLASSES) {
+    assert.ok(['melee', 'ranged'].includes(c.attack.style), `${c.id}: bilinmeyen saldırı tarzı`);
+    assert.ok(anims.has(c.attack.anim), `${c.id}: bilinmeyen animasyon ${c.attack.anim}`);
+    if (c.attack.style === 'ranged') assert.ok(c.attack.range > 52, `${c.id}: menzil temas mesafesinden uzun olmalı`);
+  }
+  // Mermi hedefe varınca hasar verir; hedef ölürse vermez
+  const ps = new ProjectileSystem();
+  let hits = 0;
+  const target = { x: 300, centerY: 0, dead: false };
+  ps.fire({ x: 0, y: 0 }, target, { shot: 'arrow', speed: 1000 }, () => hits++);
+  for (let i = 0; i < 60; i++) ps.update(1 / 60);
+  assert.equal(hits, 1, 'mermi varınca tek isabet');
+  const dead = { x: 300, centerY: 0, dead: false };
+  let deadHits = 0;
+  ps.fire({ x: 0, y: 0 }, dead, { shot: 'orb', speed: 500 }, () => deadHits++);
+  dead.dead = true;
+  for (let i = 0; i < 120; i++) ps.update(1 / 60);
+  assert.equal(deadHits, 0, 'hedef öldüyse isabet olmaz');
+});

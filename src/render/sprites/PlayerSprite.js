@@ -21,6 +21,28 @@ const WOOD = '#6b4423';
 const TUNIC = '#3f6ea8';
 const SCARF = '#c8463d';
 
+/** Saldırı sırasında silah kolunun açısı: a = attackAnim (1 → 0). */
+function attackArmAngle(anim, a) {
+  const t = 1 - a; // 0 → 1 ilerleme
+  switch (anim) {
+    case dash:
+      return lerp(-2.0, 0.6, easeOutCubic(t));
+    case holy:
+      return lerp(-2.6, 1.0, easeOutCubic(t));
+    case draw:
+      // Ok: önce geriye çekilir (gerilim), sonra öne bırakılır
+      return t < 0.6 ? lerp(-0.2, 0.5, t / 0.6) : lerp(0.5, -0.2, (t - 0.6) / 0.4);
+    case cast:
+      // Asa: yukarı kaldırılır, sonra aşağı iner
+      return -0.75 - 2.0 * Math.sin(Math.min(1, t) * Math.PI);
+    default:
+      return lerp(-2.4, 0.9, easeOutCubic(t));
+  }
+}
+
+/** Saldırı yayının rengi (sınıfa özel); tanımlı değilse silahın nadirlik rengi kullanılır. */
+const ATTACK_COLORS = { holy: '#ffd34d', cast: '#b98cf0', draw: '#e8d9a8' };
+
 /** Sınıf görünümü verilmezse eski (savaşçı) görünüm kullanılır */
 const DEFAULT_LOOK = { tunic: TUNIC, hair: HAIR, headgear: 'none', trim: '#c8b27a' };
 
@@ -80,7 +102,10 @@ export function drawPlayerAuras(ctx, player, colors) {
   });
 }
 
-export function drawPlayer(ctx, player, equipment, look = DEFAULT_LOOK) {
+/**
+ * Oyuncu çizimi. anim: sınıfın saldırı animasyonu (swing | dash | holy | draw | cast); bkz. data/classes.js.
+ */
+export function drawPlayer(ctx, player, equipment, look = DEFAULT_LOOK, anim = 'swing') {
   const armorTint = rarityColor(equipment.armor);
   const bodyColor = armorTint ? mix(STEEL, armorTint, 0.45) : look.tunic;
   const helmetTint = rarityColor(equipment.helmet);
@@ -97,7 +122,9 @@ export function drawPlayer(ctx, player, equipment, look = DEFAULT_LOOK) {
   const c = player.runCycle;
   const t = player.animTime;
   const bob = running ? Math.abs(Math.sin(c)) * 2.5 : Math.sin(t * 3) * 0.8;
-  const lunge = player.attackAnim > 0 ? Math.sin(player.attackAnim * Math.PI) * 5 : 0;
+  // Atılma (dash) daha uzağa fırlar; diğer sınıflar kısa bir öne eğilme yapar
+  const lungeAmount = anim === 'dash' ? 16 : 5;
+  const lunge = player.attackAnim > 0 ? Math.sin(player.attackAnim * Math.PI) * lungeAmount : 0;
 
   ctx.translate(player.x + lunge, player.y);
   ctx.scale(SPRITE_SCALE, SPRITE_SCALE);
@@ -222,7 +249,7 @@ export function drawPlayer(ctx, player, equipment, look = DEFAULT_LOOK) {
 
   // ---- Silah kolu ----
   let angle;
-  if (player.attackAnim > 0) angle = lerp(-2.4, 0.9, easeOutCubic(1 - player.attackAnim));
+  if (player.attackAnim > 0) angle = attackArmAngle(anim, player.attackAnim);
   else if (player.state === 'fight') angle = -1.15 + Math.sin(t * 4) * 0.05;
   else angle = -0.75 + Math.sin(c * 0.5) * 0.08;
 
@@ -235,7 +262,7 @@ export function drawPlayer(ctx, player, equipment, look = DEFAULT_LOOK) {
   if (player.attackAnim > 0.2) {
     ctx.save();
     ctx.globalAlpha *= player.attackAnim * 0.45;
-    ctx.strokeStyle = tint ?? '#ffffff';
+    ctx.strokeStyle = ATTACK_COLORS[anim] ?? tint ?? '#ffffff';
     ctx.lineWidth = kind === 'hammer' || kind === 'axe' ? 12 : 9;
     ctx.beginPath();
     ctx.arc(0, 0, 14 + reach * 0.8, -2.4, angle);

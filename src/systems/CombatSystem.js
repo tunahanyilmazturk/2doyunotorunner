@@ -1,5 +1,6 @@
 import { Balance } from '../config/balance.js';
 import { PLAYER_ATTACK_RANGE, RESPAWN_TIME } from '../config/constants.js';
+// (menzilli saldırılar sınıfın attack.range değerini kullanır; bkz. data/classes.js)
 import { Events } from '../core/events.js';
 import { chance, rand } from '../utils/random.js';
 
@@ -31,8 +32,8 @@ export class CombatSystem {
 
     let engaged = false;
     if (monster && !monster.dead) {
-      const gap = monster.left - (player.x + 22);
-      if (gap <= PLAYER_ATTACK_RANGE) {
+      // Menzilli sınıflar daha uzaktan vurur; canavar yine de temas mesafesine kadar yürür
+      if (this.gapTo(monster) <= this.attackRange()) {
         engaged = true;
         monster.state = 'fight';
       }
@@ -50,7 +51,8 @@ export class CombatSystem {
       player.attackCooldown = 1 / stats.attackSpeed;
     }
 
-    if (!monster.dead && monster.stunTimer <= 0) {
+    // Canavar yalnızca yakın dövüşte vurur (menzilli oyuncuya uzaktan saldırmaz)
+    if (!monster.dead && monster.stunTimer <= 0 && this.gapTo(monster) <= PLAYER_ATTACK_RANGE) {
       monster.attackCooldown -= dt;
       if (monster.attackCooldown <= 0) {
         this.monsterAttack(monster, stats);
@@ -59,10 +61,32 @@ export class CombatSystem {
     }
   }
 
+  /** Aktif sınıfın saldırı tarzı (melee varsayılan). */
+  get attackStyle() {
+    return this.game.classes?.active?.attack ?? { style: 'melee', anim: 'swing' };
+  }
+
+  attackRange() {
+    return this.attackStyle.style === 'ranged' ? this.attackStyle.range : PLAYER_ATTACK_RANGE;
+  }
+
+  /** Oyuncunun uç noktasından canavarın sol kenarına kadar yatay boşluk. */
+  gapTo(monster) {
+    return monster.left - (this.game.player.x + 22);
+  }
+
   playerAttack(monster, stats) {
     const crit = chance(stats.critChance);
     const damage = stats.atk * rand(0.9, 1.1) * (crit ? stats.critMult : 1);
-    this.game.player.attackAnim = 1;
+    const { player } = this.game;
+    player.attackAnim = 1;
+    const style = this.attackStyle;
+    if (style.style === 'ranged') {
+      // Menzilli: hasar mermi varınca uygulanır (ok ya da büyü)
+      const from = { x: player.x + 30, y: player.y - 44 };
+      this.game.projectiles.fire(from, monster, style, () => this.dealDamage(monster, damage, crit, 'projectile'));
+      return;
+    }
     this.dealDamage(monster, damage, crit);
   }
 
@@ -102,6 +126,7 @@ export class CombatSystem {
 
     if (player.dead) {
       player.state = 'dead';
+      this.game.projectiles.clear(); // uçan oklar ve büyüler düşer
       player.respawnTimer = RESPAWN_TIME;
       state.stats.deaths++;
       bus.emit(Events.PLAYER_DIED, { killer: monster });

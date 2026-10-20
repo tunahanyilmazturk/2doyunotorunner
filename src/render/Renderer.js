@@ -157,7 +157,8 @@ export class Renderer {
     this.drawCompanion(lc, pr);
     this.drawShadow(lc, player.x, player.y, 22, 1);
     drawPlayerAuras(lc, player, auras);
-    this.outliner.draw(lc, pr, { x: player.x, y: player.y + 8, w: 230, h: 185 }, (c) => drawPlayer(c, player, game.state.equipment, game.classes.active.look));
+    this.outliner.draw(lc, pr, { x: player.x, y: player.y + 8, w: 230, h: 185 }, (c) => drawPlayer(c, player, game.state.equipment, game.classes.active.look, game.classes.active.attack?.anim));
+    this.drawProjectiles(lc);
 
     game.particles.draw(lc);
     this.background.drawForeground(lc, game.world.distance);
@@ -201,6 +202,51 @@ export class Renderer {
       c.translate(-v.x, 0);
       drawMonster(c, v);
     });
+  }
+
+  /** Menzilli saldırıların mermileri: ok (gövde, uç, tüy) ve büyü küresi (iz + parıltı). */
+  drawProjectiles(ctx) {
+    for (const p of this.game.projectiles.items) {
+      if (p.shot.shot === 'arrow') {
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.angle);
+        ctx.strokeStyle = '#7a5a2b';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(-14, 0);
+        ctx.lineTo(6, 0);
+        ctx.stroke();
+        ctx.fillStyle = '#cfd6de';
+        ctx.beginPath();
+        ctx.moveTo(11, 0);
+        ctx.lineTo(5, -3);
+        ctx.lineTo(5, 3);
+        ctx.closePath();
+        ctx.fill();
+        ctx.fillStyle = '#d64045';
+        ctx.fillRect(-16, -2.5, 4, 5);
+        ctx.restore();
+      } else {
+        // Büyü: solan iz ve parlayan küre
+        p.trail.forEach((pt, i) => {
+          ctx.globalAlpha = ((i + 1) / p.trail.length) * 0.4;
+          ctx.fillStyle = p.shot.color;
+          ctx.beginPath();
+          ctx.arc(pt.x, pt.y, 2 + i * 0.4, 0, Math.PI * 2);
+          ctx.fill();
+        });
+        ctx.globalAlpha = 1;
+        const g = ctx.createRadialGradient(p.x, p.y, 1, p.x, p.y, 10);
+        g.addColorStop(0, '#ffffff');
+        g.addColorStop(0.4, p.shot.color);
+        g.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 10, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
   }
 
   drawShadow(ctx, x, y, rx, alpha) {

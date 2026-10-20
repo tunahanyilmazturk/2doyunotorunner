@@ -26,6 +26,7 @@ import { SpawnSystem } from '../systems/SpawnSystem.js';
 import { StatsSystem } from '../systems/StatsSystem.js';
 import { TowerSystem } from '../systems/TowerSystem.js';
 import { ClassSystem } from '../systems/ClassSystem.js';
+import { ProjectileSystem } from '../systems/ProjectileSystem.js';
 import { GemSystem } from '../systems/GemSystem.js';
 import { UpgradeSystem } from '../systems/UpgradeSystem.js';
 import { UIManager } from '../ui/UIManager.js';
@@ -57,6 +58,7 @@ export class Game {
     this.upgrades = new UpgradeSystem(this);
     this.spawn = new SpawnSystem(this);
     this.combat = new CombatSystem(this);
+    this.projectiles = new ProjectileSystem();
     this.skills = new SkillSystem(this);
     this.potions = new PotionSystem(this);
     this.elixirs = new ElixirSystem(this);
@@ -152,6 +154,7 @@ export class Game {
     this.player.update(dt, w.scrollSpeed / w.speedScale);
     this.spawn.update(dt);
     this.combat.update(dt);
+    this.projectiles.update(dt);
     this.skills.update(dt);
     this.companions.update(dt);
     this.quests.update(dt);
