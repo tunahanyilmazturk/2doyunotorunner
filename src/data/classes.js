@@ -29,6 +29,7 @@ export const CLASSES = [
     look: { tunic: '#3f6ea8', hair: '#6b3e26', headgear: 'none', trim: '#c8b27a' },
     attack: { style: 'melee', anim: 'swing', color: null },
     signature: { id: 'block', name: 'Siper', desc: '%15 şansla gelen hasarın yarısını engeller', chance: 0.15, factor: 0.5 },
+    ability: { id: 'warCry', name: 'Savaş Narası', icon: '📯', kind: 'buff', buffStat: 'atkPct', value: 40, duration: 10, cooldown: 30, color: '#ff8a3d', desc: '10 sn boyunca +%40 saldırı' },
   },
   {
     id: 'archer', name: 'Okçu', icon: '🏹', cost: 15, gems: 5,
@@ -38,6 +39,7 @@ export const CLASSES = [
     look: { tunic: '#3f7a4a', hair: '#8a5a2b', headgear: 'hood', trim: '#2f5d3a' },
     attack: { style: 'ranged', range: 300, shot: 'arrow', speed: 1000, anim: 'draw', color: '#e8d9a8' },
     signature: { id: 'volley', name: 'Delici Ok', desc: 'Her 5. ok 2 kat hasar verir', every: 5, mult: 2 },
+    ability: { id: 'eagleEye', name: 'Kartal Gözü', icon: '🦅', kind: 'buff', buffStat: 'crit', value: 25, duration: 10, cooldown: 25, color: '#9fd46b', desc: '10 sn boyunca +25 kritik şansı' },
   },
   {
     id: 'mage', name: 'Büyücü', icon: '🪄', cost: 30, gems: 10,
@@ -47,6 +49,7 @@ export const CLASSES = [
     look: { tunic: '#5a3a8a', hair: '#d8d2e6', headgear: 'hat', trim: '#3b2a6b' },
     attack: { style: 'ranged', range: 280, shot: 'orb', speed: 560, anim: 'cast', color: '#b98cf0' },
     signature: { id: 'surge', name: 'Büyü Dalgası', desc: 'Her 4. büyü 1,8 kat hasar verir', every: 4, mult: 1.8 },
+    ability: { id: 'arcaneBlast', name: 'Arkana Patlaması', icon: '🌀', kind: 'strike', value: 4, cooldown: 12, color: '#b98cf0', desc: 'Hedefe saldırının 4 katı büyü hasarı' },
   },
   {
     id: 'assassin', name: 'Suikastçı', icon: '🗡️', cost: 45, gems: 15,
@@ -56,6 +59,7 @@ export const CLASSES = [
     look: { tunic: '#2a2a33', hair: '#1d1420', headgear: 'mask', trim: '#1a1a22' },
     attack: { style: 'melee', anim: 'dash', color: '#9aa3b8' },
     signature: { id: 'execute', name: 'Kurbanı Kovala', desc: 'Canı %30 altındaki canavara 1,5 kat hasar', threshold: 0.3, mult: 1.5 },
+    ability: { id: 'shadowStep', name: 'Gölge Adımı', icon: '🌑', kind: 'buff', buffStat: 'dodge', value: 25, duration: 6, cooldown: 25, color: '#7d8aa8', desc: '6 sn boyunca +25 kaçınma' },
   },
   {
     id: 'healer', name: 'Şifacı', icon: '✨', cost: 60, gems: 20,
@@ -65,8 +69,11 @@ export const CLASSES = [
     look: { tunic: '#e8e2c8', hair: '#f0d26a', headgear: 'halo', trim: '#ffd34d' },
     attack: { style: 'melee', anim: 'holy', color: '#ffd34d' },
     signature: { id: 'blessing', name: 'Kutsama', desc: 'Her isabette maks canın %1,5\'ini iyileştirir', heal: 0.015 },
+    ability: { id: 'sanctuary', name: 'Kutsal Sığınak', icon: '🕊️', kind: 'buff', buffStat: 'regen', value: 8, duration: 12, cooldown: 40, color: '#ffe27a', desc: '12 sn boyunca +8 can/sn yenilenme' },
   },
 ];
 
 export const CLASS_MAP = Object.fromEntries(CLASSES.map((c) => [c.id, c]));
 export const CLASS_IDS = CLASSES.map((c) => c.id);
+/** Sınıf yetenekleri (G tuşu); yalnızca o sınıf aktifken kullanılır. */
+export const ABILITY_MAP = Object.fromEntries(CLASSES.map((c) => [c.ability.id, c.ability]));

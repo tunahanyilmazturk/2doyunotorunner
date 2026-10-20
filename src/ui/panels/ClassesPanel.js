@@ -115,7 +115,7 @@ export class ClassesPanel {
     // Kuşanılmış ekipman yalnızca aktif sınıfın önizlemesinde görünür
     drawPlayerDoll(ctx, sel.id === active ? game.state.equipment : NO_GEAR, this.previewCanvas.width, this.previewCanvas.height, sel.look);
     this.previewName.textContent = `${sel.icon} ${sel.name}`;
-    this.previewInfo.textContent = `${sel.desc} · ${sel.bonusText} · ${sel.signature.name}: ${sel.signature.desc}`;
+    this.previewInfo.textContent = `${sel.desc} · ${sel.bonusText} · Pasif ${sel.signature.name}: ${sel.signature.desc} · Yetenek (G) ${sel.ability.name}: ${sel.ability.desc}`;
     const isActive = sel.id === active;
     this.previewAction.textContent = isActive ? 'Aktif sınıf' : sys.isUnlocked(sel.id) ? 'Bu sınıfa geç' : `Aç · 🔷 ${sel.cost}`;
     this.previewAction.disabled = isActive || (!sys.isUnlocked(sel.id) && !sys.canUnlock(sel.id));

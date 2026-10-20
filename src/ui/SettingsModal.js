@@ -18,7 +18,7 @@ const PAGES = [
 // Yeniden atanamayan, sabit kısayollar (bilgi amaçlı listelenir)
 const FIXED_SHORTCUTS = [
   ['1 – 9', 'Menü sekmeleri'],
-  ['Q W E R T', 'Yetenekler'],
+  ['Q W E R T G', 'Yetenekler'],
   ['Esc', 'Ayarlar / pencereyi kapat'],
   ['Ctrl + tık', 'Eşyayı kilitle'],
 ];
@@ -272,7 +272,7 @@ export class SettingsModal {
       el('h4', { class: 'section-title', text: 'Oyun tuşları (değiştirilebilir)' }),
       el('ul', { class: 'stat-list compact' }, REBINDABLE.map(rebind)),
       el('div', { class: 'button-row' }, [el('button', { class: 'btn btn-sm', text: 'Varsayılana dön', onclick: () => this.resetKeys() })]),
-      el('p', { class: 'muted', text: 'Tuşlar tek harf olmalı; sayı tuşları ve Q W E R T (yetenekler) ayrılmıştır. Aynı tuş iki işleme atanamaz.' }),
+      el('p', { class: 'muted', text: 'Tuşlar tek harf olmalı; sayı tuşları ve Q W E R T G (yetenekler) ayrılmıştır. Aynı tuş iki işleme atanamaz.' }),
       el('h4', { class: 'section-title', text: 'Sabit kısayollar' }),
       el('ul', { class: 'stat-list compact' }, FIXED_SHORTCUTS.map(([k, v]) => el('li', {}, [el('span', { text: v }), el('kbd', { text: k })]))),
     ]);
@@ -297,8 +297,8 @@ export class SettingsModal {
   assignKey(action, key) {
     this.waitingFor = null;
     const keys = this.settings.keys ?? { ...DEFAULT_KEYS };
-    if (!/^[A-Z]$/.test(key) || ['Q', 'W', 'E', 'R', 'T'].includes(key)) {
-      this.ui.toast.show('Bu tuş atanamaz (harf seç; Q W E R T ayrılmış)', 'error');
+    if (!/^[A-Z]$/.test(key) || ['Q', 'W', 'E', 'R', 'T', 'G'].includes(key)) {
+      this.ui.toast.show('Bu tuş atanamaz (harf seç; Q W E R T G ayrılmış)', 'error');
     } else if (Object.entries(keys).some(([id, k]) => id !== action && k === key)) {
       this.ui.toast.show(`${key} zaten başka bir işlemde`, 'error');
     } else {

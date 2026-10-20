@@ -1,13 +1,15 @@
 import { Events } from '../core/events.js';
+import { ABILITY_MAP, CLASSES } from '../data/classes.js';
 import { SKILLS, SKILL_MAP, skillCost } from '../data/skills.js';
 import { chance } from '../utils/random.js';
 
 // Aktif yetenekler: öğrenme/yükseltme, bekleme süreleri, süreli bufflar, otomatik kullanım.
+// Sınıf yetenekleri (G) seviye gerektirmez; yalnızca o sınıf aktifken kullanılır.
 // Bekleme süreleri ve aktif bufflar kaydedilmez (çalışma anı durumu).
 export class SkillSystem {
   constructor(game) {
     this.game = game;
-    this.cooldowns = Object.fromEntries(SKILLS.map((s) => [s.id, 0]));
+    this.cooldowns = Object.fromEntries([...SKILLS.map((s) => s.id), ...CLASSES.map((c) => c.ability.id)].map((id) => [id, 0]));
     this.buffs = {}; // id → kalan süre
     game.bus.on(Events.PLAYER_DIED, () => this.clearBuffs());
     game.bus.on(Events.PRESTIGE, () => this.clearBuffs());
@@ -33,6 +35,7 @@ export class SkillSystem {
       this.state.skills[skill.id] = 0;
       this.cooldowns[skill.id] = 0;
     }
+    for (const id of Object.keys(ABILITY_MAP)) this.cooldowns[id] = 0;
     this.buffs = {};
     this.grantTreeSkills({ silent: true });
     this.game.bus.emit(Events.SKILLS_CHANGED, { id: null, level: 0 });
@@ -41,7 +44,24 @@ export class SkillSystem {
 
   /** Ruh Ağacı "Büyü Gücü" uygulanmış etki değeri */
   power(skill, level = this.level(skill.id)) {
-    return skill.value(level) * (1 + this.game.tree.perk('skillPower') / 100);
+    const base = typeof skill.value === 'function' ? skill.value(level) : skill.value;
+    return base * (1 + this.game.tree.perk('skillPower') / 100);
+  }
+
+  /** Aktif sınıfın yeteneği (yoksa null). */
+  get classAbility() {
+    return this.game.classes?.active?.ability ?? null;
+  }
+
+  /** G tuşu: aktif sınıfın yeteneğini kullanır. */
+  castClassAbility() {
+    const ability = this.classAbility;
+    return ability ? this.cast(ability.id) : false;
+  }
+
+  /** Kimliğe göre kullanılabilir yetenek: öğrenilmiş bir yetenek ya da aktif sınıfın yeteneği. */
+  resolve(id) {
+    return SKILL_MAP[id] ?? (this.classAbility?.id === id ? this.classAbility : null);
   }
 
   /** Ruh Ağacı "Büyü Akışı" uygulanmış bekleme süresi */
@@ -99,21 +119,22 @@ export class SkillSystem {
   }
 
   isReady(skill) {
-    return this.level(skill.id) > 0 && this.cooldowns[skill.id] <= 0 && !this.game.player.dead;
+    const owned = !!ABILITY_MAP[skill.id] || this.level(skill.id) > 0;
+    return owned && this.cooldowns[skill.id] <= 0 && !this.game.player.dead;
   }
 
   /** Aktif buffların stat katkısı — StatsSystem okur. */
   activeModifiers() {
     const mods = {};
     for (const id of Object.keys(this.buffs)) {
-      const skill = SKILL_MAP[id];
+      const skill = this.resolve(id) ?? ABILITY_MAP[id];
       mods[skill.buffStat] = (mods[skill.buffStat] || 0) + this.power(skill);
     }
     return mods;
   }
 
   activeBuffSkills() {
-    return Object.keys(this.buffs).map((id) => SKILL_MAP[id]);
+    return Object.keys(this.buffs).map((id) => SKILL_MAP[id] ?? ABILITY_MAP[id]);
   }
 
   update(dt) {
@@ -149,7 +170,7 @@ export class SkillSystem {
 
   /** @returns {boolean} yetenek kullanıldı mı */
   cast(id) {
-    const skill = SKILL_MAP[id];
+    const skill = this.resolve(id);
     if (!skill || !this.isReady(skill)) return false;
     const { player, combat, bus } = this.game;
     const value = this.power(skill);

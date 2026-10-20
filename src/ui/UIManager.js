@@ -156,6 +156,7 @@ export class UIManager {
       else if (key === keys.menu) this.setMenuOpen(!this.isMenuOpen);
       else if (key === keys.boss) game.spawn.challengeBoss();
       else if (key === keys.pause) game.togglePause();
+      else if (key === 'G') game.skills.castClassAbility();
       else {
         const skill = SKILLS.find((s) => s.key === key);
         if (!skill) return;

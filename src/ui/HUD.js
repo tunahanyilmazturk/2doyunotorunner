@@ -4,6 +4,7 @@ import { Events } from '../core/events.js';
 import { getBiome, getBiomeTitle, getCycle } from '../data/biomes.js';
 import { getRarity } from '../data/rarities.js';
 import { iconToken, itemArtKey } from './icons.js';
+import { ABILITY_MAP } from '../data/classes.js';
 import { SKILLS } from '../data/skills.js';
 import { $, el, setText } from '../utils/dom.js';
 import { formatNumber } from '../utils/format.js';
@@ -115,8 +116,9 @@ export class HUD {
         auto: el('span', { class: 'ab-auto', title: 'Otomatik' }),
         count: el('span', { class: 'ab-count' }),
       };
+      parts.icon = el('span', { class: 'ab-icon', text: icon });
       parts.node = el('button', { class: 'action-btn', 'aria-label': `${name} (${key})` }, [
-        el('span', { class: 'ab-icon', text: icon }),
+        parts.icon,
         parts.cd,
         parts.timer,
         el('span', { class: 'ab-key', text: key }),
@@ -148,6 +150,17 @@ export class HUD {
       this.els.actionBar.append(parts.node);
     }
 
+    // Sınıf yeteneği (G): içeriği aktif sınıfa göre değişir (updateAbility)
+    this.ability = makeButton({
+      icon: '✨',
+      name: 'Sınıf yeteneği',
+      key: 'G',
+      onUse: () => game.skills.castClassAbility(),
+      onToggleAuto: () => {},
+      tooltip: () => this.abilityTooltip(),
+    });
+    this.els.actionBar.append(this.ability.node);
+
     this.els.actionBar.append(el('div', { class: 'ab-sep' }));
     const potion = makeButton({
       icon: '🧪',
@@ -167,6 +180,37 @@ export class HUD {
     });
     this.potion = potion;
     this.els.actionBar.append(potion.node);
+  }
+
+  abilityTooltip() {
+    const { game } = this;
+    const ab = game.classes.active.ability;
+    const sig = game.classes.active.signature;
+    return `<div class="tt-name">${ab.icon} ${ab.name}</div>
+      <div class="tt-sub">${game.classes.active.name} · Bekleme ${Math.round(game.skills.cooldownOf(ab))} sn</div>
+      ${ab.desc}
+      <br>Pasif: <b>${sig.name}</b> — ${sig.desc}
+      <div class="tt-footer"><span class="tt-hint">Kısayol: G</span></div>`;
+  }
+
+  /** Sınıf yetenek düğmesini aktif sınıfın yeteneğine göre günceller. */
+  updateAbility() {
+    const { game } = this;
+    const p = this.ability;
+    const ab = game.classes.active.ability;
+    const sys = game.skills;
+    if (p.abilityId !== ab.id) {
+      p.abilityId = ab.id;
+      p.icon.textContent = ab.icon;
+      p.node.setAttribute('aria-label', `${ab.name} (G)`);
+    }
+    const cd = sys.cooldowns[ab.id];
+    p.node.classList.toggle('locked', false);
+    p.node.classList.toggle('ready', cd <= 0 && !game.player.dead);
+    p.node.classList.toggle('active', sys.buffRemaining(ab.id) > 0);
+    p.cd.style.height = `${sys.cooldownRatio(ab) * 100}%`;
+    setText(p.timer, cd > 0 ? Math.ceil(cd) : '');
+    setText(p.count, '');
   }
 
   skillTooltip(skill) {
@@ -241,6 +285,7 @@ export class HUD {
     setText(els.dps, `${formatNumber(stats.dps)} hasar/sn`);
 
     this.updateActionBar();
+    this.updateAbility();
     this.updateBuffs();
   }
 
@@ -292,7 +337,9 @@ export class HUD {
       this.buffKey = key;
       this.buffChips = active.map((a) => {
         const time = el('b');
-        const chip = el('div', { class: 'buff-chip', style: { '--c': a.src.color }, title: a.src.name }, [iconToken(`${a.key.startsWith('s:') ? 'skill' : 'elixir'}-${a.src.id}`), time]);
+        // Sınıf yetenekleri piksel atlasında yok: emoji simgesi kullanılır
+        const icon = ABILITY_MAP[a.src.id] ? a.src.icon : iconToken(`${a.key.startsWith('s:') ? 'skill' : 'elixir'}-${a.src.id}`);
+        const chip = el('div', { class: 'buff-chip', style: { '--c': a.src.color }, title: a.src.name }, [icon, time]);
         return { ...a, chip, time };
       });
       this.els.buffs.replaceChildren(...this.buffChips.map((b) => b.chip));
