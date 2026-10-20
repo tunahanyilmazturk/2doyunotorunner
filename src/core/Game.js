@@ -7,6 +7,7 @@ import { Renderer } from '../render/Renderer.js';
 import { AchievementSystem } from '../systems/AchievementSystem.js';
 import { AudioSystem } from '../systems/AudioSystem.js';
 import { CombatSystem } from '../systems/CombatSystem.js';
+import { CompanionSystem } from '../systems/CompanionSystem.js';
 import { EconomySystem } from '../systems/EconomySystem.js';
 import { ElixirSystem } from '../systems/ElixirSystem.js';
 import { EquipmentSystem } from '../systems/EquipmentSystem.js';
@@ -16,11 +17,14 @@ import { LootSystem } from '../systems/LootSystem.js';
 import { OfflineSystem } from '../systems/OfflineSystem.js';
 import { PotionSystem } from '../systems/PotionSystem.js';
 import { PrestigeSystem } from '../systems/PrestigeSystem.js';
+import { QuestSystem } from '../systems/QuestSystem.js';
+import { RuneSystem } from '../systems/RuneSystem.js';
 import { ShopSystem } from '../systems/ShopSystem.js';
 import { SkillSystem } from '../systems/SkillSystem.js';
 import { SoulTreeSystem } from '../systems/SoulTreeSystem.js';
 import { SpawnSystem } from '../systems/SpawnSystem.js';
 import { StatsSystem } from '../systems/StatsSystem.js';
+import { TowerSystem } from '../systems/TowerSystem.js';
 import { UpgradeSystem } from '../systems/UpgradeSystem.js';
 import { UIManager } from '../ui/UIManager.js';
 import { damp } from '../utils/math.js';
@@ -57,6 +61,10 @@ export class Game {
     this.forge = new ForgeSystem(this);
     this.achievements = new AchievementSystem(this);
     this.shop = new ShopSystem(this);
+    this.runes = new RuneSystem(this);
+    this.companions = new CompanionSystem(this);
+    this.tower = new TowerSystem(this);
+    this.quests = new QuestSystem(this);
     this.prestige = new PrestigeSystem(this);
     this.offline = new OfflineSystem(this);
     this.audio = new AudioSystem(this); // olaylara abone olur, sesleri kendi üretir
@@ -109,6 +117,7 @@ export class Game {
     this.equipment.enforceLockedSlots();
     this.inventory.syncCapacity();
     this.skills.grantTreeSkills();
+    this.quests.ensureDay(); // gün değiştiyse görevler, giriş serisi ve kule hakları yenilenir
     this.achievements.check(); // kayıttaki ilerlemeyi sessizce işle
     this.player.reset(this.stats.recalculate());
     this.ui.init();
@@ -139,6 +148,8 @@ export class Game {
     this.spawn.update(dt);
     this.combat.update(dt);
     this.skills.update(dt);
+    this.companions.update(dt);
+    this.quests.update(dt);
     this.potions.update(dt);
     this.elixirs.update(dt);
     this.achievements.update(dt);

@@ -52,12 +52,13 @@ export class ShopSystem {
   }
 
   /** Sandığı aç: en az belirli nadirlikte, açık yuvalardan birine eşya (otomatik satılmaz) */
-  openChest(id) {
+  /** @param {{free?:boolean}} opts free: ödül sandığı (altın harcanmaz; envanter doluysa eşya satılır) */
+  openChest(id, { free = false } = {}) {
     const c = CHEST_MAP[id];
     const { state } = this.game;
     if (!c) return null;
-    if (this.game.inventory.freeSlots === 0) return this.toast('Envanter dolu!', 'error') && null;
-    if (!this.game.economy.spend(this.chestPrice(c))) return this.toast('Yeterli altın yok!', 'error') && null;
+    if (!free && this.game.inventory.freeSlots === 0) return this.toast('Envanter dolu!', 'error') && null;
+    if (!free && !this.game.economy.spend(this.chestPrice(c))) return this.toast('Yeterli altın yok!', 'error') && null;
     const luck = this.game.stats.get().luck + c.luck;
     const item = createItem(state, { level: state.runMaxStage, luck, minTier: c.minTier, slots: this.game.tree.unlockedSlots() });
     this.game.loot.receive(item, { x: this.game.player.x, y: this.game.player.y - 90 }, { autoSell: false });

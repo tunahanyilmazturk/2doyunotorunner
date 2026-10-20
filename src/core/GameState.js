@@ -1,6 +1,8 @@
 import { INVENTORY_SIZE, SAVE_VERSION, START_POTIONS } from '../config/constants.js';
 import { SLOT_ORDER } from '../data/items.js';
+import { emptyRuneBag } from '../data/runes.js';
 import { SKILLS } from '../data/skills.js';
+import { TOWER_DAILY_ATTEMPTS } from '../data/tower.js';
 import { UPGRADES } from '../data/upgrades.js';
 
 // Kaydedilen her şey bu düz (JSON'a çevrilebilir) nesnede yaşar.
@@ -37,6 +39,10 @@ export function createDefaultState() {
     skillAuto: Object.fromEntries(SKILLS.map((s) => [s.id, true])),
     achievements: {}, // id → açılma zamanı
     tree: {}, // Ruh Ağacı düğüm seviyeleri (yeniden doğuşta korunur)
+    runes: emptyRuneBag(), // rün çantası: tür → kademe başına adet (kalıcı)
+    companions: { owned: {}, active: null, eggs: 1, incubating: null }, // yoldaşlar (kalıcı); ilk yumurta hediye
+    daily: { day: '', quests: [], bonusClaimed: false, streak: 0, lastLoginDay: '', loginClaimed: false },
+    tower: { best: 0, attempts: TOWER_DAILY_ATTEMPTS, keys: 0 }, // Boss Kulesi (kalıcı)
 
     shop: { items: [], refreshAt: 0 },
 
@@ -71,6 +77,8 @@ export function createDefaultState() {
       weaponKinds: [], // kuşanılmış farklı silah türleri
       traitsKilled: [], // yenilen farklı elit özellikleri
       monstersKilled: [], // yenilen farklı canavar türleri
+      questsDone: 0,
+      maxRuneGrade: 0,
       goldPerSec: 0,
     },
 

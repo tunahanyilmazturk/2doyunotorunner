@@ -56,6 +56,7 @@ export class InventorySystem {
       return 0;
     }
     const gold = itemSellValue(item);
+    this.game.runes?.reclaim(item); // takılı rünler çantaya döner
     this.items[index] = null;
     this.game.economy.addGold(gold, false);
     this.game.bus.emit(Events.ITEM_SOLD, { items: [item], gold });
@@ -78,6 +79,7 @@ export class InventorySystem {
       if (item && !item.locked && item.tier <= maxTier) {
         sold.push(item);
         gold += itemSellValue(item);
+        this.game.runes?.reclaim(item);
         this.items[i] = null;
       }
     });

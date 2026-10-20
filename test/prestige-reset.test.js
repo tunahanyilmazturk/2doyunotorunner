@@ -13,6 +13,8 @@ import { UPGRADES } from '../src/data/upgrades.js';
 import { EquipmentSystem } from '../src/systems/EquipmentSystem.js';
 import { InventorySystem } from '../src/systems/InventorySystem.js';
 import { PrestigeSystem } from '../src/systems/PrestigeSystem.js';
+import { RuneSystem } from '../src/systems/RuneSystem.js';
+import { TowerSystem } from '../src/systems/TowerSystem.js';
 import { ShopSystem } from '../src/systems/ShopSystem.js';
 import { SkillSystem } from '../src/systems/SkillSystem.js';
 import { UpgradeSystem } from '../src/systems/UpgradeSystem.js';
@@ -41,6 +43,8 @@ function makeGame(overrides = {}) {
   game.skills = new SkillSystem(game);
   game.upgrades = new UpgradeSystem(game);
   game.shop = new ShopSystem(game);
+  game.runes = new RuneSystem(game);
+  game.tower = new TowerSystem(game);
   game.prestige = new PrestigeSystem(game);
   for (const name of Object.values(Events)) bus.on(name, (payload) => seen.push({ name, payload }));
   return game;
@@ -163,4 +167,21 @@ test('oto-alım yeniden doğuştan sonra kısa süre bekler, sonra devam eder', 
 
   for (let i = 0; i < 20; i++) game.upgrades.update(0.5); // +10 sn
   assert.equal(bought(), true, 'bekleme bitince oto-alım devam etmeli');
+});
+
+test('yeniden doğuşta takılı rünler kaybolmaz, çantaya döner', () => {
+  const game = makeGame({ runMaxStage: 40 });
+  const s = game.state;
+  const item = createItem(s, { level: 40, slot: 'weapon' });
+  item.sockets = [{ type: 'ruby', grade: 3 }];
+  s.equipment.weapon = item;
+  const bagItem = createItem(s, { level: 40, slot: 'ring' });
+  bagItem.sockets = [{ type: 'onyx', grade: 1 }];
+  s.inventory[0] = bagItem;
+
+  game.prestige.prestige();
+
+  assert.equal(game.runes.count('ruby', 3), 1);
+  assert.equal(game.runes.count('onyx', 1), 1);
+  assert.equal(s.equipment.weapon, null);
 });

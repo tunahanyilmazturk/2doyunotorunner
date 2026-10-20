@@ -1,0 +1,397 @@
+/* =========================================================================
+   Rünler, Yoldaşlar, Boss Kulesi ve Günlük görevler
+   ========================================================================= */
+
+/* 9 sekme dar dock'a sığsın */
+.nav-btn {
+  min-height: 28px;
+}
+
+/* Ortak: yan sütun + içerik düzeni */
+.comp-layout,
+.tower-layout {
+  display: grid;
+  grid-template-columns: 250px minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+}
+.comp-side,
+.tower-side {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 13px;
+}
+.egg-box,
+.comp-active,
+.tower-stats,
+.tower-status {
+  padding: 8px 10px;
+  background: var(--bg-2);
+  border: 2px solid var(--edge);
+  box-shadow: var(--bevel-sunk);
+  border-radius: var(--radius);
+}
+
+/* ---------- Rünler ---------- */
+.rune-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+}
+.rune-bag {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.rune-row {
+  display: grid;
+  grid-template-columns: 76px repeat(10, minmax(22px, 1fr));
+  gap: 2px;
+  align-items: center;
+}
+.rune-type {
+  font-family: var(--font-pixel);
+  font-size: 13px;
+  font-weight: 600;
+  text-shadow: 1px 1px 0 var(--edge);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.rune-grade-label {
+  text-align: center;
+  font-size: 10px;
+  color: var(--muted);
+}
+.rune-cell {
+  --c: var(--border);
+  height: 24px;
+  padding: 0;
+  background: var(--bg-2);
+  border: 2px solid var(--edge);
+  border-radius: var(--radius);
+  box-shadow: var(--bevel-sunk);
+  color: var(--text);
+  font-family: var(--font-pixel);
+  font-size: 12px;
+  cursor: pointer;
+}
+.rune-cell:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+.rune-cell.has {
+  background: color-mix(in srgb, var(--c) 30%, var(--bg-2));
+  border-color: color-mix(in srgb, var(--c) 60%, var(--edge));
+}
+.rune-cell.combinable {
+  box-shadow: inset 0 0 0 1px var(--gold);
+}
+.rune-cell.selected {
+  outline: 2px solid var(--gold);
+  outline-offset: -1px;
+}
+.rune-sel-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 8px;
+  font-size: 13px;
+}
+.rune-items {
+  display: grid;
+  gap: 4px;
+}
+.rune-item {
+  --rarity: var(--border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+  background: var(--bg-2);
+  border: 2px solid var(--edge);
+  border-left: 3px solid var(--rarity);
+  border-radius: var(--radius);
+  box-shadow: var(--bevel-sunk);
+}
+.rune-item .item-slot {
+  width: 38px;
+  height: 38px;
+  flex: none;
+}
+.rune-item-info {
+  flex: 1;
+  min-width: 0;
+}
+.rune-item-info .shop-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sockets {
+  display: flex;
+  gap: 4px;
+  margin-top: 2px;
+  font-size: 11px;
+}
+.socket {
+  --c: var(--border);
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  background: var(--edge);
+  border: 2px dashed var(--border);
+  border-radius: 50%;
+  color: #fff;
+  font-family: var(--font-pixel);
+  font-size: 11px;
+  cursor: pointer;
+}
+.socket.filled {
+  background: radial-gradient(circle at 35% 35%, color-mix(in srgb, var(--c) 60%, #fff), var(--c) 60%, color-mix(in srgb, var(--c) 50%, #000));
+  border: 2px solid var(--edge);
+  text-shadow: 1px 1px 0 var(--edge);
+}
+.socket-open {
+  flex: none;
+}
+
+/* ---------- Yoldaşlar ---------- */
+.egg-box {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: stretch;
+  text-align: center;
+}
+.egg-emoji {
+  font-size: 34px;
+  line-height: 1;
+}
+.egg-box b {
+  color: var(--gold);
+}
+.egg-box .muted {
+  font-size: 11px;
+  text-align: left;
+}
+.egg-bar .fill,
+.comp-xp .fill {
+  background: linear-gradient(180deg, #8ee07a, #3f9a3a);
+}
+.comp-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 6px;
+}
+.comp-card {
+  --c: var(--border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  background: var(--bg-2);
+  border: 2px solid var(--edge);
+  border-left: 3px solid var(--c);
+  border-radius: var(--radius);
+  box-shadow: var(--bevel-sunk);
+}
+.comp-card.active {
+  border-color: var(--gold);
+  border-left-color: var(--c);
+  background: linear-gradient(90deg, rgba(242, 193, 78, 0.12), var(--bg-2));
+}
+.comp-card.unknown {
+  opacity: 0.55;
+}
+.comp-card.unknown .comp-emoji {
+  filter: brightness(0);
+}
+.comp-emoji {
+  flex: none;
+  width: 34px;
+  font-size: 28px;
+  text-align: center;
+}
+.comp-body {
+  flex: 1;
+  min-width: 0;
+}
+.comp-rarity {
+  color: var(--c);
+  font-size: 11px;
+  font-weight: 600;
+}
+.comp-info {
+  font-size: 11px;
+  line-height: 1.3;
+}
+.comp-xp {
+  height: 12px;
+  margin-top: 3px;
+}
+.comp-xp span {
+  font-size: 9px;
+  line-height: 9px;
+}
+
+/* ---------- Boss Kulesi ---------- */
+.tower-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.tower-stats b {
+  color: var(--gold);
+}
+.tower-stats .muted {
+  font-size: 11px;
+}
+.tower-status {
+  font-family: var(--font-pixel);
+  font-size: 14px;
+  text-align: center;
+}
+.tower-side > .muted {
+  font-size: 11px;
+  line-height: 1.35;
+}
+.tower-floors {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 4px;
+}
+.tower-floor {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 8px;
+  background: var(--bg-2);
+  border: 2px solid var(--edge);
+  border-radius: var(--radius);
+  box-shadow: var(--bevel-sunk);
+}
+.tower-floor.milestone {
+  border-left: 3px solid var(--soul);
+}
+.tower-floor.current {
+  border-color: var(--gold);
+  background: linear-gradient(90deg, rgba(242, 193, 78, 0.14), var(--bg-2));
+}
+.tower-floor-no {
+  flex: none;
+  width: 52px;
+  font-family: var(--font-pixel);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--gold);
+}
+.tower-floor-info {
+  min-width: 0;
+  font-size: 12px;
+}
+.tower-floor-info .muted {
+  font-size: 11px;
+}
+.boss-btn.tower-exit {
+  background: var(--panel-2);
+}
+
+/* ---------- Hedefler: günlük görevler ---------- */
+.login-strip {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 4px;
+  margin-bottom: 10px;
+}
+.login-day {
+  padding: 4px 6px;
+  background: var(--bg-2);
+  border: 2px solid var(--edge);
+  border-radius: var(--radius);
+  box-shadow: var(--bevel-sunk);
+  font-size: 11px;
+  text-align: center;
+  opacity: 0.75;
+}
+.login-day b {
+  display: block;
+  font-family: var(--font-pixel);
+  font-size: 12px;
+}
+.login-day.today {
+  opacity: 1;
+  border-color: var(--gold);
+}
+.login-day.done {
+  opacity: 1;
+  background: linear-gradient(180deg, rgba(89, 201, 165, 0.18), var(--bg-2));
+}
+.login-day.done b::after {
+  content: ' ✓';
+  color: var(--good);
+}
+.quest-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 6px;
+}
+.quest-card {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  background: var(--bg-2);
+  border: 2px solid var(--edge);
+  border-radius: var(--radius);
+  box-shadow: var(--bevel-sunk);
+}
+.quest-card.claimed {
+  opacity: 0.6;
+}
+.quest-info {
+  flex: 1;
+  min-width: 0;
+  font-size: 12px;
+}
+.quest-bar {
+  height: 13px;
+  margin: 3px 0;
+}
+.quest-bar .fill {
+  background: linear-gradient(180deg, #ffd34d, #c98b12);
+}
+.quest-bar span {
+  font-size: 9px;
+  line-height: 9px;
+}
+.quest-reward {
+  color: var(--gold);
+  font-size: 11px;
+}
+.quest-bonus {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 8px;
+  font-size: 12px;
+}
+
+@media (max-width: 1250px) {
+  .rune-layout {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 900px) {
+  .comp-layout,
+  .tower-layout {
+    grid-template-columns: 1fr;
+  }
+  .login-strip {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}

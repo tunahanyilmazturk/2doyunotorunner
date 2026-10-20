@@ -32,7 +32,19 @@ Beş haritanın hareketli önizlemesi: sunucu açıkken `/tools/map-preview.html
   Hızlı, Dev, Zırhlı, Vampir, Çılgın veya Altın (parıltı rengi özelliği gösterir)
 - **Aktif yetenekler** — Güçlü Vuruş, Öfke, Altın Yağmuru, İlahi Şifa; oyun alanındaki çubuktan veya Q W E R ile, istersen otomatik
 - **Demirci** — kuşanılan eşyaları +1 … +15 güçlendirme (maksimum seviye nadirliğe bağlı)
-- **Başarımlar** — 23 grupta 70+ kademeli başarım (canavar bilgini, tam teçhizat, set kuşanan, silah ustası, hızlı cellat…);
+- **Rünler** — 6 tür (Yakut saldırı, Zümrüt can, Safir kritik hasar, Topaz altın, Ametist saldırı hızı, Oniks şans) × 10 kademe.
+  Bosslardan, elitlerden, kuleden ve görevlerden düşer; 3 aynı rün altınla bir üst kademeye birleşir.
+  Nadir+ eşyalarda yuva açılır (Nadir 1, Destansı/Efsanevi 2, Mitik 3); yuvaya tıkla tak/çıkar. Rün çantası kalıcıdır:
+  satılan eşyadaki ve yeniden doğuşta silinen eşyalardaki rünler çantaya geri döner (Demirci › Rünler)
+- **Yoldaşlar** — 6 yoldaş (Kurt Yavrusu, Altın Böceği, Bilge Baykuş, Orman Perisi, Taş Golemcik, Ejder Yavrusu), 4 nadirlik.
+  Yumurta kuluçkada 120 öldürmede çatlar (boss 5 sayılır); yanındaki yoldaş koşucunun arkasında koşar, saldırır ya da iyileştirir,
+  öldürmelerden deneyim kazanır (en fazla 50. seviye) ve pasif stat verir. Tekrar çıkan yoldaş deneyime dönüşür
+- **Boss Kulesi** — 10. bölgeden sonra açılır. Günde 3 hak (+ görevlerden kule anahtarı); her giriş en yüksek katın üstünden
+  başlar, kat başına 30 sn. İlk kez geçilen kat Ruh + rün, her 5. kat yumurta, her 10. kat büyük Ruh paketi verir.
+  Kuledeyken bölge ilerlemesi donar; kulede ölmek bölge kaybettirmez
+- **Günlük görevler** — her gün (yerel gece yarısı) 3 rastgele görev ve hepsini bitirme bonusu; 7 günlük giriş serisi ödülü.
+  Hedefler sekmesinde başarımlarla birlikte
+- **Başarımlar** — 27 grupta 80+ kademeli başarım (kule, yoldaş, rün ve günlük görev grupları dahil; canavar bilgini, tam teçhizat, set kuşanan, silah ustası, hızlı cellat…);
   her biri kalıcı +%3 saldırı ve altın verir
 - **Eşya sistemi** — 10 yuva (Kask, Kolye, Pelerin, Silah, Kalkan, Zırh, Eldiven, Kemer, Yüzük, Çizme),
   6 nadirlik (Sıradan → Mitik), 7 seviye kademesi, seviyeye göre ölçeklenen rastgele statlar
@@ -102,10 +114,12 @@ Başlangıçta 6 ekipman yuvası açıktır; Kalkan, Eldiven, Kemer ve Pelerin a
 | 🎒 Karakter | 1 | Ekipman, envanter, statlar |
 | ⬆️ Yükseltmeler | 2 | Altınla kalıcı (yeniden doğuşa kadar) stat yükseltmeleri |
 | ✨ Yetenekler | 3 | Yetenek öğrenme / yükseltme / otomatik kullanım |
-| 🔨 Demirci | 4 | Kuşanılan eşyaları güçlendirme |
-| 🏪 Mağaza | 5 | İksirler ve eşya vitrini |
-| 🏆 Başarımlar | 6 | İlerleme ve kalıcı bonuslar |
-| 🌳 Ruh Ağacı | 7 | Yeniden doğuş ve kalıcı yükseltme ağacı |
+| 🔨 Demirci | 4 | Eşya güçlendirme · rün çantası ve yuvalar |
+| 🐾 Yoldaşlar | 5 | Yumurta/kuluçka ve yoldaş koleksiyonu |
+| 🏪 Mağaza | 6 | İksirler ve eşya vitrini |
+| 🗼 Boss Kulesi | 7 | Günlük haklar, sıradaki katlar ve ödülleri |
+| 🏆 Hedefler | 8 | Günlük görevler, giriş serisi ve başarımlar |
+| 🌳 Ruh Ağacı | 9 | Yeniden doğuş ve kalıcı yükseltme ağacı |
 
 Diğer kısayollar: **Q W E R T** yetenekler · **F** iksir · **B** ilerle / boss · **M** menüyü gizle/göster ·
 **P** duraklat/devam et · **Esc** ayarlar · **Ctrl+tık** eşya kilitle.
@@ -127,7 +141,8 @@ Ayarlar, kayıt işlemleri ve istatistikler üst bardaki ⚙️ butonundadır.
 │   ├── base.css             Tema token'ları (renk, kabartma, yazı tipi), genel stiller
 │   ├── hud.css              Üst bar + oyun alanı üstü bilgi katmanı
 │   ├── panels.css           Alt menü ve tüm sekme panelleri
-│   └── components.css       Buton, eşya kutusu, tooltip, toast, modal
+│   ├── components.css       Buton, eşya kutusu, tooltip, toast, modal
+│   └── features.css         Rün, yoldaş, kule ve günlük görev panelleri
 └── src/
     ├── main.js              Giriş noktası
     ├── config/
@@ -153,7 +168,11 @@ Ayarlar, kayıt işlemleri ve istatistikler üst bardaki ⚙️ butonundadır.
     │   ├── stats.js         Stat tanımları
     │   ├── upgrades.js      Yükseltmeler
     │   ├── skills.js        Aktif yetenekler
-    │   └── achievements.js  Kademeli başarımlar
+    │   ├── achievements.js  Kademeli başarımlar
+    │   ├── runes.js         Rün türleri, kademe değerleri, birleştirme/yuva maliyetleri
+    │   ├── companions.js    Yoldaşlar, nadirlikler, seviye eğrisi
+    │   ├── tower.js         Boss Kulesi: kat ölçeği, haklar, kat ödülleri
+    │   └── quests.js        Günlük görev şablonları, giriş serisi ödülleri, gün anahtarı
     ├── entities/
     │   ├── Entity.js        Ortak can/hasar/animasyon zamanı
     │   ├── Player.js
@@ -177,6 +196,11 @@ Ayarlar, kayıt işlemleri ve istatistikler üst bardaki ⚙️ butonundadır.
     │   ├── ElixirSystem.js      Süreli iksirler (stat bonusu, kayıtla korunur)
     │   ├── PrestigeSystem.js    Yeniden doğuş (Ruh hesabı, korunan altın, başlangıç bölgesi, danışman)
     │   ├── SoulTreeSystem.js    Ruh Ağacı: satın alma, ön koşullar, perk/stat/yuva/yetenek etkileri
+    │   ├── RuneSystem.js        Rün çantası, düşürme, birleştirme, yuva açma, tak/çıkar/iade
+    │   ├── CompanionSystem.js   Yumurta/kuluçka, yoldaş deneyimi, savaşta saldırı/iyileştirme
+    │   ├── TowerSystem.js       Boss Kulesi: giriş, kat bossu, kat ödülleri, çıkış
+    │   ├── QuestSystem.js       Günlük görevler, giriş serisi, gün değişimi (kule haklarını da yeniler)
+    │   ├── rewards.js           Görev/kule/giriş ödüllerinin ortak biçimi ve verilmesi
     │   ├── OfflineSystem.js     Çevrimdışı ödül
     │   └── AudioSystem.js       Prosedürel ses efektleri (olaylara abone olur, dosya yok)
     ├── render/
@@ -193,7 +217,7 @@ Ayarlar, kayıt işlemleri ve istatistikler üst bardaki ⚙️ butonundadır.
     │   ├── HUD.js               Altın, can, bölge, boss süresi, hız, yetenek/iksir çubuğu, bufflar
     │   ├── SettingsModal.js     Ayarlar, kayıt işlemleri, kısayollar, istatistikler (⚙️)
     │   ├── components/          Tooltip, Toast, Modal, ItemSlot
-    │   └── panels/              Karakter, Yükseltmeler, Yetenekler, Demirci, Mağaza, Başarımlar, Yeniden Doğuş
+    │   └── panels/              Karakter, Yükseltmeler, Yetenekler, Demirci (+Rünler), Yoldaşlar, Mağaza, Boss Kulesi, Hedefler, Yeniden Doğuş
     └── utils/                   format, random, math, dom yardımcıları
 ```
 

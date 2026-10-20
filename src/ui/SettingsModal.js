@@ -5,7 +5,7 @@ import { el } from '../utils/dom.js';
 import { formatNumber, formatTime } from '../utils/format.js';
 
 const SHORTCUTS = [
-  ['1 – 7', 'Menü sekmeleri'],
+  ['1 – 9', 'Menü sekmeleri'],
   ['Q W E R T', 'Yetenekler'],
   ['M', 'Alt menüyü gizle / göster'],
   ['P', 'Duraklat / devam et'],

@@ -7,18 +7,36 @@ import { getItemStats, itemDisplayName, itemMaxEnhance } from '../../systems/Ite
 import { el } from '../../utils/dom.js';
 import { formatNumber } from '../../utils/format.js';
 import { createItemSlot } from '../components/ItemSlot.js';
+import { RunesView } from './RunesView.js';
 
-// Demirci: kuşanılan eşyaları güçlendir.
+const PAGES = [
+  { id: 'enhance', label: '🔨 Güçlendir' },
+  { id: 'runes', label: '◆ Rünler' },
+];
+
+// Demirci: kuşanılan eşyaları güçlendir + rün yuvaları (iki alt sayfa).
 export class ForgePanel {
   constructor(game, ui) {
     this.game = game;
     this.ui = ui;
     this.rows = [];
+    this.page = 'enhance';
+    this.runes = new RunesView(game, ui);
   }
 
   mount(root) {
+    this.subnav = el(
+      'div',
+      { class: 'subnav' },
+      PAGES.map((p) => el('button', { class: 'subnav-btn', dataset: { page: p.id }, text: p.label, onclick: () => this.showPage(p.id) }))
+    );
+    this.enhancePage = el('div', { class: 'forge-page' });
+    this.runesPage = el('div', { class: 'forge-page' });
+    root.append(this.subnav, this.enhancePage, this.runesPage);
+    this.runes.mount(this.runesPage);
+
     this.list = el('div', { class: 'forge-list' });
-    root.append(
+    this.enhancePage.append(
       el('div', {
         class: 'muted forge-intro',
         text: `Kuşandığın eşyaları güçlendir: her seviye eşyanın tüm statlarına +%${Balance.enhanceStatPerLevel * 100} ekler. Maksimum seviye nadirliğe bağlıdır (Sıradan +5 … Mitik +15). Güçlendirilmiş eşyalar daha pahalıya satılır.`,
@@ -29,6 +47,16 @@ export class ForgePanel {
     this.game.bus.on(Events.EQUIPMENT_CHANGED, rebuild);
     this.game.bus.on(Events.ITEM_ENHANCED, rebuild);
     this.build();
+    this.showPage(this.page);
+  }
+
+  showPage(id) {
+    this.page = id;
+    this.enhancePage.hidden = id !== 'enhance';
+    this.runesPage.hidden = id !== 'runes';
+    for (const b of this.subnav.children) b.classList.toggle('active', b.dataset.page === id);
+    this.ui.tooltip.hide();
+    this.tick();
   }
 
   build() {
@@ -64,6 +92,7 @@ export class ForgePanel {
   }
 
   tick() {
+    if (this.page === 'runes') return this.runes.tick();
     const forge = this.game.forge;
     for (const r of this.rows) {
       if (!r.item) continue;

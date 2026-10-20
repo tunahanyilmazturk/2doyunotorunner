@@ -22,7 +22,8 @@ export class PrestigeSystem {
 
     game.bus.on(Events.STAGE_CHANGED, () => this.checkRecord());
     game.bus.on(Events.BOSS_FAILED, () => this.setbacks++);
-    game.bus.on(Events.PLAYER_DIED, () => this.setbacks++);
+    // Kulede ölmek ana koşunun tıkandığı anlamına gelmez
+    game.bus.on(Events.PLAYER_DIED, ({ killer } = {}) => !killer?.towerFloor && this.setbacks++);
   }
 
   get pendingSouls() {
@@ -99,6 +100,10 @@ export class PrestigeSystem {
    */
   resetRun() {
     const { state, bus } = this.game;
+    this.game.tower.end('prestige');
+    // Rünler kalıcıdır: silinecek eşyalardaki rünler önce çantaya döner
+    const reclaimed = this.game.runes.reclaimAll();
+    if (reclaimed) bus.emit(Events.TOAST, { text: `◆ ${reclaimed} rün çantana geri döndü`, type: 'info' });
     this.game.inventory.clear();
     this.game.equipment.clearRun();
     this.game.skills.resetRun();

@@ -43,6 +43,10 @@ register('interface', [
 // şablonla üretir (`achievement-${group}`), eksik olursa iconHTML fırlatır.
 ICONS['achievement-sets'] = { ...ICONS['achievement-items'] };
 ICONS['achievement-setTypes'] = { ...ICONS['achievement-gear'] };
+ICONS['achievement-tower'] = { ...ICONS['boss'] };
+ICONS['achievement-companions'] = { ...ICONS['gift'] };
+ICONS['achievement-runes'] = { ...ICONS['achievement-mythic'] };
+ICONS['achievement-daily'] = { ...ICONS['elixir-luck'] };
 
 export function itemArtKey(item) {
   const type = item.slot === 'weapon' ? (item.kind || 'sword') : item.slot;

@@ -1,6 +1,7 @@
 import { Balance } from '../config/balance.js';
 import { ITEM_BASES, SLOT_ORDER, WEAPON_KINDS } from '../data/items.js';
 import { RARITIES, getRarity } from '../data/rarities.js';
+import { MAX_SOCKETS_BY_TIER } from '../data/runes.js';
 import { SET_MAP, isSetForSlot, itemName, rollSet } from '../data/sets.js';
 import { STAT_DEFS } from '../data/stats.js';
 import { pick, rand, shuffle, weightedPick } from '../utils/random.js';
@@ -67,6 +68,10 @@ export function createItem(state, { level, slot, slots = SLOT_ORDER, kind, tier,
     value: Balance.itemValue(level, rarity.valueMult),
   };
   if (setId) item.set = setId;
+  // Rün yuvaları: nadirliğin izin verdiği en fazla yuvanın yarısı ile tamamı arası
+  const maxSockets = MAX_SOCKETS_BY_TIER[rarity.tier] ?? 0;
+  const sockets = maxSockets ? Math.floor(maxSockets / 2) + Math.floor(Math.random() * (Math.ceil(maxSockets / 2) + 1)) : 0;
+  if (sockets > 0) item.sockets = new Array(Math.min(maxSockets, sockets)).fill(null);
   return item;
 }
 

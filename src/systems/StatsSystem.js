@@ -22,6 +22,8 @@ export class StatsSystem {
     game.bus.on(Events.BUFFS_CHANGED, markDirty);
     game.bus.on(Events.ACHIEVEMENT_UNLOCKED, markDirty);
     game.bus.on(Events.TREE_CHANGED, markDirty);
+    game.bus.on(Events.RUNES_CHANGED, ({ statsChanged }) => statsChanged && markDirty());
+    game.bus.on(Events.COMPANIONS_CHANGED, ({ statsChanged }) => statsChanged && markDirty());
   }
 
   get() {
@@ -48,6 +50,10 @@ export class StatsSystem {
     for (const [key, value] of Object.entries(buffs)) raw[key] = (raw[key] || 0) + value;
     const elixirs = this.game.elixirs?.activeModifiers() ?? {};
     for (const [key, value] of Object.entries(elixirs)) raw[key] = (raw[key] || 0) + value;
+    // Kuşanılan eşyalara takılı rünler ve yanındaki yoldaşın pasif bonusu
+    for (const source of [this.game.runes?.statBonuses(), this.game.companions?.statBonuses()]) {
+      for (const [key, value] of Object.entries(source ?? {})) raw[key] = (raw[key] || 0) + value;
+    }
 
     const MULT_STATS = ['atkPct', 'hpPct', 'goldPct'];
     const tree = this.game.tree?.statBonuses() ?? {};

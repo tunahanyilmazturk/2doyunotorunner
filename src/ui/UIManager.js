@@ -7,8 +7,10 @@ import { Modal } from './components/Modal.js';
 import { ToastManager } from './components/Toast.js';
 import { Tooltip } from './components/Tooltip.js';
 import { HUD } from './HUD.js';
-import { AchievementsPanel } from './panels/AchievementsPanel.js';
 import { CharacterPanel } from './panels/CharacterPanel.js';
+import { CompanionsPanel } from './panels/CompanionsPanel.js';
+import { GoalsPanel } from './panels/GoalsPanel.js';
+import { TowerPanel } from './panels/TowerPanel.js';
 import { ForgePanel } from './panels/ForgePanel.js';
 import { SoulTreePanel } from './panels/SoulTreePanel.js';
 import { ShopPanel } from './panels/ShopPanel.js';
@@ -16,7 +18,7 @@ import { SkillsPanel } from './panels/SkillsPanel.js';
 import { UpgradePanel } from './panels/UpgradePanel.js';
 import { SettingsModal } from './SettingsModal.js';
 
-import { iconToken } from './icons.js';
+import { ICONS, iconToken } from './icons.js';
 
 const HUD_INTERVAL = 0.05;
 const PANEL_INTERVAL = 0.25;
@@ -42,8 +44,10 @@ export class UIManager {
       { id: 'upgrades', icon: '⬆️', label: 'Yükseltmeler', panel: new UpgradePanel(game, this) },
       { id: 'skills', icon: '✨', label: 'Yetenekler', panel: new SkillsPanel(game, this) },
       { id: 'forge', icon: '🔨', label: 'Demirci', panel: new ForgePanel(game, this) },
+      { id: 'companions', icon: '🐾', label: 'Yoldaşlar', panel: new CompanionsPanel(game, this) },
       { id: 'shop', icon: '🏪', label: 'Mağaza', panel: new ShopPanel(game, this) },
-      { id: 'achievements', icon: '🏆', label: 'Başarımlar', panel: new AchievementsPanel(game, this) },
+      { id: 'tower', icon: '🗼', label: 'Boss Kulesi', panel: new TowerPanel(game, this) },
+      { id: 'achievements', icon: '🏆', label: 'Hedefler', panel: new GoalsPanel(game, this) },
       { id: 'prestige', icon: '🌳', label: 'Ruh Ağacı', panel: new SoulTreePanel(game, this) },
     ];
     this.activeTab = 'character';
@@ -81,6 +85,9 @@ export class UIManager {
       if (level === 1) this.toast.show(`Yeni yetenek: ${SKILLS.find((s) => s.id === id).name}`, 'success');
     });
     bus.on(Events.PRESTIGE, () => this.tabs.forEach((t) => t.panel.tick?.()));
+    bus.on(Events.QUEST_COMPLETED, ({ template }) => this.toast.show(`📜 Görev tamamlandı: ${template.name}. Ödülünü Hedefler sekmesinden al`, 'gold', 3200));
+    // Kule kat ödülleri afişte görünür; diğer ödüller (görev, giriş, bonus) bildirimle
+    bus.on(Events.REWARD_GRANTED, ({ text }) => !this.game.tower.active && this.toast.show(`🎁 ${text}`, 'success', 2200));
     bus.on(Events.PRESTIGE_READY, ({ souls }) =>
       this.toast.show(`✨ Yeniden doğuş açıldı! Şimdi doğarsan +${formatNumber(souls)} Ruh (Ruh Ağacı)`, 'gold', 4000)
     );
@@ -94,7 +101,8 @@ export class UIManager {
     this.tabs.forEach((tab, i) => {
       tab.badgeEl = el('span', { class: 'nav-badge' });
       tab.button = el('button', { class: 'nav-btn', title: `${tab.label} (${i + 1})`, onclick: () => this.showTab(tab.id) }, [
-        el('span', { class: 'nav-icon', text: iconToken(`menu-${tab.id}`) }),
+        // Atlasta çizimi olmayan sekmeler (yoldaşlar, kule) kendi emojisini gösterir
+        el('span', { class: 'nav-icon', text: ICONS[`menu-${tab.id}`] ? iconToken(`menu-${tab.id}`) : tab.icon }),
         el('span', { class: 'nav-label', text: tab.label }),
         tab.badgeEl,
       ]);

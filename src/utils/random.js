@@ -3,9 +3,10 @@ export const randInt = (min, max) => Math.floor(rand(min, max + 1));
 export const chance = (p) => Math.random() < p;
 export const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
-export function weightedPick(entries, weightFn = (e) => e.weight) {
+/** @param {() => number} rng testlerde sabit sonuç için değiştirilebilir */
+export function weightedPick(entries, weightFn = (e) => e.weight, rng = Math.random) {
   const total = entries.reduce((sum, e) => sum + weightFn(e), 0);
-  let r = Math.random() * total;
+  let r = rng() * total;
   for (const e of entries) {
     r -= weightFn(e);
     if (r <= 0) return e;

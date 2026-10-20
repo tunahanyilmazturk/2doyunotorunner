@@ -1,5 +1,5 @@
 import { drawIconText, measureIconText } from './IconRenderer.js';
-import { BASE_VIEW_WIDTH, GAME_HEIGHT, MAX_VIEW_WIDTH, MIN_VIEW_WIDTH } from '../config/constants.js';
+import { BASE_VIEW_WIDTH, GAME_HEIGHT, MAX_VIEW_WIDTH, MIN_VIEW_WIDTH, SPRITE_SCALE } from '../config/constants.js';
 import { getBiomeIndex, getCycle } from '../data/biomes.js';
 import { withAlpha } from '../utils/color.js';
 import { easeOutBack } from '../utils/math.js';
@@ -152,6 +152,7 @@ export class Renderer {
       this.outliner.draw(lc, pr, { x: monster.x, y: monster.y + 4, w: monster.size * 2.8 + 40, h: boxH }, (c) => drawMonster(c, monster));
     }
 
+    this.drawCompanion(lc, pr);
     this.drawShadow(lc, player.x, player.y, 22, 1);
     drawPlayerAuras(lc, player, auras);
     this.outliner.draw(lc, pr, { x: player.x, y: player.y + 8, w: 230, h: 185 }, (c) => drawPlayer(c, player, game.state.equipment));
@@ -165,6 +166,39 @@ export class Renderer {
       lc.fillStyle = `rgba(120,0,30,${Math.min(0.28, 0.1 + cycle * 0.06)})`;
       lc.fillRect(0, 0, this.viewWidth, GAME_HEIGHT);
     }
+  }
+
+  /**
+   * Yanındaki yoldaş: oyuncunun arkasında koşar, saldırırken öne atılır.
+   * Canavar çizimlerini yeniden kullanır; onlar sola baktığı için yatay aynalanır.
+   */
+  drawCompanion(lc, pr) {
+    const { game } = this;
+    const a = game.companions.active;
+    if (!a) return;
+    const player = game.player;
+    const look = a.def.look;
+    const anim = game.companions.attackAnim;
+    const v = (this.companionView ??= { seed: 0, hitFlash: 0, deathTimer: 0, dead: false, stunTimer: 0 });
+    v.def = look;
+    v.scale = SPRITE_SCALE * 0.9;
+    v.size = look.size * v.scale;
+    v.flying = look.shape === 'flyer';
+    v.x = player.x - 62;
+    v.y = player.y;
+    v.animTime = player.animTime;
+    v.attackAnim = anim;
+    v.state = player.state === 'run' ? 'approach' : 'fight';
+    if (player.dead) return;
+
+    this.drawShadow(lc, v.x, v.y, v.size * 0.4 * (v.flying ? 0.6 : 1), 1);
+    const boxH = v.size * 1.9 + (v.flying ? FLY_HEIGHT + 30 : 16);
+    this.outliner.draw(lc, pr, { x: v.x, y: v.y + 4, w: v.size * 2.8 + 60, h: boxH }, (c) => {
+      c.translate(v.x, 0);
+      c.scale(-1, 1);
+      c.translate(-v.x, 0);
+      drawMonster(c, v);
+    });
   }
 
   drawShadow(ctx, x, y, rx, alpha) {

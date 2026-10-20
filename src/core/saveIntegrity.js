@@ -16,6 +16,10 @@ import { ACHIEVEMENTS } from '../data/achievements.js';
 import { ELITE_TRAITS } from '../data/eliteTraits.js';
 import { ITEM_BASES, SLOT_ORDER, WEAPON_KINDS } from '../data/items.js';
 import { BOSSES, MONSTERS } from '../data/monsters.js';
+import { COMPANION_IDS, COMPANION_MAP, EGG_HATCH_KILLS, MAX_COMPANION_LEVEL, MAX_EGGS, xpToNext } from '../data/companions.js';
+import { DAILY_QUEST_COUNT, QUEST_MAP } from '../data/quests.js';
+import { MAX_SOCKETS_BY_TIER, RUNE_GRADES, RUNE_IDS } from '../data/runes.js';
+import { TOWER_DAILY_ATTEMPTS } from '../data/tower.js';
 import { RARITIES } from '../data/rarities.js';
 import { isSetForSlot, itemName } from '../data/sets.js';
 import { MAX_ELIXIR_SECONDS, ELIXIR_MAP } from '../data/shop.js';
@@ -135,7 +139,79 @@ function sanitizeItem(raw, allocateId) {
   const enhance = int(raw.enhance, 0, Balance.maxEnhance(tier), 0);
   if (enhance > 0) item.enhance = enhance;
   if (raw.locked === true) item.locked = true;
+  // Rün yuvaları: sayı nadirlik sınırını aşamaz, içerik bilinen tür + geçerli kademe olmalı
+  if (Array.isArray(raw.sockets)) {
+    const sockets = raw.sockets.slice(0, MAX_SOCKETS_BY_TIER[tier] ?? 0).map(sanitizeRune);
+    if (sockets.length) item.sockets = sockets;
+  }
   return item;
+}
+
+function sanitizeRune(raw) {
+  if (!isObject(raw) || !RUNE_IDS.includes(raw.type)) return null;
+  return { type: raw.type, grade: int(raw.grade, 1, RUNE_GRADES, 1) };
+}
+
+const MAX_RUNE_STACK = 1e6;
+const MAX_KEYS = 999;
+const DAY_KEY = /^d{4}-d{2}-d{2}$/;
+
+function sanitizeRuneBag(raw) {
+  const out = {};
+  for (const id of RUNE_IDS) {
+    const list = Array.isArray(raw?.[id]) ? raw[id] : [];
+    out[id] = Array.from({ length: RUNE_GRADES }, (_, i) => int(list[i], 0, MAX_RUNE_STACK, 0));
+  }
+  return out;
+}
+
+function sanitizeCompanions(raw) {
+  const out = { owned: {}, active: null, eggs: 0, incubating: null };
+  if (!isObject(raw)) return { ...out, eggs: 1 };
+  if (isObject(raw.owned)) {
+    for (const id of COMPANION_IDS) {
+      const c = raw.owned[id];
+      if (!isObject(c)) continue;
+      const level = int(c.level, 1, MAX_COMPANION_LEVEL, 1);
+      out.owned[id] = { level, xp: int(c.xp, 0, xpToNext(level), 0) };
+    }
+  }
+  out.active = COMPANION_MAP[raw.active] && out.owned[raw.active] ? raw.active : null;
+  out.eggs = int(raw.eggs, 0, MAX_EGGS, 0);
+  out.incubating = raw.incubating === null || raw.incubating === undefined ? null : int(raw.incubating, 0, EGG_HATCH_KILLS, 0);
+  return out;
+}
+
+function sanitizeReward(raw) {
+  if (!isObject(raw)) return null;
+  const types = ['souls', 'gold', 'rune', 'egg', 'elixir', 'chest', 'towerKey'];
+  if (!types.includes(raw.type)) return null;
+  const out = { type: raw.type, amount: int(raw.amount, 0, 1e6, 1) };
+  if (raw.type === 'rune') out.grade = int(raw.grade, 0, RUNE_GRADES, 0);
+  if (raw.type === 'chest') out.id = ['wood', 'iron', 'gold'].includes(raw.id) ? raw.id : 'wood';
+  return out;
+}
+
+function sanitizeDaily(raw) {
+  const out = { day: '', quests: [], bonusClaimed: false, streak: 0, lastLoginDay: '', loginClaimed: false };
+  if (!isObject(raw)) return out;
+  out.day = typeof raw.day === 'string' && DAY_KEY.test(raw.day) ? raw.day : '';
+  out.lastLoginDay = typeof raw.lastLoginDay === 'string' && DAY_KEY.test(raw.lastLoginDay) ? raw.lastLoginDay : '';
+  out.streak = int(raw.streak, 0, 100000, 0);
+  out.loginClaimed = bool(raw.loginClaimed, false);
+  out.bonusClaimed = bool(raw.bonusClaimed, false);
+  if (Array.isArray(raw.quests)) {
+    for (const q of raw.quests.slice(0, DAILY_QUEST_COUNT)) {
+      if (!isObject(q) || !QUEST_MAP[q.id]) continue;
+      const reward = sanitizeReward(q.reward);
+      if (!reward) continue;
+      const target = int(q.target, 1, 1e7, 1);
+      out.quests.push({ id: q.id, target, progress: int(q.progress, 0, target, 0), claimed: bool(q.claimed, false), reward });
+    }
+  }
+  // Görev listesi bozulduysa gün anahtarını sıfırla: QuestSystem bugünün görevlerini yeniden üretir
+  if (out.quests.length !== DAILY_QUEST_COUNT) out.day = '';
+  return out;
 }
 
 function sanitizeItemList(rawList, allocateId) {
@@ -202,6 +278,15 @@ export function sanitizeSave(raw) {
 
   out.tree = sanitizeLevelMap(raw.tree, new Set(Object.keys(TREE_MAP)), (id) => TREE_MAP[id]?.maxLevel ?? 1, { omitZero: true });
 
+  out.runes = sanitizeRuneBag(raw.runes);
+  out.companions = sanitizeCompanions(raw.companions);
+  out.daily = sanitizeDaily(raw.daily);
+  out.tower = {
+    best: int(raw.tower?.best, 0, MAX_STAGE, 0),
+    attempts: int(raw.tower?.attempts, 0, TOWER_DAILY_ATTEMPTS, TOWER_DAILY_ATTEMPTS),
+    keys: int(raw.tower?.keys, 0, MAX_KEYS, 0),
+  };
+
   out.shop = { items: [], refreshAt: Math.max(0, num(raw.shop?.refreshAt, 0)) };
   if (Array.isArray(raw.shop?.items)) {
     for (const offer of raw.shop.items.slice(0, SHOP_SIZE)) {
@@ -252,6 +337,8 @@ export function sanitizeSave(raw) {
     weaponKinds: sanitizeIdList(st.weaponKinds, WEAPON_KIND_IDS),
     traitsKilled: sanitizeIdList(st.traitsKilled, TRAIT_IDS),
     monstersKilled: sanitizeIdList(st.monstersKilled, MONSTER_IDS),
+    questsDone: count('questsDone'),
+    maxRuneGrade: int(st.maxRuneGrade, 0, RUNE_GRADES, 0),
     goldPerSec: count('goldPerSec'),
   };
 

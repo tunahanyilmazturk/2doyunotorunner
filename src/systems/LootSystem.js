@@ -10,6 +10,7 @@ export class LootSystem {
   }
 
   onKill(monster) {
+    if (monster.towerFloor) return; // kule bossları eşya değil kat ödülü verir
     const stats = this.game.stats.get();
     const luckMult = 1 + stats.luck / 100;
     let drops = 0;

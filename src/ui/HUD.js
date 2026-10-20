@@ -19,6 +19,7 @@ export class HUD {
   init() {
     this.els = {
       prestigePill: $('#prestige-pill'),
+      towerExit: $('#tower-exit'),
       lootFeed: $('#loot-feed'),
       gold: $('#hud-gold'),
       gps: $('#hud-gps'),
@@ -42,6 +43,7 @@ export class HUD {
 
     this.els.bossBtn.addEventListener('click', () => this.game.spawn.challengeBoss());
     this.els.prestigePill.addEventListener('click', () => this.ui.showTab('prestige'));
+    this.els.towerExit.addEventListener('click', () => this.game.tower.end('exit'));
     this.game.bus.on(Events.PRESTIGE_ADVICE, ({ recommended, souls }) => {
       this.els.prestigePill.hidden = !recommended;
       this.els.prestigePill.textContent = `✨ Yeniden doğ · +${formatNumber(souls)} Ruh`;
@@ -183,6 +185,14 @@ export class HUD {
     setText(els.biome, getBiomeTitle(state.stage));
     els.biome.classList.toggle('nightmare', getCycle(state.stage) > 0);
     setText(els.stage, `Bölge ${state.stage}`);
+    // Kuledeyken plaka bölge yerine katı gösterir
+    const inTower = game.tower.active;
+    if (inTower) {
+      setText(els.biome, '🗼 Boss Kulesi');
+      setText(els.stage, `Kat ${game.tower.floor}`);
+    }
+    els.pips.hidden = inTower;
+    els.towerExit.hidden = !inTower;
 
     const spawn = game.spawn;
     const bossNext = spawn.isBossStage && state.autoAdvance && state.kills >= KILLS_PER_STAGE;
@@ -206,7 +216,7 @@ export class HUD {
       els.bossTimer.classList.remove('doomed');
     }
 
-    els.bossBtn.hidden = state.autoAdvance;
+    els.bossBtn.hidden = state.autoAdvance || inTower;
     setText(els.dps, `${formatNumber(stats.dps)} hasar/sn`);
 
     this.updateActionBar();

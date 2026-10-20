@@ -2,6 +2,7 @@ import { GROUND_Y } from '../config/constants.js';
 import { Events } from '../core/events.js';
 import { getBiomeTitle, getCycle } from '../data/biomes.js';
 import { getRarity } from '../data/rarities.js';
+import { RUNE_MAP, runeName } from '../data/runes.js';
 import { formatNumber } from '../utils/format.js';
 
 import { iconToken, itemArtKey } from '../ui/icons.js';
@@ -23,6 +24,13 @@ export class EffectsController {
         text.add(`🌵 ${formatNumber(amount)}`, x + 10, y - target.size * 0.3, { color: '#9be27a', size: 13, life: 0.7 });
         return;
       }
+      if (source === 'companion') {
+        const fire = game.companions.active?.def.attack?.fire;
+        if (fire) fx.burst(x, y, { count: 14, color: ['#ff7a2e', '#ffd34d', '#c22a1f'], speed: [60, 200], size: [2, 5], life: [0.3, 0.6], gravity: -60, angle: Math.PI, spread: 1.2 });
+        else fx.burst(x, y, { count: 6, color: '#e8f4ff', speed: [60, 160], size: [2, 3], life: [0.2, 0.4], gravity: 300, angle: Math.PI, spread: 1.4 });
+        text.add(formatNumber(amount), x + 6, y - target.size * 0.4, { color: '#b9e6ff', size: 13, life: 0.7 });
+        return;
+      }
       fx.slash(x, y, crit ? '#ffe066' : '#ffffff', crit);
       fx.burst(x, y, { count: crit ? 10 : 5, color: target.def.colors.body, speed: [80, 220], size: [2, 4], life: [0.25, 0.5], gravity: 600, angle: -0.6, spread: 1.8 });
       text.add(crit ? `${formatNumber(amount)}!` : formatNumber(amount), x, y - target.size * 0.6, {
@@ -30,6 +38,37 @@ export class EffectsController {
         size: crit ? 26 : 17,
       });
       if (crit) renderer.shake(3, 0.12);
+    });
+
+    bus.on(Events.RUNE_FOUND, ({ typeId, grade, x, y }) => {
+      if (x === undefined) return;
+      const color = RUNE_MAP[typeId].color;
+      text.add(`◆ ${runeName(typeId, grade)}`, x, y - 70, { color, size: 15, life: 1.6, vy: -35, vx: 0 });
+      fx.burst(x, y, { count: 12, color: [color, '#ffffff'], shape: 'circle', speed: [40, 140], size: [2, 4], life: [0.6, 1], gravity: -80 });
+    });
+
+    bus.on(Events.COMPANION_HATCHED, ({ def, isNew }) => {
+      renderer.showBanner(isNew ? `${def.emoji} Yeni yoldaş!` : `${def.emoji} Tekrar çıktı`, isNew ? def.name : `${def.name} deneyim kazandı`, '#9be7ff');
+    });
+
+    bus.on(Events.COMPANION_LEVELED, ({ def, level }) => {
+      const p = game.player;
+      text.add(`${def.emoji} Sv.${level}!`, p.x - 60, p.y - 80, { color: '#9be7ff', size: 15, life: 1.4, vx: 0 });
+    });
+
+    bus.on(Events.COMPANION_HEALED, ({ amount }) => {
+      const p = game.player;
+      text.add(`+${formatNumber(amount)}`, p.x - 50, p.y - 70, { color: '#6bff8f', size: 14, life: 0.9 });
+      fx.burst(p.x, p.y - 38, { count: 8, color: '#bff5d8', shape: 'circle', speed: [20, 70], gravity: -120, life: [0.5, 0.9] });
+    });
+
+    bus.on(Events.TOWER_STARTED, ({ floor }) => renderer.showBanner('🗼 Boss Kulesi', `Kat ${floor}: kaybedene kadar tırman!`, '#c58bff'));
+    bus.on(Events.TOWER_FLOOR_CLEARED, ({ floor, firstClear }) => {
+      renderer.showBanner(`Kat ${floor} geçildi!`, firstClear ? 'Yeni rekor: ödüller alındı' : 'Sıradaki kat geliyor', '#c58bff');
+    });
+    bus.on(Events.TOWER_ENDED, ({ reason, cleared }) => {
+      const why = { timeout: 'Süre doldu', death: 'Yenildin', exit: 'Kuleden çıktın', prestige: 'Yeniden doğuş' }[reason] ?? '';
+      renderer.showBanner('🗼 Kule tırmanışı bitti', `${why}: bu girişte ${cleared} kat geçildi`, '#ff9a8a');
     });
 
     bus.on(Events.HEAVY_WARNING, ({ monster }) => {

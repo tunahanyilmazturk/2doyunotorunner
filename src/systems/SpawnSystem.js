@@ -46,7 +46,7 @@ export class SpawnSystem {
       }
     } else if (!this.game.player.dead) {
       this.spawnTimer -= dt;
-      if (this.spawnTimer <= 0) this.spawnNext();
+      if (this.spawnTimer <= 0) (this.game.tower.active ? this.spawnTowerBoss() : this.spawnNext());
     }
   }
 
@@ -70,6 +70,17 @@ export class SpawnSystem {
     this.game.bus.emit(Events.MONSTER_SPAWNED, { monster });
   }
 
+  /** Kuledeyken: sıradaki katın bossu (ana bölge ilerlemesi donuk kalır) */
+  spawnTowerBoss() {
+    const monster = this.game.tower.createBoss();
+    this.bossTimeTotal = this.game.tower.timeLimit;
+    this.bossTimer = this.bossTimeTotal;
+    this.current = monster;
+    this.spawnTimer = SPAWN_DELAY;
+    this.game.bus.emit(Events.BOSS_SPAWNED, { monster });
+    this.game.bus.emit(Events.MONSTER_SPAWNED, { monster });
+  }
+
   onKill(monster) {
     const state = this.state;
     state.stats.totalKills++;
@@ -82,7 +93,8 @@ export class SpawnSystem {
     if (monster.isBoss) {
       state.stats.bossKills++;
       if (this.bossTimeTotal - this.bossTimer <= 10) state.stats.fastBossKills++;
-      this.advanceStage();
+      if (monster.towerFloor) this.game.tower.onFloorCleared(monster);
+      else this.advanceStage();
       return;
     }
     state.kills++;
@@ -117,6 +129,7 @@ export class SpawnSystem {
   }
 
   failBoss() {
+    if (this.game.tower.active) return this.game.tower.end('timeout');
     this.current = null;
     this.spawnTimer = SPAWN_DELAY;
     this.state.kills = 0;
@@ -126,6 +139,8 @@ export class SpawnSystem {
   }
 
   onPlayerDied() {
+    // Kulede ölmek bölge kaybettirmez; sadece kule tırmanışı biter
+    if (this.game.tower.active) return this.game.tower.end('death');
     const wasBoss = this.current?.isBoss;
     this.current = null;
     this.spawnTimer = SPAWN_DELAY;
