@@ -9,7 +9,10 @@
 //
 // `sanitizeSave` bilinmeyen alanları atar, bilinen alanları tip/aralık
 // doğrulamasından geçirir ve eşya adlarını kanonik veriden YENİDEN üretir.
-import { BAG_EXPANSION_SLOTS, GAME_SPEEDS, INVENTORY_SIZE, KILLS_PER_STAGE, MAX_BAG_EXPANSIONS, MAX_POTIONS, SAVE_VERSION, SHOP_SIZE } from '../config/constants.js';
+import {
+  AUTOSAVE_CHOICES, BAG_EXPANSION_SLOTS, GAME_SPEEDS, INVENTORY_SIZE, KILLS_PER_STAGE, MAX_BAG_EXPANSIONS, MAX_POTIONS,
+  POTION_THRESHOLD_RANGE, SAVE_VERSION, SHOP_SIZE,
+} from '../config/constants.js';
 import { createDefaultState } from './GameState.js';
 import { Balance } from '../config/balance.js';
 import { ACHIEVEMENTS } from '../data/achievements.js';
@@ -71,6 +74,26 @@ const PROFILE_IDS = PROFILES.map((p) => p.id);
 
 /** 0..1 aralığına sıkıştırılmış ondalık (ses düzeyi gibi). */
 const unit = (v, fallback) => Math.min(1, Math.max(0, num(v, fallback)));
+
+/** Bildirim anahtarları: her biri açık/kapalı; eksikler varsayılan (açık) kalır */
+const NOTIFY_KEYS = ['loot', 'achievements', 'quests', 'rewards'];
+const sanitizeNotify = (raw) => Object.fromEntries(NOTIFY_KEYS.map((k) => [k, bool(isObject(raw) ? raw[k] : undefined, true)]));
+
+/**
+ * Tuş atamaları: tek harf (A–Z), sayı tuşlarıyla ve yetenek tuşlarıyla (Q W E R T) çakışmaz,
+ * birbirini de tekrarlamaz. Geçersiz ya da çakışan atama varsayılana döner.
+ */
+const RESERVED_KEYS = new Set(['Q', 'W', 'E', 'R', 'T']);
+function sanitizeKeys(raw) {
+  const defaults = { potion: 'F', menu: 'M', boss: 'B', pause: 'P' };
+  const out = {};
+  for (const action of Object.keys(defaults)) {
+    const v = isObject(raw) && typeof raw[action] === 'string' ? raw[action].toUpperCase() : '';
+    out[action] = /^[A-Z]$/.test(v) && !RESERVED_KEYS.has(v) ? v : defaults[action];
+  }
+  if (new Set(Object.values(out)).size !== Object.values(out).length) return defaults;
+  return out;
+}
 
 /** Bilinmeyen kimlikleri atar, seviyeleri aralığa sıkıştırır. */
 function sanitizeLevelMap(raw, allowed, maxLevelOf, { omitZero = false } = {}) {
@@ -369,6 +392,13 @@ export function sanitizeSave(raw) {
     autoSellTier: int(s.autoSellTier, -1, MAX_TIER, -1),
     audio: bool(s.audio, true),
     volume: unit(s.volume, 0.7),
+    uiSounds: bool(s.uiSounds, true),
+    reduceMotion: bool(s.reduceMotion, false),
+    highContrast: bool(s.highContrast, false),
+    potionThreshold: Math.min(POTION_THRESHOLD_RANGE[1], Math.max(POTION_THRESHOLD_RANGE[0], num(s.potionThreshold, 0.35))),
+    autosaveSeconds: oneOf(s.autosaveSeconds, AUTOSAVE_CHOICES, 10),
+    notify: sanitizeNotify(s.notify),
+    keys: sanitizeKeys(s.keys),
   };
 
   const st = isObject(raw.stats) ? raw.stats : {};

@@ -74,6 +74,7 @@ export class Renderer {
   }
 
   shake(power = 4, duration = 0.2) {
+    if (this.game.state.settings.reduceMotion) return; // hareketi azalt: ekran sarsıntısı kapalı
     this.shakePower = Math.max(this.shakePower, power);
     this.shakeTime = Math.max(this.shakeTime, duration);
   }

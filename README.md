@@ -131,7 +131,15 @@ Başlangıçta 6 ekipman yuvası açıktır; Kalkan, Eldiven, Kemer ve Pelerin a
 
 Diğer kısayollar: **Q W E R T** yetenekler · **F** iksir · **B** ilerle / boss · **M** menüyü gizle/göster ·
 **P** duraklat/devam et · **Esc** ayarlar · **Ctrl+tık** eşya kilitle.
-Ayarlar, kayıt işlemleri ve istatistikler üst bardaki ⚙️ butonundadır.
+Ayarlar üst bardaki ⚙️ butonundadır; solda dikey menü, sağda seçili sayfa bulunur:
+- **🔊 Ses** — efekt ve arayüz sesleri (ayrı açılıp kapanır), ses düzeyi; piksel sanat, yüksek kontrast ve hareketi azaltma.
+- **🎮 Oyun** — otomatik iksir (açık/kapalı ve can eşiği), tüm yeteneklerin otomatik kullanımı, bildirim türleri
+  (eşya, başarım, görev, ödül) ve otomatik kayıt aralığı (5 / 10 / 30 / 60 sn).
+- **💾 Kayıt** — kayıt özeti, kaydet / dışa aktar / içe aktar / sıfırla; son 3 yedekten geri yükleme
+  (manuel kayıt, içe aktarma ve sıfırlamadan önce otomatik yedek alınır).
+- **⌨️ Tuşlar** — iksir, menü, boss ve duraklatma tuşları yeniden atanabilir (tek harf; sayı tuşları ve Q W E R T ayrılmış,
+  çakışan atama reddedilir); sabit kısayollar listelenir.
+Menünün son öğesi **📊 İstatistikler** sayfasıdır.
 
 ## Dosya Yapısı
 

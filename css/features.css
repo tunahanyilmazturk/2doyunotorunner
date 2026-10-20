@@ -935,3 +935,105 @@
 .upgrade-list {
   gap: 3px;
 }
+
+/* Yüksek kontrast: metin ve kenarlar daha belirgin (ayarlardan açılır) */
+body.high-contrast {
+  --text: #fffaf0;
+  --muted: #e4dcef;
+  --border: #9a8caa;
+  --edge: #000000;
+}
+
+/* ---------- Ayarlar: sekmeler, tuş atama, yedekler ---------- */
+.settings-left {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+.settings-page {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.settings-page .section-title {
+  margin: 8px 0 2px;
+}
+.settings-page .section-title:first-child {
+  margin-top: 0;
+}
+.kbd-btn {
+  min-width: 120px;
+  padding: 4px 8px;
+  font-family: var(--font-pixel);
+  font-size: 13px;
+  color: var(--text);
+  background: var(--panel-2);
+  border: 2px solid var(--edge);
+  border-radius: var(--radius);
+  box-shadow: var(--bevel);
+  cursor: pointer;
+}
+.kbd-btn.waiting {
+  border-color: var(--gold);
+  color: var(--gold);
+  animation: kbd-pulse 1s ease-in-out infinite;
+}
+@keyframes kbd-pulse {
+  50% {
+    opacity: 0.6;
+  }
+}
+
+/* Ayarlar kabuğu: solda dikey menü, sağda seçili sayfa */
+.settings-shell {
+  display: grid;
+  grid-template-columns: 190px minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+  min-height: 340px;
+}
+.settings-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-right: 10px;
+  border-right: 2px solid var(--edge);
+}
+.settings-nav-btn {
+  width: 100%;
+  padding: 8px 10px;
+  text-align: left;
+  font-family: var(--font-pixel);
+  font-size: 15px;
+  color: var(--muted);
+  background: none;
+  border: 2px solid transparent;
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+.settings-nav-btn:hover {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.04);
+}
+.settings-nav-btn.active {
+  color: var(--text);
+  background: var(--panel-2);
+  border-color: var(--edge);
+  box-shadow: var(--bevel), inset 4px 0 0 var(--gold);
+}
+.settings-content {
+  min-width: 0;
+}
+@media (max-width: 700px) {
+  .settings-shell {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .settings-nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+    border-right: none;
+    border-bottom: 2px solid var(--edge);
+    padding: 0 0 8px;
+  }
+}

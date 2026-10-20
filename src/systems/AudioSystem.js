@@ -284,6 +284,7 @@ export class AudioSystem {
   play(name, payload) {
     const recipe = RECIPES[name];
     if (!recipe || !this.enabled) return false;
+    if (name === 'ui' && this.game.state.settings.uiSounds === false) return false;
     const ctx = this.ensureContext();
     if (!ctx || ctx.state !== 'running') return false;
 

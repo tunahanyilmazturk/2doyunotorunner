@@ -63,6 +63,13 @@ export function createDefaultState() {
       autoSellTier: -1, // -1: kapalı, 0: Sıradan, 1: ≤ Kaliteli ...
       audio: true, // ses efektleri
       volume: 0.7, // 0..1
+      uiSounds: true, // arayüz tıklama sesleri
+      reduceMotion: false, // ekran sarsıntısını kapatır
+      highContrast: false, // daha belirgin metin ve kenarlar
+      potionThreshold: 0.35, // otomatik iksirin devreye gireceği can oranı
+      autosaveSeconds: 10, // otomatik kayıt aralığı
+      notify: { loot: true, achievements: true, quests: true, rewards: true }, // bildirim türleri
+      keys: { potion: 'F', menu: 'M', boss: 'B', pause: 'P' }, // yeniden atanabilir tuşlar
     },
 
     stats: {

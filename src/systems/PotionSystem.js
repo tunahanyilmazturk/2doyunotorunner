@@ -15,7 +15,8 @@ export class PotionSystem {
   update(dt) {
     this.cooldown = Math.max(0, this.cooldown - dt);
     const { player, state } = this.game;
-    if (state.settings.autoPotion && !player.dead && player.hpRatio < AUTO_POTION_THRESHOLD) this.use();
+    const threshold = state.settings.potionThreshold ?? AUTO_POTION_THRESHOLD;
+    if (state.settings.autoPotion && !player.dead && player.hpRatio < threshold) this.use();
   }
 
   use() {

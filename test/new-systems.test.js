@@ -664,3 +664,15 @@ test('elmas: sınıf elmasla açılır ve elmas yetmezse açılmaz', () => {
   assert.equal(game.state.gems, 0, 'sınıf bedeli elmastan düşer');
   assert.equal(game.classes.isUnlocked('healer'), true);
 });
+
+test('ayarlar: tuş atamaları kayıtta doğrulanır (ayrılmış ve çakışan tuşlar varsayılana döner)', () => {
+  const base = JSON.parse(JSON.stringify(createDefaultState()));
+  base.settings.keys = { potion: 'G', menu: 'M', boss: 'B', pause: 'P' };
+  assert.deepEqual(sanitizeSave(base).settings.keys, { potion: 'G', menu: 'M', boss: 'B', pause: 'P' }, 'geçerli atama korunur');
+  base.settings.keys = { potion: 'Q', menu: 'M', boss: 'B', pause: 'P' };
+  assert.equal(sanitizeSave(base).settings.keys.potion, 'F', 'ayrılmış tuş varsayılana döner');
+  base.settings.keys = { potion: 'G', menu: 'G', boss: 'B', pause: 'P' };
+  assert.deepEqual(sanitizeSave(base).settings.keys, { potion: 'F', menu: 'M', boss: 'B', pause: 'P' }, 'çakışma tümüyle varsayılana döner');
+  base.settings.autosaveSeconds = 7;
+  assert.equal(sanitizeSave(base).settings.autosaveSeconds, 10, 'izinsiz otomatik kayıt aralığı varsayılana döner');
+});

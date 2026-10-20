@@ -79,21 +79,26 @@ export class UIManager {
     bus.on(Events.PAUSE_CHANGED, ({ paused, reasons }) => this.updatePauseUi(paused, reasons));
     bus.on(Events.TOAST, ({ text, type }) => this.toast.show(text, type));
     bus.on(Events.OFFLINE_REWARD, (r) => this.showOfflineReward(r));
+    // Bildirim türleri ayarlardan açılıp kapatılır (dolu envanter uyarısı her zaman gösterilir)
+    const notify = () => this.game.state.settings.notify ?? {};
     bus.on(Events.LOOT_DROPPED, ({ item, autoSold, full }) => {
       if (full) this.toast.show('Envanter dolu! Eşya otomatik satıldı.', 'error', 1800);
+      else if (!notify().loot) return;
       else if (!autoSold && item.set) this.toast.show(`💠 ${SET_MAP[item.set].name} parçası: ${item.name}`, 'loot', 2600);
       else if (!autoSold && item.tier >= 3) this.toast.show(`Yeni eşya: ${item.name}`, 'loot', 2200);
     });
     bus.on(Events.ACHIEVEMENT_UNLOCKED, ({ achievement, silent }) => {
-      if (!silent) this.toast.show(`🏆 Başarım: ${achievement.name}`, 'gold', 3000);
+      if (!silent && notify().achievements !== false) this.toast.show(`🏆 Başarım: ${achievement.name}`, 'gold', 3000);
     });
     bus.on(Events.SKILLS_CHANGED, ({ level, id }) => {
       if (level === 1) this.toast.show(`Yeni yetenek: ${SKILLS.find((s) => s.id === id).name}`, 'success');
     });
     bus.on(Events.PRESTIGE, () => this.tabs.forEach((t) => t.panel.tick?.()));
-    bus.on(Events.QUEST_COMPLETED, ({ template }) => this.toast.show(`📜 Görev tamamlandı: ${template.name}. Ödülünü Hedefler sekmesinden al`, 'gold', 3200));
+    bus.on(Events.QUEST_COMPLETED, ({ template }) => {
+      if (notify().quests !== false) this.toast.show(`📜 Görev tamamlandı: ${template.name}. Ödülünü Hedefler sekmesinden al`, 'gold', 3200);
+    });
     // Kule kat ödülleri afişte görünür; diğer ödüller (görev, giriş, bonus) bildirimle
-    bus.on(Events.REWARD_GRANTED, ({ text }) => !this.game.tower.active && this.toast.show(`🎁 ${text}`, 'success', 2200));
+    bus.on(Events.REWARD_GRANTED, ({ text }) => !this.game.tower.active && notify().rewards !== false && this.toast.show(`🎁 ${text}`, 'success', 2200));
     bus.on(Events.PRESTIGE_READY, ({ souls }) =>
       this.toast.show(`✨ Yeniden doğuş açıldı! Şimdi doğarsan +${formatNumber(souls)} Ruh (Ruh Ağacı)`, 'gold', 4000)
     );
@@ -129,6 +134,10 @@ export class UIManager {
 
   bindKeys() {
     const { game } = this;
+    // Yüksek kontrast: ayar değişince sayfa sınıfı güncellenir (CSS token'larını geçersiz kılar)
+    const applyDisplay = () => document.body.classList.toggle('high-contrast', !!game.state.settings.highContrast);
+    applyDisplay();
+    game.bus.on(Events.SETTINGS_CHANGED, applyDisplay);
     window.addEventListener('keydown', (e) => {
       if (e.target.closest?.('input, textarea, select') || e.ctrlKey || e.altKey || e.metaKey) return;
       if (e.key === 'Escape') {
@@ -139,12 +148,13 @@ export class UIManager {
       if (this.modal.isOpen) return;
 
       const key = e.key.toUpperCase();
+      const keys = game.state.settings.keys ?? {};
       const tabIndex = Number(e.key) - 1;
       if (tabIndex >= 0 && tabIndex < this.tabs.length) this.showTab(this.tabs[tabIndex].id);
-      else if (key === 'F') game.potions.use();
-      else if (key === 'M') this.setDockCollapsed(!game.state.settings.dockCollapsed);
-      else if (key === 'B') game.spawn.challengeBoss();
-      else if (key === 'P') game.togglePause();
+      else if (key === keys.potion) game.potions.use();
+      else if (key === keys.menu) this.setDockCollapsed(!game.state.settings.dockCollapsed);
+      else if (key === keys.boss) game.spawn.challengeBoss();
+      else if (key === keys.pause) game.togglePause();
       else {
         const skill = SKILLS.find((s) => s.key === key);
         if (!skill) return;

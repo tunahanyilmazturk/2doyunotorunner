@@ -34,9 +34,18 @@ export const AUTO_POTION_THRESHOLD = 0.35;
 export const SAVE_KEY = 'idle-runner-rpg-save';
 export const SAVE_VERSION = 1;
 export const AUTOSAVE_INTERVAL = 10;
+/** Ayarlardan seçilebilecek otomatik kayıt aralıkları (saniye) */
+export const AUTOSAVE_CHOICES = [5, 10, 30, 60];
+/** Yeniden atanabilir oyun tuşları ve varsayılanları (sayı tuşları ve Q W E R T yetenekler için ayrılmış) */
+export const DEFAULT_KEYS = { potion: 'F', menu: 'M', boss: 'B', pause: 'P' };
+/** Ayarlardan seçilebilecek otomatik iksir eşikleri (can oranı) */
+export const POTION_THRESHOLD_RANGE = [0.1, 0.6];
 export const OFFLINE_MIN_SECONDS = 60;
 export const OFFLINE_CAP_SECONDS = 8 * 3600;
 export const OFFLINE_EFFICIENCY = 0.5;
 
 export const PRESTIGE_MIN_STAGE = 20;
 export const GAME_SPEEDS = [1, 2, 3];
+/** Son kayıt yedekleri (ayarlardan geri yüklenir); en fazla BACKUP_COUNT tane tutulur */
+export const BACKUP_KEY = 'idle-runner-rpg-backups';
+export const BACKUP_COUNT = 3;

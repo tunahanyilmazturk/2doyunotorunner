@@ -137,7 +137,7 @@ export class Game {
     this.ui.update(dt);
 
     this.saveTimer += dt;
-    if (this.saveTimer >= AUTOSAVE_INTERVAL) {
+    if (this.saveTimer >= (this.state.settings.autosaveSeconds ?? AUTOSAVE_INTERVAL)) {
       this.saveTimer = 0;
       this.saveGame();
     }
