@@ -67,8 +67,8 @@ export class UIManager {
     this.bindKeys();
     $('#settings-btn').addEventListener('click', () => this.settings.open());
     this.dockToggle = $('#dock-toggle');
-    this.dockToggle.addEventListener('click', () => this.setDockCollapsed(!this.game.state.settings.dockCollapsed));
-    this.setDockCollapsed(!!this.game.state.settings.dockCollapsed);
+    this.dockToggle.addEventListener('click', () => this.setMenuOpen(!this.isMenuOpen));
+    this.setMenuOpen(false); // oyun açılışta sade: menü paneli kapalı
 
     this.pauseBtn = $('#pause-btn');
     this.pauseOverlay = $('#pause-overlay');
@@ -111,7 +111,7 @@ export class UIManager {
     const content = $('#tab-content');
     this.tabs.forEach((tab, i) => {
       tab.badgeEl = el('span', { class: 'nav-badge' });
-      tab.button = el('button', { class: 'nav-btn', title: `${tab.label} (${i + 1})`, onclick: () => this.showTab(tab.id) }, [
+      tab.button = el('button', { class: 'nav-btn', title: `${tab.label} (${i + 1})`, onclick: () => this.toggleTab(tab.id) }, [
         // Atlasta çizimi olmayan sekmeler (yoldaşlar, kule) kendi emojisini gösterir
         el('span', { class: 'nav-icon', text: ICONS[`menu-${tab.id}`] ? iconToken(`menu-${tab.id}`) : tab.icon }),
         el('span', { class: 'nav-label', text: tab.label }),
@@ -129,7 +129,7 @@ export class UIManager {
     } catch {
       /* yoksay */
     }
-    this.showTab(this.tabs.some((t) => t.id === saved) ? saved : 'character');
+    this.showTab(this.tabs.some((t) => t.id === saved) ? saved : 'character', { open: false });
   }
 
   bindKeys() {
@@ -142,6 +142,7 @@ export class UIManager {
       if (e.target.closest?.('input, textarea, select') || e.ctrlKey || e.altKey || e.metaKey) return;
       if (e.key === 'Escape') {
         if (this.modal.isOpen) this.modal.closeLast();
+        else if (this.isMenuOpen) this.setMenuOpen(false);
         else this.settings.open();
         return;
       }
@@ -152,7 +153,7 @@ export class UIManager {
       const tabIndex = Number(e.key) - 1;
       if (tabIndex >= 0 && tabIndex < this.tabs.length) this.showTab(this.tabs[tabIndex].id);
       else if (key === keys.potion) game.potions.use();
-      else if (key === keys.menu) this.setDockCollapsed(!game.state.settings.dockCollapsed);
+      else if (key === keys.menu) this.setMenuOpen(!this.isMenuOpen);
       else if (key === keys.boss) game.spawn.challengeBoss();
       else if (key === keys.pause) game.togglePause();
       else {
@@ -164,13 +165,33 @@ export class UIManager {
     });
   }
 
-  /** Alt menüyü gizle/göster: gizliyken oyun alanı tüm yüksekliği kullanır */
-  setDockCollapsed(collapsed) {
-    this.game.state.settings.dockCollapsed = collapsed;
-    document.getElementById('app').classList.toggle('dock-collapsed', collapsed);
-    this.dockToggle.textContent = `${iconToken(collapsed ? 'expand' : 'collapse')} Menü`;
-    this.dockToggle.setAttribute('aria-expanded', String(!collapsed));
+  get isMenuOpen() {
+    return document.querySelector('.stage')?.classList.contains('menu-open') ?? false;
+  }
+
+  /**
+   * Menü panelini aç/kapa. Panel oyun alanının içinde, menü şeridinin üstünde
+   * modal gibi açılır; kapalıyken oyun alanı tüm yüksekliği kullanır.
+   */
+  setMenuOpen(open) {
+    document.querySelector('.stage')?.classList.toggle('menu-open', open);
+    if (this.dockToggle) {
+      this.dockToggle.textContent = `${iconToken(open ? 'collapse' : 'expand')} Menü`;
+      this.dockToggle.setAttribute('aria-expanded', String(open));
+    }
+    for (const tab of this.tabs) tab.button?.classList.toggle('open', open && tab.id === this.activeTab);
     this.tooltip.hide();
+  }
+
+  /** Alt menü düğmesi / M tuşu: açıksa kapatır, kapalıysa son sekmeyle açar. */
+  setDockCollapsed(collapsed) {
+    this.setMenuOpen(!collapsed);
+  }
+
+  /** Menü düğmesi: aynı sekmeye tekrar basılırsa panel kapanır; başka sekmeye basılırsa o açılır. */
+  toggleTab(id) {
+    if (this.isMenuOpen && this.activeTab === id) this.setMenuOpen(false);
+    else this.showTab(id);
   }
 
   /** Duraklatma düğmesi, kaplama ve menü görünürlüğünü eşitler. */
@@ -184,11 +205,13 @@ export class UIManager {
     this.pauseOverlay.hidden = !byUser;
   }
 
-  showTab(id) {
+  /**
+   * Sekmeyi göster. open: panel de açılsın mı (varsayılan evet; açılışta false).
+   */
+  showTab(id, { open = true } = {}) {
     if (this.activeTab !== id) this.game.audio?.play('ui');
-    // Kapalı menüde bir sekme seçilirse menüyü aç (ilk kurulumda değil)
-    if (this.dockToggle && this.game.state.settings.dockCollapsed) this.setDockCollapsed(false);
     this.activeTab = id;
+    if (open) this.setMenuOpen(true);
     for (const tab of this.tabs) {
       const active = tab.id === id;
       tab.button.classList.toggle('active', active);

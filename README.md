@@ -98,7 +98,9 @@ Beş haritanın hareketli önizlemesi: sunucu açıkken `/tools/map-preview.html
   bilinmeyen alanlar, geçersiz yuvalar ve şişirilmiş değerler temizlenir
 - **Oyun hızı** — 1x / 2x / 3x
 - **Tek ekran düzeni** — sayfa kaymaz; sol menüde bildirim rozetleri (daha iyi eşya, alınabilir yükseltme, yeni başarım…)
-- **Gizlenebilir alt menü** — üst bardaki "▼ Menü" düğmesi veya **M** tuşu; gizliyken oyun alanı tüm ekranı kullanır
+- **Menüler oyun alanının içinde** — sağ alt köşedeki menü şeridi, yetenek çubuğu ile aynı hizada. Bir menü düğmesine basınca
+  panel şeridin üstünde modal gibi açılır; aynı düğmeye tekrar basmak veya **Esc** paneli kapatır. Açık değilken oyun alanı tüm ekranı kullanır.
+  Üst bardaki "Menü" düğmesi ve **M** tuşu son sekmeyi açıp kapatır.
 - **HUD** — can, bölge plakası (10 öldürme hücresi), aktif yetenek/iksir süreleri, son ganimetler akışı
 
 ## Ruh Ağacı
