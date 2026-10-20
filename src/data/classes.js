@@ -28,6 +28,7 @@ export const CLASSES = [
     bonus: { hpPct: 5 }, bonusText: '+%5 can',
     look: { tunic: '#3f6ea8', hair: '#6b3e26', headgear: 'none', trim: '#c8b27a' },
     attack: { style: 'melee', anim: 'swing', color: null },
+    signature: { id: 'block', name: 'Siper', desc: '%15 şansla gelen hasarın yarısını engeller', chance: 0.15, factor: 0.5 },
   },
   {
     id: 'archer', name: 'Okçu', icon: '🏹', cost: 15, gems: 5,
@@ -36,6 +37,7 @@ export const CLASSES = [
     bonus: { aspd: 10 }, bonusText: '+%10 saldırı hızı',
     look: { tunic: '#3f7a4a', hair: '#8a5a2b', headgear: 'hood', trim: '#2f5d3a' },
     attack: { style: 'ranged', range: 300, shot: 'arrow', speed: 1000, anim: 'draw', color: '#e8d9a8' },
+    signature: { id: 'volley', name: 'Delici Ok', desc: 'Her 5. ok 2 kat hasar verir', every: 5, mult: 2 },
   },
   {
     id: 'mage', name: 'Büyücü', icon: '🪄', cost: 30, gems: 10,
@@ -44,6 +46,7 @@ export const CLASSES = [
     bonus: { atkPct: 10 }, bonusText: '+%10 saldırı',
     look: { tunic: '#5a3a8a', hair: '#d8d2e6', headgear: 'hat', trim: '#3b2a6b' },
     attack: { style: 'ranged', range: 280, shot: 'orb', speed: 560, anim: 'cast', color: '#b98cf0' },
+    signature: { id: 'surge', name: 'Büyü Dalgası', desc: 'Her 4. büyü 1,8 kat hasar verir', every: 4, mult: 1.8 },
   },
   {
     id: 'assassin', name: 'Suikastçı', icon: '🗡️', cost: 45, gems: 15,
@@ -52,6 +55,7 @@ export const CLASSES = [
     bonus: { crit: 8 }, bonusText: '+8 kritik şansı',
     look: { tunic: '#2a2a33', hair: '#1d1420', headgear: 'mask', trim: '#1a1a22' },
     attack: { style: 'melee', anim: 'dash', color: '#9aa3b8' },
+    signature: { id: 'execute', name: 'Kurbanı Kovala', desc: 'Canı %30 altındaki canavara 1,5 kat hasar', threshold: 0.3, mult: 1.5 },
   },
   {
     id: 'healer', name: 'Şifacı', icon: '✨', cost: 60, gems: 20,
@@ -60,6 +64,7 @@ export const CLASSES = [
     bonus: { regen: 3 }, bonusText: '+3 can/sn yenilenme',
     look: { tunic: '#e8e2c8', hair: '#f0d26a', headgear: 'halo', trim: '#ffd34d' },
     attack: { style: 'melee', anim: 'holy', color: '#ffd34d' },
+    signature: { id: 'blessing', name: 'Kutsama', desc: 'Her isabette maks canın %1,5\'ini iyileştirir', heal: 0.015 },
   },
 ];
 

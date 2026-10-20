@@ -3,6 +3,7 @@ import { PLAYER_ATTACK_RANGE, RESPAWN_TIME } from '../config/constants.js';
 // (menzilli saldırılar sınıfın attack.range değerini kullanır; bkz. data/classes.js)
 import { Events } from '../core/events.js';
 import { chance, rand } from '../utils/random.js';
+import { blessingHeal, burstMultiplier, executeMultiplier, incomingMultiplier } from './classPerks.js';
 
 // Temas tespiti, karşılıklı saldırılar, ölüm ve yeniden doğma.
 export class CombatSystem {
@@ -10,6 +11,13 @@ export class CombatSystem {
     this.game = game;
     /** Şu an temas halinde olunan canavar (yoksa null) — yetenekler kullanır */
     this.engaged = null;
+    /** Oyuncunun yaptığı saldırı sayısı (sınıf imzası "her n. vuruş" için) */
+    this.attackCount = 0;
+  }
+
+  /** Aktif sınıfın imza yeteneği (yoksa undefined). */
+  get signature() {
+    return this.game.classes?.active?.signature;
   }
 
   update(dt) {
@@ -77,7 +85,10 @@ export class CombatSystem {
 
   playerAttack(monster, stats) {
     const crit = chance(stats.critChance);
-    const damage = stats.atk * rand(0.9, 1.1) * (crit ? stats.critMult : 1);
+    this.attackCount++;
+    const sig = this.signature;
+    const damage = stats.atk * rand(0.9, 1.1) * (crit ? stats.critMult : 1)
+      * burstMultiplier(sig, this.attackCount) * executeMultiplier(sig, monster.hpRatio);
     const { player } = this.game;
     player.attackAnim = 1;
     const style = this.attackStyle;
@@ -100,6 +111,7 @@ export class CombatSystem {
     monster.takeDamage(damage);
     if (damage > state.stats.maxHit) state.stats.maxHit = damage;
     if (stats.lifesteal > 0) player.heal(damage * stats.lifesteal);
+    if (source === 'attack' || source === 'projectile') player.heal(blessingHeal(this.signature, player.maxHp));
 
     bus.emit(Events.DAMAGE_DEALT, { target: monster, amount: damage, crit, source });
     if (monster.dead) bus.emit(Events.MONSTER_KILLED, { monster });
@@ -117,7 +129,9 @@ export class CombatSystem {
       return;
     }
     const reduction = Balance.armorReduction(stats.armor, state.stage) * (heavy ? Balance.heavyArmorFactor : 1);
-    const damage = monster.atk * rand(0.9, 1.1) * (heavy ? monster.heavyMult : 1) * (1 - reduction);
+    let damage = monster.atk * rand(0.9, 1.1) * (heavy ? monster.heavyMult : 1) * (1 - reduction);
+    const sig = this.signature;
+    if (sig?.id === 'block') damage *= incomingMultiplier(sig, chance(sig.chance));
 
     player.takeDamage(damage);
     if (monster.lifesteal) monster.heal(damage * monster.lifesteal);
