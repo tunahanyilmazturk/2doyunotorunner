@@ -68,9 +68,14 @@ export class Renderer {
     this.game.world.speedScale = viewWidth / BASE_VIEW_WIDTH;
   }
 
-  /** Dünya tuvalinin piksel oranı: piksel modunda sabit, değilse ekran çözünürlüğü */
+  /**
+   * Dünya tuvalinin piksel oranı. Piksel modunda bir sanat pikseli ekranda en fazla
+   * ~2 cihaz pikseli olacak şekilde seçilir: oyun alanı büyüdükçe bloklar da büyümesin
+   * diye oran ekran ölçeğiyle birlikte artar (alt sınır ART_SCALE).
+   */
   get artScale() {
-    return this.game.state.settings.pixelArt === false ? this.scale : ART_SCALE;
+    if (this.game.state.settings.pixelArt === false) return this.scale;
+    return Math.min(this.scale, Math.max(ART_SCALE, this.scale / 2));
   }
 
   shake(power = 4, duration = 0.2) {
