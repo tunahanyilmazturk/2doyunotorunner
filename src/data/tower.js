@@ -30,10 +30,10 @@ export const TOWER_HP_MULT = 1.3;
  */
 export function floorRewards(floor) {
   const rewards = [
-    { type: 'souls', amount: 2 + floor },
+    { type: 'souls', amount: 1 + Math.floor(floor / 2) },
     { type: 'rune', grade: runeGradeForStage(towerStage(floor)), amount: 1 },
   ];
   if (floor % 5 === 0) rewards.push({ type: 'egg', amount: 1 });
-  if (floor % 10 === 0) rewards.push({ type: 'souls', amount: 10 * floor });
+  if (floor % 10 === 0) rewards.push({ type: 'souls', amount: 3 * floor });
   return rewards;
 }

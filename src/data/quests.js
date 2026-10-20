@@ -6,7 +6,10 @@
 // reward(best): ödül (rewards.js biçiminde).
 
 const round5 = (n) => Math.max(5, Math.round(n / 5) * 5);
-const soulsFor = (best, k = 1) => Math.max(3, Math.floor((best / 4) * k));
+// Ruh ödülü: görevler oynanarak kazanılır ama bölge ilerlemesinden bağımsız
+// birikmesin diye küçük tutulur. Prestij bir koşuda ~best/... yerine bölgeye göre
+// artan bir miktar verir; görevler bunun küçük bir parçası olmalı.
+const soulsFor = (best, k = 1) => Math.max(3, Math.floor((best / 10) * k));
 
 export const QUEST_TEMPLATES = [
   {

@@ -62,3 +62,18 @@ console.log('\n=== Yoldaş (yumurta) ===');
 console.log(`Kuluçka: bölge başına ~${fmt(perStageIncubation, 0)} ilerleme → ${fmt(stagesPerHatch, 1)} bölgede bir çatlama (yumurta varsa).`);
 console.log(`Yumurta: boss başına %${bossEggChance * 100} → ortalama ${fmt(stagesPerEgg, 0)} bölgede bir yumurta.`);
 console.log(`Yani yumurta, kuluçkanın çatlamasından ${fmt(stagesPerEgg / stagesPerHatch, 1)} kat yavaş; yoldaş arzı yumurta ile sınırlı.`);
+
+// 4) RUH EKONOMİSİ: kule ilk geçişleri ve günlük görevler, prestij ruhlarıyla karşılaştırılır
+import { floorRewards } from '../src/data/tower.js';
+import { QUEST_TEMPLATES } from '../src/data/quests.js';
+import { Balance as Bal } from '../src/config/balance.js';
+
+let towerSouls = 0;
+for (let f = 1; f <= 30; f++) towerSouls += floorRewards(f).filter((r) => r.type === 'souls').reduce((a, r) => a + r.amount, 0);
+console.log('\n=== Ruh ekonomisi ===');
+console.log(`Kule ilk geçişleri (1-30. kat, toplam, tek seferlik): ${towerSouls} ruh`);
+for (const best of [30, 60, 100]) {
+  const soulQuests = QUEST_TEMPLATES.filter((q) => q.reward(best).type === 'souls');
+  const avg = soulQuests.reduce((a, q) => a + q.reward(best).amount, 0) / soulQuests.length;
+  console.log(`bölge ${pad(best, 3)}: günlük görevler ~${fmt(avg * 3, 0)} ruh/gün · prestij (o bölgede tek koşu) ${Bal.prestigeSouls(best)} ruh`);
+}
