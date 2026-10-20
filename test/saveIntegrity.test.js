@@ -4,7 +4,7 @@ import { migrate, sanitizeSave } from '../src/core/saveIntegrity.js';
 import { createDefaultState } from '../src/core/GameState.js';
 import { INVENTORY_SIZE, MAX_POTIONS, SAVE_VERSION, SHOP_SIZE } from '../src/config/constants.js';
 import { Balance } from '../src/config/balance.js';
-import { SLOT_ORDER, getBaseName } from '../src/data/items.js';
+import { SLOT_ORDER } from '../src/data/items.js';
 import { TREE_NODES } from '../src/data/soulTree.js';
 import { SKILLS } from '../src/data/skills.js';
 import { UPGRADES } from '../src/data/upgrades.js';
@@ -12,6 +12,7 @@ import { ACHIEVEMENTS } from '../src/data/achievements.js';
 import { ELIXIRS } from '../src/data/shop.js';
 import { MAX_ELIXIR_SECONDS } from '../src/data/shop.js';
 import { createItem } from '../src/systems/ItemFactory.js';
+import { itemName } from '../src/data/sets.js';
 
 const itemState = { nextItemId: 1 };
 const someItem = (slot = 'helmet', level = 20, tier = 2) => createItem(itemState, { slot, level, tier });
@@ -96,7 +97,8 @@ test('eşya adı kanonik veriden yeniden üretilir (HTML enjeksiyonu etkisiz)', 
   item.name = '<img src=x onerror=alert(1)>';
   state.inventory[0] = item;
   const out = sanitizeSave(clone(state));
-  assert.equal(out.inventory[0].name, getBaseName('helmet', 20));
+  // Set rastgele seçilebilir: kanonik ad set önekini de içerir
+  assert.equal(out.inventory[0].name, itemName('helmet', 20, undefined, item.set));
   assert.ok(!out.inventory[0].name.includes('<'));
 });
 
