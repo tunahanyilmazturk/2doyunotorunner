@@ -1037,3 +1037,21 @@ body.high-contrast {
     padding: 0 0 8px;
   }
 }
+
+/* Ayarlar penceresi sabit boyda: sayfa değişince pencere zıplamaz, içerik kendi içinde kayar */
+.settings-shell {
+  height: min(540px, 72vh);
+  min-height: 0;
+  align-items: stretch;
+}
+.settings-content {
+  overflow-y: auto;
+  min-height: 0;
+  padding-right: 6px;
+}
+@media (max-width: 700px) {
+  .settings-shell {
+    height: min(620px, 78vh);
+    grid-template-rows: auto minmax(0, 1fr);
+  }
+}
