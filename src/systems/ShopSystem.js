@@ -1,11 +1,16 @@
 import { Balance } from '../config/balance.js';
 import { MAX_POTIONS, SHOP_REFRESH_SECONDS, SHOP_SIZE } from '../config/constants.js';
 import { Events } from '../core/events.js';
-import { CHEST_MAP, ELIXIR_MAP, MAX_ELIXIR_SECONDS } from '../data/shop.js';
-import { createItem } from './ItemFactory.js';
+import { CHEST_MAP, CHESTS, ELIXIRS, ELIXIR_MAP, MAX_ELIXIR_SECONDS, SPECIAL_ITEMS, SPECIAL_MAP } from '../data/shop.js';
+import { dayKey } from '../data/quests.js';
+import { createItem, itemRating } from './ItemFactory.js';
+import { grantReward } from './rewards.js';
 
-// Mağaza: gerçek zamanla yenilenen eşya vitrini, hazine sandıkları, can iksiri ve süreli iksirler.
-// Tüm fiyatlara Ruh Ağacı "Pazarlıkçı" indirimi uygulanır.
+/** Günlük indirim yüzdesi: her gün mağazadaki tek bir ürün bu kadar ucuzlar */
+export const DEAL_PERCENT = 25;
+
+// Mağaza: gerçek zamanla yenilenen eşya vitrini, hazine sandıkları, iksirler ve özel ürünler.
+// Tüm fiyatlara Ruh Ağacı "Pazarlıkçı" indirimi uygulanır; günün indirimi ayrıca üstüne biner.
 export class ShopSystem {
   constructor(game) {
     this.game = game;
@@ -33,21 +38,73 @@ export class ShopSystem {
     return Math.ceil(Balance.potionCost(this.game.state.runMaxStage) * this.discount);
   }
 
+  /**
+   * Bugünün indirimli ürünü. Yerel güne göre sabit seçilir (kayıtta tutulmaz):
+   * aynı gün herkes için aynı ürün, ertesi gün başka bir ürün.
+   */
+  get dailyDeal() {
+    const pool = [
+      ...ELIXIRS.map((e) => ({ kind: 'elixir', id: e.id })),
+      ...CHESTS.map((c) => ({ kind: 'chest', id: c.id })),
+      ...SPECIAL_ITEMS.map((s) => ({ kind: 'special', id: s.id })),
+    ];
+    let hash = 0;
+    for (const ch of dayKey(Date.now())) hash = (hash * 31 + ch.charCodeAt(0)) >>> 0;
+    return { ...pool[hash % pool.length], percent: DEAL_PERCENT };
+  }
+
+  isDeal(kind, id) {
+    const d = this.dailyDeal;
+    return d.kind === kind && d.id === id;
+  }
+
+  dealPrice(kind, id, price) {
+    return this.isDeal(kind, id) ? Math.ceil(price * (1 - DEAL_PERCENT / 100)) : price;
+  }
+
   elixirPrice(e) {
-    return Math.ceil(this.potionPrice * e.priceMult);
+    return this.dealPrice('elixir', e.id, Math.ceil(this.potionPrice * e.priceMult));
   }
 
   chestPrice(c) {
-    return Math.ceil(Balance.itemValue(this.game.state.runMaxStage, 1) * c.priceMult * this.discount);
+    return this.dealPrice('chest', c.id, Math.ceil(Balance.itemValue(this.game.state.runMaxStage, 1) * c.priceMult * this.discount));
+  }
+
+  specialPrice(s) {
+    return this.dealPrice('special', s.id, Math.ceil(Balance.itemValue(this.game.state.runMaxStage, 1) * s.priceMult * this.discount));
+  }
+
+  /**
+   * Vitrin eşyasının kuşanılana göre güç kazancı (0.2 = %20 daha güçlü).
+   * Kuşanılan yoksa ya da eşya aynı slotta değilse null.
+   */
+  ratingGain(item) {
+    const equipped = this.game.state.equipment[item.slot];
+    if (!equipped) return null;
+    const base = itemRating(equipped, this.game.state.stage);
+    if (base <= 0) return null;
+    return itemRating(item, this.game.state.stage) / base - 1;
   }
 
   buyElixir(id) {
+    return this.buyElixirs(id, 1);
+  }
+
+  /** Bir veya daha fazla iksir içer; süre üst sınırına ulaşınca durur. */
+  buyElixirs(id, count = 1) {
     const e = ELIXIR_MAP[id];
     if (!e) return false;
-    if (this.game.elixirs.remaining(id) >= MAX_ELIXIR_SECONDS) return this.toast('Bu iksirin süresi dolu', 'error');
-    if (!this.game.economy.spend(this.elixirPrice(e))) return this.toast('Yeterli altın yok!', 'error');
-    this.game.elixirs.drink(id);
-    this.toast(`${e.icon} ${e.name} içildi`, 'success');
+    const price = this.elixirPrice(e);
+    if (this.game.state.gold < price * count) return this.toast('Yeterli altın yok!', 'error');
+    let done = 0;
+    for (let i = 0; i < count; i++) {
+      if (this.game.elixirs.remaining(id) >= MAX_ELIXIR_SECONDS) break;
+      if (!this.game.economy.spend(price)) break;
+      this.game.elixirs.drink(id);
+      done++;
+    }
+    if (!done) return this.toast('Bu iksirin süresi dolu', 'error');
+    this.toast(`${e.icon} ${e.name}${done > 1 ? ` ×${done}` : ''} içildi`, 'success');
     return true;
   }
 
@@ -64,6 +121,26 @@ export class ShopSystem {
     this.game.loot.receive(item, { x: this.game.player.x, y: this.game.player.y - 90 }, { autoSell: false });
     this.game.bus.emit(Events.CHEST_OPENED, { chest: c, item });
     return item;
+  }
+
+  /** Birden çok sandık açar; altın ya da yer bitince durur. @returns {number} açılan sandık sayısı */
+  openChests(id, count = 1) {
+    let opened = 0;
+    for (let i = 0; i < count; i++) {
+      if (!this.openChest(id)) break;
+      opened++;
+    }
+    return opened;
+  }
+
+  /** Özel ürünü alır (ödül rewards.js ile verilir). */
+  buySpecial(id, count = 1) {
+    const s = SPECIAL_MAP[id];
+    if (!s) return false;
+    if (!this.game.economy.spend(this.specialPrice(s) * count)) return this.toast('Yeterli altın yok!', 'error');
+    for (let i = 0; i < count; i++) grantReward(this.game, s.reward);
+    this.toast(`${s.icon} ${s.name}${count > 1 ? ` ×${count}` : ''} alındı`, 'success');
+    return true;
   }
 
   update(dt) {

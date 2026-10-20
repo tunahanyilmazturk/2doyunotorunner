@@ -71,9 +71,9 @@ Beş haritanın hareketli önizlemesi: sunucu açıkken `/tools/map-preview.html
   **kilometre taşları** (her 25 seviyede etki ×2); **tahmini verim** çubuğu ("⚡ en iyisini al"
   altın başına en çok kazandıranı seçer), sıralama / filtre / arama; ilk yeniden doğuştan sonra
   **otomatik alım** (öncelik profili: en ucuz / verim / hasar / hayatta kalma / altın)
-- **Mağaza** — üç bölüm: **Eşyalar** (5 dakikada bir yenilenen vitrin, ▲ daha iyi işareti),
-  **Sandıklar** (Tahta / Demir / Altın: garanti nadirlikte eşya), **İksirler** (Can İksiri + 9 süreli iksir:
-  Öfke, Demir Deri, Altın, Şans, Çeviklik, Keskin Göz, Kan Damlası, Diriliş, Gölge Tozu; süreleri kayıtla korunur)
+- **Mağaza** — dört bölüm: **Eşyalar** (5 dakikada bir yenilenen vitrin, ücretli yenileme; ▲ işaretli ve güç farkı yüzdeli eşyalar),
+  **Sandıklar** (Tahta / Demir / Altın), **İksirler** (Can İksiri + süreli iksirler) ve **Özel** (Rün Paketi, Yoldaş Yumurtası, Kule Anahtarı).
+  Sandık, iksir ve özel ürünler **×1 / ×5 / ×10** toplu alınabilir. Her gün bir ürün **%25 indirimli** (yerel güne göre sabit).
 - **Tehlikeli düşmanlar** — bosslar her 4., elitler her 5. saldırıda zırhı yarı delen **ağır vuruş** yapar;
   öncesinde kırmızı parıltı ve "⚠ Ağır vuruş geliyor!" uyarısı çıkar
 - **Yeniden Doğuş + Ruh Ağacı** — 20. bölgeden sonra yeniden doğ (ilerleme durunca HUD öneri düğmesi çıkar): temiz bir koşu

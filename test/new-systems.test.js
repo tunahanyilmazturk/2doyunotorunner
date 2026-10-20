@@ -17,6 +17,7 @@ import { createItem } from '../src/systems/ItemFactory.js';
 import { ClassSystem } from '../src/systems/ClassSystem.js';
 import { InventorySystem } from '../src/systems/InventorySystem.js';
 import { BAG_EXPANSION_SLOTS, MAX_BAG_EXPANSIONS } from '../src/config/constants.js';
+import { ELIXIRS } from '../src/data/shop.js';
 import { EquipmentSystem } from '../src/systems/EquipmentSystem.js';
 import { ARMOR_SLOTS, CLASSES, CLASS_MAP } from '../src/data/classes.js';
 import { WEAPON_KINDS } from '../src/data/items.js';
@@ -486,4 +487,61 @@ test('envanter: sıralama modları seçilen ölçüte göre sıralar', () => {
   game.inventory.sort('tier');
   const tiers = s.inventory.filter(Boolean).map((i) => i.tier);
   assert.deepEqual(tiers, [...tiers].sort((a, b) => b - a), 'nadirliğe göre azalan');
+});
+
+test('mağaza: günün indirimi sabittir ve fiyatı %25 düşürür', async () => {
+  const { ShopSystem } = await import('../src/systems/ShopSystem.js');
+  const game = makeGame();
+  game.shop = new ShopSystem(game);
+  const a = game.shop.dailyDeal;
+  assert.equal(game.shop.dailyDeal.id, a.id, 'aynı gün aynı ürün');
+  assert.equal(a.percent, 25);
+  const elixir = ELIXIRS.find((e) => e.id === a.id);
+  if (a.kind === 'elixir') {
+    const base = Math.ceil(game.shop.potionPrice * elixir.priceMult);
+    assert.equal(game.shop.elixirPrice(elixir), Math.ceil(base * 0.75));
+  }
+  assert.ok(game.shop.isDeal(a.kind, a.id));
+});
+
+test('mağaza: toplu iksir alımı harcanan altını ve eklenen süreyi doğru hesaplar', async () => {
+  const { ShopSystem } = await import('../src/systems/ShopSystem.js');
+  const { ElixirSystem } = await import('../src/systems/ElixirSystem.js');
+  const game = makeGame();
+  game.shop = new ShopSystem(game);
+  game.elixirs = new ElixirSystem(game);
+  game.state.gold = 1e15;
+  const wrath = ELIXIRS.find((e) => e.id === 'wrath');
+  const price = game.shop.elixirPrice(wrath);
+  const gold0 = game.state.gold;
+  assert.equal(game.shop.buyElixirs('wrath', 3), true);
+  assert.equal(gold0 - game.state.gold, price * 3);
+  assert.equal(game.elixirs.remaining('wrath'), wrath.duration * 3);
+});
+
+test('mağaza: özel ürün alımı ödülü verir (yumurta ve rün)', async () => {
+  const { ShopSystem } = await import('../src/systems/ShopSystem.js');
+  const game = makeGame();
+  game.shop = new ShopSystem(game);
+  game.state.gold = 1e15;
+  const eggs = () => game.state.companions.eggs + (game.state.companions.incubating !== null ? 1 : 0);
+  const before = eggs();
+  assert.equal(game.shop.buySpecial('egg', 2), true);
+  assert.equal(eggs(), before + 2);
+  const runes0 = game.runes.totalCount;
+  game.shop.buySpecial('runePack', 1);
+  assert.equal(game.runes.totalCount, runes0 + 3);
+});
+
+test('mağaza: güç kazancı yalnızca kuşanılanla aynı yuvada ve kuşanılan varken hesaplanır', async () => {
+  const { ShopSystem } = await import('../src/systems/ShopSystem.js');
+  const game = makeGame();
+  game.shop = new ShopSystem(game);
+  const s = game.state;
+  const weak = heavy(createItem(s, { level: 10, slot: 'helmet', tier: 0 }));
+  const strong = heavy(createItem(s, { level: 60, slot: 'helmet', tier: 5 }));
+  assert.equal(game.shop.ratingGain(strong), null, 'kuşanılan yoksa kazanç yok');
+  s.equipment.helmet = weak;
+  assert.ok(game.shop.ratingGain(strong) > 0, 'daha güçlü eşya kazanç verir');
+  assert.ok(game.shop.ratingGain(weak) <= 0.001, 'aynı eşyada kazanç yok');
 });

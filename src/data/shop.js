@@ -44,3 +44,18 @@ export const CHESTS = [
 ];
 
 export const CHEST_MAP = Object.fromEntries(CHESTS.map((c) => [c.id, c]));
+
+/**
+ * Özel ürünler: altınla alınır, ödülü rewards.js biçiminde verilir (grantReward).
+ * priceMult: o bölgedeki Sıradan bir eşyanın değerinin katı (ShopSystem hesaplar).
+ */
+export const SPECIAL_ITEMS = [
+  { id: 'runePack', name: 'Rün Paketi', icon: '💎', color: '#8fd3ff', priceMult: 25,
+    desc: '3 rastgele rün (bölgeye göre kademe)', reward: { type: 'rune', amount: 3 } },
+  { id: 'egg', name: 'Yoldaş Yumurtası', icon: '🥚', color: '#f5e6c8', priceMult: 150,
+    desc: 'Kuluçkaya bir yumurta ekler', reward: { type: 'egg', amount: 1 } },
+  { id: 'towerKey', name: 'Kule Anahtarı', icon: '🗝️', color: '#c58bff', priceMult: 60,
+    desc: 'Boss Kulesi\'ne bir ekstra giriş hakkı', reward: { type: 'towerKey', amount: 1 } },
+];
+
+export const SPECIAL_MAP = Object.fromEntries(SPECIAL_ITEMS.map((s) => [s.id, s]));
