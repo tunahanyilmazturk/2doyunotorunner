@@ -851,3 +851,17 @@
 .goals-modal .cal-grid {
   width: 100%;
 }
+
+/* Elmas: üst çubukta ayrı para birimi */
+.currency.gems {
+  color: #7fd9ff;
+}
+.class-actions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.btn-gem {
+  border-color: #7fd9ff;
+  color: #7fd9ff;
+}

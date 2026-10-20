@@ -28,15 +28,16 @@ export class ClassesPanel {
     for (const c of CLASSES) {
       const canvas = el('canvas', { class: 'class-thumb', width: 64, height: 96 });
       const action = el('button', { class: 'btn btn-sm', onclick: (e) => { e.stopPropagation(); this.act(c.id); } });
+      const gemAction = el('button', { class: 'btn btn-sm btn-gem', onclick: (e) => { e.stopPropagation(); this.act(c.id, 'gems'); } });
       const card = el('div', { class: 'class-card', dataset: { class: c.id }, onclick: () => this.select(c.id) }, [
         canvas,
         el('div', { class: 'class-info' }, [
           el('b', { text: c.name }),
           el('div', { class: 'class-meta', text: `Silah: ${c.weaponKinds.map((k) => WEAPON_KINDS[k]?.name ?? k).join(', ')} · Zırh: ${ARMOR_CLASSES[c.armorClass]?.name ?? c.armorClass} · ${c.bonusText}` }),
-          action,
+          el('div', { class: 'class-actions' }, [action, gemAction]),
         ]),
       ]);
-      this.cards.push({ id: c.id, card, canvas, action });
+      this.cards.push({ id: c.id, card, canvas, action, gemAction });
       grid.append(card);
     }
 
@@ -67,10 +68,11 @@ export class ClassesPanel {
   }
 
   /** Açık sınıfı geçer; kilitliyse önce açar. */
-  act(id) {
+  /** by: 'seals' (Kule Mührü) ya da 'gems' (Elmas); açıkken ise sınıfa geçer. */
+  act(id, by = 'seals') {
     const sys = this.game.classes;
     if (sys.data.active === id) return;
-    if (!sys.isUnlocked(id)) sys.unlock(id);
+    if (!sys.isUnlocked(id)) sys.unlock(id, by);
     if (sys.isUnlocked(id)) sys.switchTo(id);
     this.dirty = true;
   }
@@ -81,9 +83,9 @@ export class ClassesPanel {
     const { game } = this;
     const sys = game.classes;
     const active = sys.data.active;
-    this.sealsEl.textContent = `🔷 Kule Mührü: ${game.state.seals}`;
+    this.sealsEl.textContent = `🔷 Kule Mührü: ${game.state.seals} · 💎 Elmas: ${game.state.gems || 0}`;
 
-    for (const { id, card, canvas, action } of this.cards) {
+    for (const { id, card, canvas, action, gemAction } of this.cards) {
       const c = CLASSES.find((x) => x.id === id);
       drawThumb(canvas, c.look);
       const isActive = id === active;
@@ -101,6 +103,10 @@ export class ClassesPanel {
         action.textContent = `Aç · 🔷 ${c.cost}`;
         action.disabled = !sys.canUnlock(id);
       }
+      // Elmasla açma: yalnızca kilitli sınıflarda
+      gemAction.hidden = unlocked;
+      gemAction.textContent = `Aç · 💎 ${c.gems}`;
+      gemAction.disabled = !sys.canUnlock(id, 'gems');
     }
 
     const sel = CLASSES.find((x) => x.id === this.selected) ?? CLASSES[0];

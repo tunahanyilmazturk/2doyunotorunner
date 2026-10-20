@@ -59,3 +59,18 @@ export const SPECIAL_ITEMS = [
 ];
 
 export const SPECIAL_MAP = Object.fromEntries(SPECIAL_ITEMS.map((s) => [s.id, s]));
+
+/**
+ * Elmasla alınan ürünler (fiyat sabit elmas; altın ve bölge ölçeklemesi yok).
+ * kind: 'rare' (en yüksek nadirlik eşya) | 'elixirs' (her süreli iksirden bir tane) | 'runes' (rün paketi)
+ */
+export const GEM_ITEMS = [
+  { id: 'gemRare', name: 'Nadir Hazine', icon: '💠', color: '#7fd9ff', gems: 12, kind: 'rare',
+    desc: 'Mitik nadirlikte (en yüksek) bir eşya' },
+  { id: 'gemElixirs', name: 'İksir Sandığı', icon: '🧴', color: '#c58bff', gems: 4, kind: 'elixirs',
+    desc: 'Her süreli iksirden birer tane' },
+  { id: 'gemRunes', name: 'Rün Hazinesi', icon: '💎', color: '#8fd3ff', gems: 6, kind: 'runes',
+    desc: '8 rastgele rün (bölgeye göre kademe)' },
+];
+
+export const GEM_ITEM_MAP = Object.fromEntries(GEM_ITEMS.map((g) => [g.id, g]));

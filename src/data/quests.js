@@ -134,6 +134,7 @@ export const WEEKLY_QUEST_COUNT = 3;
 export const WEEKLY_BONUS_REWARDS = [
   { type: 'chest', id: 'gold', amount: 1 },
   { type: 'egg', amount: 2 },
+  { type: 'gem', amount: 5 },
 ];
 
 /**
@@ -178,6 +179,7 @@ export const MONTHLY_BONUS_REWARDS = [
   { type: 'chest', id: 'gold', amount: 2 },
   { type: 'egg', amount: 3 },
   { type: 'towerKey', amount: 3 },
+  { type: 'gem', amount: 15 },
 ];
 
 export const QUEST_MAP = Object.fromEntries([...QUEST_TEMPLATES, ...WEEKLY_TEMPLATES, ...MONTHLY_TEMPLATES].map((q) => [q.id, q]));
@@ -197,6 +199,7 @@ export function weekKey(time = Date.now()) {
 export const ALL_DONE_REWARDS = [
   { type: 'egg', amount: 1 },
   { type: 'towerKey', amount: 1 },
+  { type: 'gem', amount: 2 },
 ];
 
 /** 7 günlük giriş serisi; 8. gün başa döner. */

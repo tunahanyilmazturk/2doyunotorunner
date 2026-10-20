@@ -1,7 +1,7 @@
 import { Balance } from '../config/balance.js';
 import { MAX_POTIONS, SHOP_REFRESH_SECONDS, SHOP_SIZE } from '../config/constants.js';
 import { Events } from '../core/events.js';
-import { CHEST_MAP, CHESTS, ELIXIRS, ELIXIR_MAP, MAX_ELIXIR_SECONDS, SPECIAL_ITEMS, SPECIAL_MAP } from '../data/shop.js';
+import { CHEST_MAP, CHESTS, ELIXIRS, ELIXIR_MAP, GEM_ITEM_MAP, MAX_ELIXIR_SECONDS, SPECIAL_ITEMS, SPECIAL_MAP } from '../data/shop.js';
 import { dayKey } from '../data/quests.js';
 import { createItem, itemRating } from './ItemFactory.js';
 import { grantReward } from './rewards.js';
@@ -140,6 +140,25 @@ export class ShopSystem {
     if (!this.game.economy.spend(this.specialPrice(s) * count)) return this.toast('Yeterli altın yok!', 'error');
     for (let i = 0; i < count; i++) grantReward(this.game, s.reward);
     this.toast(`${s.icon} ${s.name}${count > 1 ? ` ×${count}` : ''} alındı`, 'success');
+    return true;
+  }
+
+  /** Elmasla alınan ürün: nadir eşya, iksir sandığı ya da rün paketi. */
+  buyGemItem(id) {
+    const g = GEM_ITEM_MAP[id];
+    if (!g) return false;
+    if (g.kind === 'rare' && this.game.inventory.freeSlots === 0) return this.toast('Envanter dolu!', 'error');
+    if (!this.game.gems.spend(g.gems)) return this.toast('Yeterli elmas yok!', 'error');
+    if (g.kind === 'rare') {
+      const { state } = this.game;
+      const item = createItem(state, { level: state.runMaxStage, tier: 5, slots: this.game.tree.unlockedSlots() });
+      this.game.loot.receive(item, { x: this.game.player.x, y: this.game.player.y - 90 }, { autoSell: false });
+    } else if (g.kind === 'elixirs') {
+      for (const e of ELIXIRS) this.game.elixirs.drink(e.id);
+    } else {
+      grantReward(this.game, { type: 'rune', amount: 8 });
+    }
+    this.toast(`${g.icon} ${g.name} alındı`, 'success');
     return true;
   }
 

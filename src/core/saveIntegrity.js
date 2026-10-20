@@ -186,7 +186,7 @@ function sanitizeCompanions(raw) {
 
 function sanitizeReward(raw) {
   if (!isObject(raw)) return null;
-  const types = ['souls', 'gold', 'rune', 'egg', 'elixir', 'chest', 'towerKey'];
+  const types = ['souls', 'gold', 'rune', 'egg', 'elixir', 'chest', 'towerKey', 'gem'];
   if (!types.includes(raw.type)) return null;
   const out = { type: raw.type, amount: int(raw.amount, 0, 1e6, 1) };
   if (raw.type === 'rune') out.grade = int(raw.grade, 0, RUNE_GRADES, 0);
@@ -339,6 +339,7 @@ export function sanitizeSave(raw) {
 
   out.bagExpansions = int(raw.bagExpansions, 0, MAX_BAG_EXPANSIONS, 0);
   out.seals = int(raw.seals, 0, 1e6, 0); // Kule mührü (sınıf açma para birimi)
+  out.gems = int(raw.gems, 0, 1e6, 0); // Elmas
   out.classes = sanitizeClasses(raw.classes, allocateId);
 
   out.shop = { items: [], refreshAt: Math.max(0, num(raw.shop?.refreshAt, 0)) };

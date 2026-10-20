@@ -24,6 +24,7 @@ export class HUD {
       gold: $('#hud-gold'),
       gps: $('#hud-gps'),
       souls: $('#hud-souls'),
+      gems: $('#hud-gems'),
       hpFill: $('#hud-hp-fill'),
       hpText: $('#hud-hp-text'),
       buffs: $('#buff-list'),
@@ -187,6 +188,7 @@ export class HUD {
     setText(els.gold, formatNumber(state.gold));
     setText(els.gps, `${formatNumber(state.stats.goldPerSec)}/sn`);
     setText(els.souls, formatNumber(state.souls));
+    setText(els.gems, formatNumber(state.gems ?? 0));
 
     els.hpFill.style.width = `${player.hpRatio * 100}%`;
     setText(els.hpText, `${formatNumber(player.hp)} / ${formatNumber(player.maxHp)}`);

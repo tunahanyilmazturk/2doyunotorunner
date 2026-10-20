@@ -621,3 +621,46 @@ test('giriş takvimi: her yeni gün giriş geçmişine eklenir ve kayıtta korun
   assert.deepEqual(out.daily.loginDays, ['2026-10-20', '2026-10-21']);
   assert.equal(out.monthly.month, '2026-10');
 });
+
+test('elmas: kule ilk geçişi ve ödül verilmesi elmas kazandırır', async () => {
+  const { GemSystem } = await import('../src/systems/GemSystem.js');
+  const { grantReward } = await import('../src/systems/rewards.js');
+  const game = makeGame();
+  game.gems = new GemSystem(game);
+  game.state.gems = 0;
+  game.bus.emit(Events.TOWER_FLOOR_CLEARED, { floor: 1, firstClear: true });
+  assert.equal(game.state.gems, 1 + 3, 'ilk geçiş: 1 + 3 elmas');
+  game.bus.emit(Events.TOWER_FLOOR_CLEARED, { floor: 1, firstClear: false });
+  assert.equal(game.state.gems, 5, 'tekrar geçiş: 1 elmas');
+  grantReward(game, { type: 'gem', amount: 2 });
+  assert.equal(game.state.gems, 7, 'ödül türü elmas verir');
+});
+
+test('elmas: elmasla iksir ve rün paketi alınır; yetmezse alınmaz', async () => {
+  const { GemSystem } = await import('../src/systems/GemSystem.js');
+  const { ShopSystem } = await import('../src/systems/ShopSystem.js');
+  const { ElixirSystem } = await import('../src/systems/ElixirSystem.js');
+  const game = makeGame();
+  game.gems = new GemSystem(game);
+  game.shop = new ShopSystem(game);
+  game.elixirs = new ElixirSystem(game);
+  game.state.gems = 3;
+  assert.equal(game.shop.buyGemItem('gemElixirs'), false, 'iksir sandığı 4 elmas ister');
+  game.state.gems = 10;
+  assert.equal(game.shop.buyGemItem('gemElixirs'), true);
+  assert.equal(game.state.gems, 6, 'bedel elmastan düşer');
+  const runes0 = game.runes.totalCount;
+  assert.equal(game.shop.buyGemItem('gemRunes'), true);
+  assert.equal(game.runes.totalCount, runes0 + 8);
+  assert.equal(game.state.gems, 0);
+});
+
+test('elmas: sınıf elmasla açılır ve elmas yetmezse açılmaz', () => {
+  const game = makeGame();
+  game.state.gems = CLASS_MAP.healer.gems - 1;
+  assert.equal(game.classes.unlock('healer', 'gems'), false);
+  game.state.gems = CLASS_MAP.healer.gems;
+  assert.equal(game.classes.unlock('healer', 'gems'), true);
+  assert.equal(game.state.gems, 0, 'sınıf bedeli elmastan düşer');
+  assert.equal(game.classes.isUnlocked('healer'), true);
+});

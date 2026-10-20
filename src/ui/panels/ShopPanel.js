@@ -1,7 +1,7 @@
 import { Balance } from '../../config/balance.js';
 import { Events } from '../../core/events.js';
 import { getRarity } from '../../data/rarities.js';
-import { CHESTS, ELIXIRS, SPECIAL_ITEMS } from '../../data/shop.js';
+import { CHESTS, ELIXIRS, GEM_ITEMS, SPECIAL_ITEMS } from '../../data/shop.js';
 import { isUpgradeOver, itemDisplayName } from '../../systems/ItemFactory.js';
 import { el } from '../../utils/dom.js';
 import { formatNumber, formatPercent, formatTime } from '../../utils/format.js';
@@ -218,9 +218,21 @@ export class ShopPanel {
         btn,
       ]);
     });
+    // Elmasla alınan ürünler: altın yerine elmas (bosslar, kule, görevler ve başarımlardan kazanılır)
+    this.gemRows = GEM_ITEMS.map((g) => {
+      const btn = el('button', { class: 'btn btn-buy btn-block', onclick: () => this.game.shop.buyGemItem(g.id) });
+      return { g, btn, card: el('div', { class: 'chest-card gem-card', style: { '--c': g.color } }, [
+        el('div', { class: 'chest-icon', text: g.icon }),
+        el('b', { text: g.name }),
+        el('div', { class: 'muted', text: g.desc }),
+        btn,
+      ]) };
+    });
     return el('div', { class: 'shop-page' }, [
       el('div', { class: 'section-head' }, [el('span', { class: 'muted', text: 'Altınla alınan özel ürünler. Yumurta ve anahtar, boss ödüllerinin yerini tutmaz; fiyatları yüksektir.' })]),
       el('div', { class: 'chest-grid' }, cards),
+      el('div', { class: 'section-head' }, [el('h4', { class: 'section-title', text: '💎 Elmasla' }), el('span', { class: 'muted', text: 'Elmas bosslardan, kuleden, hedeflerden ve başarımlardan gelir.' })]),
+      el('div', { class: 'chest-grid' }, this.gemRows.map((r) => r.card)),
     ]);
   }
 
@@ -253,6 +265,11 @@ export class ShopPanel {
         btn.textContent = `Al ×${qty} · 🪙 ${formatNumber(price * qty)}`;
         btn.disabled = gold < price;
         deal.hidden = !shop.isDeal('special', s.id);
+      }
+      const gems = game.state.gems || 0;
+      for (const { g, btn } of this.gemRows ?? []) {
+        btn.textContent = `Al · 💎 ${g.gems}`;
+        btn.disabled = gems < g.gems;
       }
     } else {
       const p = shop.potionPrice;

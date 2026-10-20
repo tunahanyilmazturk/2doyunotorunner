@@ -48,6 +48,7 @@ export function createDefaultState() {
     monthly: { month: '', quests: [], bonusClaimed: false }, // aylık hedefler (ayda bir yenilenir)
     tower: { best: 0, attempts: TOWER_DAILY_ATTEMPTS, keys: 0 }, // Boss Kulesi (kalıcı)
     seals: 0, // Kule mührü: sınıf açma para birimi (kalıcı)
+    gems: 0, // Elmas: nadir eşya, iksir/rün paketi ve sınıf açma (kalıcı, prestijde silinmez)
     classes: { active: DEFAULT_CLASS, unlocked: { [DEFAULT_CLASS]: true }, sets: {} }, // sınıflar; sets = aktif olmayanların ekipmanı
 
     shop: { items: [], refreshAt: 0 },

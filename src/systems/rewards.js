@@ -28,6 +28,7 @@ const rewardText = {
   elixir: (r) => `${r.amount} rastgele iksir`,
   chest: (r) => `${r.amount} ${CHEST_MAP[r.id]?.name ?? 'sandık'}`,
   towerKey: (r) => `${r.amount} 🗝️ kule anahtarı`,
+  gem: (r) => `${r.amount} 💎 elmas`,
 };
 
 export function describeReward(game, r) {
@@ -60,6 +61,9 @@ export function grantReward(game, r, at = null) {
       break;
     case 'chest':
       for (let i = 0; i < n; i++) game.shop.openChest(res.id, { free: true });
+      break;
+    case 'gem':
+      state.gems = (state.gems || 0) + n;
       break;
     case 'towerKey':
       state.tower.keys += n;

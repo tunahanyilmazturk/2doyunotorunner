@@ -29,16 +29,19 @@ export class ClassSystem {
     return !!this.data.unlocked[id];
   }
 
-  canUnlock(id) {
+  /** Sınıf açılabilir mi? by: 'seals' (Kule Mührü) ya da 'gems' (Elmas). */
+  canUnlock(id, by = 'seals') {
     const c = CLASS_MAP[id];
-    return !!c && !this.isUnlocked(id) && this.game.state.seals >= c.cost;
+    if (!c || this.isUnlocked(id)) return false;
+    return by === 'gems' ? (this.game.state.gems || 0) >= c.gems : this.game.state.seals >= c.cost;
   }
 
-  /** Sınıfı Kule Mührü karşılığında açar. */
-  unlock(id) {
-    if (!this.canUnlock(id)) return false;
+  /** Sınıfı Kule Mührü ya da elmas karşılığında açar. */
+  unlock(id, by = 'seals') {
+    if (!this.canUnlock(id, by)) return false;
     const c = CLASS_MAP[id];
-    this.game.state.seals -= c.cost;
+    if (by === 'gems') this.game.state.gems -= c.gems;
+    else this.game.state.seals -= c.cost;
     this.data.unlocked[id] = true;
     this.game.bus.emit(Events.TOAST, { text: `🎭 ${c.name} sınıfı açıldı`, type: 'success' });
     this.changed();

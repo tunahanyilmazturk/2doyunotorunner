@@ -62,6 +62,7 @@ export const Events = Object.freeze({
   PRESTIGE_READY: 'prestige:ready',
   PRESTIGE_ADVICE: 'prestige:advice',
   OFFLINE_REWARD: 'offline:reward',
+  GEMS_EARNED: 'gems:earned',
   SETTINGS_CHANGED: 'settings:changed',
   PAUSE_CHANGED: 'game:pauseChanged',
   GAME_SAVED: 'game:saved',

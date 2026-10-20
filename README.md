@@ -51,7 +51,9 @@ Beş haritanın hareketli önizlemesi: sunucu açıkken `/tools/map-preview.html
   6 nadirlik (Sıradan → Mitik), 7 seviye kademesi, seviyeye göre ölçeklenen rastgele statlar
 - **Eşya setleri** — 5 set (Kızıl Nişan, Buzul Siperi, Fırtına Örtüsü, Yaşam Yemini, Kâhin Gözü), her biri 6 yuva kapsar.
 - **Karakter sınıfları** — Savaşçı (varsayılan), Okçu, Büyücü, Suikastçı, Şifacı. Her sınıf kendi silah türünü ve zırh sınıfını kuşanır;
-  diğer sınıfların eşyaları envanterde durur ama kuşanılamaz. Sınıf açmak **Kule Mührü** (🔷) harcar; her Boss Kulesi kat geçişi 1 mühür verir.
+  diğer sınıfların eşyaları envanterde durur ama kuşanılamaz. Sınıf açmak **Kule Mührü** (🔷) harcar; her Boss Kulesi kat geçişi 1 mühür verir. Sınıflar **elmasla** (💎) da açılabilir.
+- **Elmas** (💎) — bosslardan (%35), Boss Kulesi kat geçişlerinden, haftalık/aylık/günlük hedef bonuslarından ve başarımlardan kazanılır.
+  Elmasla **Nadir Hazine** (mitik eşya), **İksir Sandığı** ve **Rün Hazinesi** alınır; sınıf açılabilir. Prestijde silinmez.
   Geçiş ücretsizdir ve her sınıfın ekipmanı ayrı saklanır. Yeniden doğuşta ekipmanlar silinir, açılan sınıflar kalır.
   Nadir ve üstü eşyalar set parçası olabilir (nadirlik arttıkça şans artar); aynı setten **2 / 4 / 6 parça**
   kuşanınca kademeli bonus açılır. Parçalar yuva kenarındaki elmasla işaretlenir, Karakter sekmesinde
