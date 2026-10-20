@@ -351,17 +351,18 @@
 .upgrade-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(255px, 1fr));
-  gap: 6px;
+  gap: 4px;
 }
+/* Sıkı dizilim: kategori rozetli satırlar ekrana sığsın diye boşluklar dar */
 .upgrade-row {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   background: var(--bg-2);
   border: 2px solid var(--edge);
   box-shadow: var(--bevel-sunk);
   border-radius: var(--radius);
-  padding: 5px 8px;
+  padding: 3px 7px;
 }
 .upgrade-row .btn-buy {
   min-width: 70px;

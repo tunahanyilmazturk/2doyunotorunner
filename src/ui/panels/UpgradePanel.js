@@ -17,6 +17,14 @@ const SORTS = [
   { id: 'cost', name: 'Fiyat' },
   { id: 'level', name: 'Seviye' },
 ];
+// Kategori: yükseltmenin etkilediği stata göre üç grup (satırda rozet ve filtre olarak görünür)
+const CATEGORIES = {
+  war: { name: '⚔️ Savaş', stats: ['atk', 'aspd', 'crit', 'critDmg', 'bossDmg'] },
+  def: { name: '🛡️ Savunma', stats: ['hp', 'armor', 'regen', 'lifesteal', 'dodge'] },
+  eco: { name: '💰 Ekonomi', stats: ['goldPct', 'luck'] },
+};
+const categoryOf = (up) => Object.keys(CATEGORIES).find((k) => CATEGORIES[k].stats.includes(up.stat)) ?? 'eco';
+
 const FILTERS = [
   { id: 'all', name: 'Tümü' },
   { id: 'affordable', name: 'Alınabilir' },
@@ -31,7 +39,7 @@ export class UpgradePanel {
     this.game = game;
     this.ui = ui;
     this.rows = [];
-    this.view = { sort: 'default', filter: 'all', query: '' };
+    this.view = { sort: 'default', filter: 'all', query: '', category: 'all' };
     // DOM yalnızca sıra/filtre imzası değişince yeniden dizilir (kare başına
     // düğüm taşıma animasyonları ve imleci bozar).
     this.orderSignature = '';
@@ -106,6 +114,20 @@ export class UpgradePanel {
       },
     });
 
+    this.categorySelect = el(
+      'select',
+      {
+        class: 'select',
+        title: 'Kategori',
+        onchange: (e) => {
+          this.view.category = e.target.value;
+          this.tick();
+        },
+      },
+      [el('option', { value: 'all', text: 'Tüm kategoriler' }), ...Object.entries(CATEGORIES).map(([id, c]) => el('option', { value: id, text: c.name }))]
+    );
+    this.summary = el('span', { class: 'up-summary muted' });
+
     this.empty = el('div', { class: 'up-empty muted', text: '🔍 Bu sıralama/filtreye uyan yükseltme yok.' });
 
     this.list = el('div', { class: 'upgrade-list' });
@@ -118,12 +140,13 @@ export class UpgradePanel {
         effBar: el('span'),
         effLabel: el('span', { class: 'up-eff-label' }),
         btn: el('button', { class: 'btn btn-buy', onclick: (e) => this.buy(up.id, e) }),
+        cat: el('span', { class: 'up-cat', text: CATEGORIES[categoryOf(up)].name }),
         auto: el('input', { type: 'checkbox', title: 'Otomatik alıma dahil', onchange: (e) => sys.setRowAuto(up.id, e.target.checked) }),
       };
       row.eff = el('div', { class: 'up-eff' }, [el('div', { class: 'up-eff-track' }, [row.effBar]), row.effLabel]);
       row.node = el('div', { class: 'upgrade-row', title: `${up.name}: ${up.desc}` }, [
         el('div', { class: 'up-icon', text: iconToken(`upgrade-${up.id}`) }),
-        el('div', { class: 'up-info' }, [el('div', { class: 'up-name' }, [el('b', { text: up.name }), row.level]), row.effect, row.mile, row.eff]),
+        el('div', { class: 'up-info' }, [el('div', { class: 'up-name' }, [el('b', { text: up.name }), row.cat, row.level]), row.effect, row.mile, row.eff]),
         el('div', { class: 'up-actions' }, [row.btn, row.auto]),
       ]);
       this.rows.push(row);
@@ -136,8 +159,8 @@ export class UpgradePanel {
         el('div', { class: 'toolbar-group' }, [this.bestBtn, this.autoLabel, this.profileSelect]),
       ]),
       el('div', { class: 'toolbar up-filters' }, [
-        el('div', { class: 'toolbar-group' }, [this.sortSelect, this.filterSelect, this.searchInput]),
-        el('div', { class: 'toolbar-group' }, [el('span', { class: 'muted', text: `⭐ Her ${MILESTONE_EVERY} seviyede etki ×2` })]),
+        el('div', { class: 'toolbar-group' }, [this.sortSelect, this.filterSelect, this.categorySelect, this.searchInput]),
+        el('div', { class: 'toolbar-group' }, [this.summary, el('span', { class: 'muted', text: `⭐ Her ${MILESTONE_EVERY} seviyede ×2` })]),
       ]),
       this.list,
       this.empty
@@ -220,6 +243,7 @@ export class UpgradePanel {
       const matchesQuery = !query || up.name.toLocaleLowerCase('tr').includes(query) || up.stat.toLocaleLowerCase('tr').includes(query);
       const visible =
         matchesQuery &&
+        (this.view.category === 'all' || categoryOf(up) === this.view.category) &&
         (this.view.filter === 'all' ||
           (this.view.filter === 'affordable' ? affordable : this.view.filter === 'marked' ? marked && !maxed : maxed));
       items.push({ row, up, lvl, maxed, m, cost, affordable, marked, visible });
@@ -242,7 +266,7 @@ export class UpgradePanel {
     else if (this.view.sort === 'cost') sorted.sort((a, b) => a.cost - b.cost);
     else if (this.view.sort === 'level') sorted.sort((a, b) => b.lvl - a.lvl);
 
-    const signature = `${this.view.sort}|${this.view.filter}|${query}|${sorted.map((i) => `${i.up.id}${i.visible ? 1 : 0}`).join(',')}`;
+    const signature = `${this.view.sort}|${this.view.filter}|${this.view.category}|${query}|${sorted.map((i) => `${i.up.id}${i.visible ? 1 : 0}`).join(',')}`;
     if (signature !== this.orderSignature) {
       this.orderSignature = signature;
       this.list.append(...sorted.filter((i) => i.visible).map((i) => i.row.node));
@@ -292,6 +316,8 @@ export class UpgradePanel {
       row.eff.title = `Tahmini verim ${item.rank ?? 0}/100 · stat kazancı ≈%${(q.gain * 100).toFixed(1)} · fiyat 🪙${formatNumber(item.cost)}`;
     }
 
+    const affordableCount = items.filter((i) => i.affordable).length;
+    this.summary.textContent = `🪙 ${formatNumber(game.state.gold)} · ${affordableCount} alınabilir`;
     this.bestBtn.disabled = !anyAffordableMarked;
     this.bestBtn.title = anyAffordableMarked
       ? 'İşaretli yükseltmelerden altın başına en verimlisini, altın yettiğince alır'

@@ -19,20 +19,19 @@ export class ClassesPanel {
 
   mount(root) {
     this.sealsEl = el('div', { class: 'class-seals' });
-    this.previewCanvas = el('canvas', { class: 'class-preview-canvas', width: 200, height: 300 });
+    this.previewCanvas = el('canvas', { class: 'class-preview-canvas', width: 120, height: 180 });
     this.previewName = el('h3', { class: 'class-preview-name' });
     this.previewInfo = el('div', { class: 'class-preview-info' });
     this.previewAction = el('button', { class: 'btn btn-block', onclick: () => this.act(this.selected) });
 
     const grid = el('div', { class: 'class-grid' });
     for (const c of CLASSES) {
-      const canvas = el('canvas', { class: 'class-thumb', width: 90, height: 130 });
+      const canvas = el('canvas', { class: 'class-thumb', width: 64, height: 96 });
       const action = el('button', { class: 'btn btn-sm', onclick: (e) => { e.stopPropagation(); this.act(c.id); } });
       const card = el('div', { class: 'class-card', dataset: { class: c.id }, onclick: () => this.select(c.id) }, [
         canvas,
         el('div', { class: 'class-info' }, [
           el('b', { text: c.name }),
-          el('div', { class: 'muted', text: c.desc }),
           el('div', { class: 'class-meta', text: `Silah: ${c.weaponKinds.map((k) => WEAPON_KINDS[k]?.name ?? k).join(', ')} · Zırh: ${ARMOR_CLASSES[c.armorClass]?.name ?? c.armorClass} · ${c.bonusText}` }),
           action,
         ]),
