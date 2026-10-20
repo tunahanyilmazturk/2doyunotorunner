@@ -78,6 +78,8 @@
   align-items: center;
 }
 .rune-type {
+  display: flex;
+  align-items: center;
   font-family: var(--font-pixel);
   font-size: 13px;
   font-weight: 600;
@@ -86,6 +88,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.rune-type .pixel-icon { --icon-size: 22px; }
 .rune-grade-label {
   text-align: center;
   font-size: 10px;
@@ -197,6 +200,7 @@
   font-size: 34px;
   line-height: 1;
 }
+.egg-emoji .pixel-icon { --icon-size: 48px; }
 .egg-box b {
   color: var(--gold);
 }
@@ -242,6 +246,8 @@
   font-size: 28px;
   text-align: center;
 }
+.comp-emoji .pixel-icon { --icon-size: 36px; }
+.comp-rarity .pixel-icon { --icon-size: 18px; }
 .comp-body {
   flex: 1;
   min-width: 0;
@@ -348,6 +354,7 @@
   font-family: var(--font-pixel);
   font-size: 12px;
 }
+.login-day .pixel-icon { --icon-size: 18px; }
 .login-day.today {
   opacity: 1;
   border-color: var(--gold);

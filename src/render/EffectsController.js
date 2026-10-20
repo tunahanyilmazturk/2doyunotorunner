@@ -43,17 +43,17 @@ export class EffectsController {
     bus.on(Events.RUNE_FOUND, ({ typeId, grade, x, y }) => {
       if (x === undefined) return;
       const color = RUNE_MAP[typeId].color;
-      text.add(`◆ ${runeName(typeId, grade)}`, x, y - 70, { color, size: 15, life: 1.6, vy: -35, vx: 0 });
+      text.add(`${iconToken(`rune-${typeId}`)} ${runeName(typeId, grade)}`, x, y - 70, { color, size: 15, life: 1.6, vy: -35, vx: 0 });
       fx.burst(x, y, { count: 12, color: [color, '#ffffff'], shape: 'circle', speed: [40, 140], size: [2, 4], life: [0.6, 1], gravity: -80 });
     });
 
     bus.on(Events.COMPANION_HATCHED, ({ def, isNew }) => {
-      renderer.showBanner(isNew ? `${def.emoji} Yeni yoldaş!` : `${def.emoji} Tekrar çıktı`, isNew ? def.name : `${def.name} deneyim kazandı`, '#9be7ff');
+      renderer.showBanner(isNew ? `${iconToken(`companion-${def.id}`)} Yeni yoldaş!` : `${iconToken(`companion-${def.id}`)} Tekrar çıktı`, isNew ? def.name : `${def.name} deneyim kazandı`, '#9be7ff');
     });
 
     bus.on(Events.COMPANION_LEVELED, ({ def, level }) => {
       const p = game.player;
-      text.add(`${def.emoji} Sv.${level}!`, p.x - 60, p.y - 80, { color: '#9be7ff', size: 15, life: 1.4, vx: 0 });
+      text.add(`${iconToken(`companion-${def.id}`)} Sv.${level}!`, p.x - 60, p.y - 80, { color: '#9be7ff', size: 15, life: 1.4, vx: 0 });
     });
 
     bus.on(Events.COMPANION_HEALED, ({ amount }) => {

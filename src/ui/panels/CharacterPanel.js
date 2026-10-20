@@ -10,6 +10,7 @@ import { drawPlayerDoll } from '../../render/sprites/PlayerSprite.js';
 import { el } from '../../utils/dom.js';
 import { formatNumber } from '../../utils/format.js';
 import { createItemSlot } from '../components/ItemSlot.js';
+import { iconToken } from '../icons.js';
 
 // Kağıt bebek: yuvalar figürün iki yanına, gövde yüksekliğine göre dizilir.
 // Sol sütun figürün solunda kalan parçalar (kalkan sol elde tutulur), sağ sütun sağdakiler.
@@ -146,7 +147,7 @@ export class CharacterPanel {
   /** Sınıf düğmesi: aktif sınıf adı ve kalan Kule Mührü */
   updateClassBtn() {
     const { game } = this;
-    this.classBtn.textContent = `🎭 ${game.classes.active.name} · 🔷 ${game.state.seals}`;
+    this.classBtn.textContent = `${iconToken('menu-classes')} ${game.classes.active.name} · ${iconToken('class-seal')} ${game.state.seals}`;
   }
 
   /** Menü rozeti: envanterde kuşanılandan daha iyi eşya sayısı */
@@ -356,7 +357,7 @@ export class CharacterPanel {
         const next = set.bonuses.find((b) => pieces < b.pieces);
         return el('div', { class: 'set-row', style: { '--set': set.color } }, [
           el('div', { class: 'set-head' }, [
-            el('span', { class: 'set-name', text: `${set.icon} ${set.name}` }),
+            el('span', { class: 'set-name', text: `${iconToken(set.icon)} ${set.name}` }),
             el('span', { class: 'set-pieces', text: `${pieces}/${set.slots.length}` }),
           ]),
           el('div', { class: 'set-chips' }, Object.entries(merged).map(([key, value]) => el('span', { class: 'set-chip', text: formatStatLine(key, value) }))),

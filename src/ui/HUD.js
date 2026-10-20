@@ -152,7 +152,7 @@ export class HUD {
 
     // Sınıf yeteneği (G): içeriği aktif sınıfa göre değişir (updateAbility)
     this.ability = makeButton({
-      icon: '✨',
+      icon: iconToken('ability-warCry'),
       name: 'Sınıf yeteneği',
       key: 'G',
       onUse: () => game.skills.castClassAbility(),
@@ -186,7 +186,7 @@ export class HUD {
     const { game } = this;
     const ab = game.classes.active.ability;
     const sig = game.classes.active.signature;
-    return `<div class="tt-name">${ab.icon} ${ab.name}</div>
+    return `<div class="tt-name">${iconToken(ab.icon)} ${ab.name}</div>
       <div class="tt-sub">${game.classes.active.name} · Bekleme ${Math.round(game.skills.cooldownOf(ab))} sn</div>
       ${ab.desc}
       <br>Pasif: <b>${sig.name}</b> — ${sig.desc}
@@ -201,7 +201,7 @@ export class HUD {
     const sys = game.skills;
     if (p.abilityId !== ab.id) {
       p.abilityId = ab.id;
-      p.icon.textContent = ab.icon;
+      p.icon.textContent = iconToken(ab.icon);
       p.node.setAttribute('aria-label', `${ab.name} (G)`);
     }
     const cd = sys.cooldowns[ab.id];
@@ -337,9 +337,8 @@ export class HUD {
       this.buffKey = key;
       this.buffChips = active.map((a) => {
         const time = el('b');
-        // Sınıf yetenekleri piksel atlasında yok: emoji simgesi kullanılır
-        const icon = ABILITY_MAP[a.src.id] ? a.src.icon : iconToken(`${a.key.startsWith('s:') ? 'skill' : 'elixir'}-${a.src.id}`);
-        const chip = el('div', { class: 'buff-chip', style: { '--c': a.src.color }, title: a.src.name }, [icon, time]);
+        const art = ABILITY_MAP[a.src.id] ? iconToken(a.src.icon) : iconToken(`${a.key.startsWith('s:') ? 'skill' : 'elixir'}-${a.src.id}`);
+        const chip = el('div', { class: 'buff-chip', style: { '--c': a.src.color }, title: a.src.name }, [art, time]);
         return { ...a, chip, time };
       });
       this.els.buffs.replaceChildren(...this.buffChips.map((b) => b.chip));

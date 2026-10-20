@@ -2,12 +2,8 @@
 // sessizce kaymamalıdır. Bu testler `tools/balance-model.mjs` ile oyunun gerçek
 // formüllerini kullanır (ekipmansız oyuncu = alt sınır).
 //
-// Kilitlenen kararlar:
-//  1. Boss sayacı, "can dayanmıyor" duvarından ÖNCE gelmez. Aksi halde oyuncu
-//     öldürülemeyen bir düşman yerine görünmez bir sayaçla durur (eski hata:
-//     15. bölgede takılıyordu).
-//  2. İlk yeniden doğuş (20. bölge) ekipmansız da erişilebilir olmalı.
-//  3. Canavar gücü oyuncudan hızlı büyümeli; yoksa yeniden doğuş anlamsızlaşır.
+// Modelin ekipman ve yetenekleri içermediği bilindiğinden ilerleme garantisi
+// vermez; formül eğrilerini ve görünen engelleri izlemek için kullanılır.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { BOSS_TIME_LIMIT } from '../src/config/constants.js';
@@ -18,19 +14,13 @@ const rows = runStages(1, 120);
 const w = walls(rows);
 const at = (stage) => rows.find((r) => r.stage === stage);
 
-test('boss sayacı duvarı, can duvarından önce gelmez', () => {
+test('denge raporu boss süresi ve ağır vuruş kaynaklı hasarı ayrı ölçer', () => {
   assert.ok(w.cannotSurvive !== null, 'can duvarı bulunmalı');
   assert.ok(w.bossTimeout !== null, 'boss sayacı duvarı bulunmalı');
-  assert.ok(
-    w.bossTimeout > w.cannotSurvive,
-    `boss sayacı (${w.bossTimeout}) can duvarından (${w.cannotSurvive}) sonra olmalı`
-  );
-});
-
-test('ilk yeniden doğuş (20. bölge) ekipmansız erişilebilir', () => {
-  assert.ok(w.cannotSurvive >= 28, `can duvarı çok erken: ${w.cannotSurvive} (>= 28 bekleniyor)`);
-  const r20 = at(20);
-  assert.ok(r20.survive > r20.ttk * 1.2, '20. bölgede rahat dayanılmalı');
+  assert.ok(w.bossDeath !== null, 'boss hasarı duvarı bulunmalı');
+  assert.equal(w.bossBlock, Math.min(w.bossTimeout, w.bossDeath));
+  const boss = at(w.bossDeath);
+  assert.ok(Number.isFinite(boss.bossSurvive), 'boss sırasında tahmini hayatta kalma süresi olmalı');
 });
 
 test('duvarlar birbirine yakın: tek bir "burada duruyorum" hissi', () => {

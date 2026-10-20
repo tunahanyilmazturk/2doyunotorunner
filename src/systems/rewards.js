@@ -4,6 +4,7 @@ import { CHEST_MAP, ELIXIRS } from '../data/shop.js';
 import { RUNE_MAP, runeGradeForStage } from '../data/runes.js';
 import { formatNumber } from '../utils/format.js';
 import { pick } from '../utils/random.js';
+import { iconToken } from '../ui/icons.js';
 
 // Görev, giriş serisi ve kule ödüllerinin ortak dili.
 // Ödül biçimi: { type, amount, grade?, id? }
@@ -25,7 +26,7 @@ const rewardText = {
   gold: (r) => `${formatNumber(r.gold)} 🪙`,
   rune: (r) => `${r.amount} rün (${r.grade}. kademe)`,
   egg: (r) => `${r.amount} 🥚 yumurta`,
-  elixir: (r) => `${r.amount} rastgele iksir`,
+  elixir: (r) => `${r.amount} ${iconToken('reward-elixir')} rastgele iksir`,
   chest: (r) => `${r.amount} ${CHEST_MAP[r.id]?.name ?? 'sandık'}`,
   towerKey: (r) => `${r.amount} 🗝️ kule anahtarı`,
   gem: (r) => `${r.amount} 💎 elmas`,

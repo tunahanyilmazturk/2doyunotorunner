@@ -5,8 +5,9 @@
 // `test/balance-curve.test.js` ise eğrinin bozulmadığını doğrular. İkisi de
 // buradaki tek tanımı kullanır; formül iki yerde tekrarlanmaz.
 //
-// Sınırlar: ekipman, yetenek, iksir, elit canavar ve çevrimdışı kazanç modellenmez.
-// Yani çıkan sonuç ALT sınırdır: gerçek oyuncu ekipmanla daha ileri gider.
+// Sınırlar: sınıf bonusu/imzası, ekipman, yetenek, iksir, elit canavar ve çevrimdışı kazanç modellenmez.
+// Her bölgenin 10 normal öldürmesi ve varsa boss ganimeti bölge sonu geliri olarak
+// varsayılır; bu nedenle model bir denge senaryosudur, gerçek koşunun garantisi değildir.
 import { BOSS_EVERY, KILLS_PER_STAGE } from '../src/config/constants.js';
 import { Balance, PLAYER_BASE } from '../src/config/balance.js';
 import { getBiome } from '../src/data/biomes.js';
@@ -86,54 +87,65 @@ export function runStages(from, to, opts = {}) {
   let gold = 0;
   const rows = [];
   for (let stage = 1; stage <= to; stage++) {
-    let stats = playerStats(levels, stage, opts);
-
-    // Bölgedeki canavarları ve varsa bossu öldürüp altın topla, sonra alışveriş yap.
-    gold += Balance.monsterGold(avgMonster(stage).gold, stage) * stats.goldMult * KILLS_PER_STAGE;
-    if (stage % BOSS_EVERY === 0) {
-      gold += Balance.monsterGold(bossDef(stage).gold, stage) * Balance.bossGoldMult * stats.goldMult;
-    }
-    gold = autoBuy(gold, levels);
-    stats = playerStats(levels, stage, opts);
-
-    if (stage < from) continue;
-
     const m = avgMonster(stage);
-    const incoming = Balance.monsterAtk(m.atk, stage) * m.atkSpeed * (1 - stats.damageReduction) * (1 - stats.dodgeChance);
+    const stats = playerStats(levels, stage, opts);
+    const cycleHp = Balance.cycleHpMultiplier(stage);
+    const cycleAtk = Balance.cycleAtkMultiplier(stage);
+    const cycleGold = Balance.cycleGoldMultiplier(stage);
+    const incoming = Balance.monsterAtk(m.atk, stage) * cycleAtk * m.atkSpeed * (1 - stats.damageReduction) * (1 - stats.dodgeChance);
     const healing = stats.regen + stats.lifesteal * stats.dps;
     // İyileşme gelen hasarı geçiyorsa oyuncu bu bölgede ölemez.
     const survive = healing >= incoming ? Infinity : stats.maxHp / (incoming - healing);
-    const ttk = Balance.monsterHp(m.hp, stage) / stats.dps;
+    const ttk = Balance.monsterHp(m.hp, stage) * cycleHp / stats.dps;
     const boss = stage % BOSS_EVERY === 0 ? bossDef(stage) : null;
 
-    rows.push({
-      stage,
-      gold: Math.floor(gold),
-      levels: { ...levels },
-      atk: stats.atk,
-      maxHp: stats.maxHp,
-      armor: stats.armor,
-      damageReduction: stats.damageReduction,
-      dps: stats.dps,
-      monsterHp: Balance.monsterHp(m.hp, stage),
-      monsterDps: incoming,
-      ttk,
-      survive,
-      bossTtk: boss ? (Balance.monsterHp(boss.hp, stage) * Balance.bossHpMult) / (stats.dps * stats.bossDmgMult) : null,
-      bossTimeLimit: boss ? Balance.bossTimeLimit(stage) : null,
+    const bossTtk = boss
+      ? (Balance.monsterHp(boss.hp, stage) * cycleHp * Balance.bossHpMult) / (stats.dps * stats.bossDmgMult)
+      : null;
+    // Bossların her 4. vuruşu ağırdır; ortalama hasara bu döngüyü de kat.
+    const bossReduction = stats.damageReduction;
+    const bossNormalDamage = 1 - bossReduction;
+    const bossHeavyDamage = Balance.heavyMult.boss * (1 - bossReduction * Balance.heavyArmorFactor);
+    const bossAttackFactor = boss
+      ? ((Balance.heavyEvery.boss - 1) * bossNormalDamage + bossHeavyDamage) / Balance.heavyEvery.boss
+      : null;
+    const bossIncoming = boss
+      ? Balance.monsterAtk(boss.atk, stage) * cycleAtk * Balance.bossAtkMult * boss.atkSpeed * bossAttackFactor * (1 - stats.dodgeChance)
+      : null;
+    const bossHealing = boss ? stats.regen + stats.lifesteal * stats.dps * stats.bossDmgMult : null;
+    const bossSurvive = boss
+      ? bossHealing >= bossIncoming ? Infinity : stats.maxHp / (bossIncoming - bossHealing)
+      : null;
+    if (stage >= from) rows.push({
+      stage, gold: Math.floor(gold), levels: { ...levels }, atk: stats.atk, maxHp: stats.maxHp,
+      armor: stats.armor, damageReduction: stats.damageReduction, dps: stats.dps,
+      regen: stats.regen, lifesteal: stats.lifesteal, dodgeChance: stats.dodgeChance, bossDmgMult: stats.bossDmgMult,
+      monsterHp: Balance.monsterHp(m.hp, stage) * cycleHp, monsterDps: incoming, ttk, survive,
+      bossTtk, bossSurvive, bossDps: bossIncoming, bossTimeLimit: boss ? Balance.bossTimeLimit(stage) : null,
     });
+
+    // Ödüller ancak bölge sonu hesaplandıktan sonra kullanılabilir. Bu senaryo
+    // 10 normal öldürmeyi varsayar; boss ganimeti de ancak süre içinde yenilirse gelir.
+    gold += Math.max(1, Math.round(Balance.monsterGold(m.gold, stage) * cycleGold * stats.goldMult)) * KILLS_PER_STAGE;
+    if (boss && bossTtk <= Balance.bossTimeLimit(stage) && bossTtk <= bossSurvive) {
+      gold += Math.max(1, Math.round(Balance.monsterGold(boss.gold, stage) * cycleGold * Balance.bossGoldMult * stats.goldMult));
+    }
+    gold = autoBuy(gold, levels);
   }
   return rows;
 }
 
 /**
  * Duvarlar: oyunun gerçekten durduğu ilk bölgeler.
- * Sıralama önemli — boss duvarı can dayanıklılığı duvarından ÖNCE gelmemeli,
- * yoksa oyuncu "öldürülebilir" bir düşman yerine görünmez bir sayaçla durur.
+ * Boss süresi, boss hasarı ve normal düşman duvarlarını ayrı ayrı gösterir.
  */
 export function walls(rows) {
+  const bossDeath = rows.find((r) => r.bossTtk !== null && r.bossTtk > r.bossSurvive)?.stage ?? null;
+  const bossTimeout = rows.find((r) => r.bossTtk !== null && r.bossTtk > r.bossTimeLimit)?.stage ?? null;
   return {
-    bossTimeout: rows.find((r) => r.bossTtk !== null && r.bossTtk > r.bossTimeLimit)?.stage ?? null,
+    bossTimeout,
+    bossDeath,
+    bossBlock: [bossTimeout, bossDeath].filter((stage) => stage !== null).sort((a, b) => a - b)[0] ?? null,
     cannotSurvive: rows.find((r) => r.survive < r.ttk)?.stage ?? null,
     slowKill: rows.find((r) => r.ttk > 15)?.stage ?? null,
   };

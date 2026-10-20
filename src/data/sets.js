@@ -15,7 +15,7 @@ export const SETS = [
     id: 'crimson',
     name: 'Kızıl Nişan',
     prefix: 'Kızıl',
-    icon: '🔥',
+    icon: 'set-crimson',
     color: '#e0553f',
     slots: ['weapon', 'helmet', 'armor', 'gloves', 'ring', 'belt'],
     bonuses: [
@@ -28,7 +28,7 @@ export const SETS = [
     id: 'glacier',
     name: 'Buzul Siperi',
     prefix: 'Buzul',
-    icon: '🛡️',
+    icon: 'set-glacier',
     color: '#58b6e0',
     slots: ['shield', 'helmet', 'armor', 'cape', 'belt', 'boots'],
     bonuses: [
@@ -41,7 +41,7 @@ export const SETS = [
     id: 'storm',
     name: 'Fırtına Örtüsü',
     prefix: 'Fırtına',
-    icon: '💨',
+    icon: 'set-storm',
     color: '#5fd0c0',
     slots: ['cape', 'boots', 'ring', 'gloves', 'amulet', 'weapon'],
     bonuses: [
@@ -54,7 +54,7 @@ export const SETS = [
     id: 'life',
     name: 'Yaşam Yemini',
     prefix: 'Yaşam',
-    icon: '💚',
+    icon: 'set-life',
     color: '#86d96b',
     slots: ['amulet', 'armor', 'helmet', 'shield', 'belt', 'ring'],
     bonuses: [
@@ -67,7 +67,7 @@ export const SETS = [
     id: 'oracle',
     name: 'Kâhin Gözü',
     prefix: 'Kâhin',
-    icon: '🍀',
+    icon: 'set-oracle',
     color: '#e0c04a',
     slots: ['amulet', 'cape', 'ring', 'helmet', 'boots', 'gloves'],
     bonuses: [
@@ -81,7 +81,7 @@ export const SETS = [
     id: 'hunter',
     name: 'Avcı Yemini',
     prefix: 'Avcı',
-    icon: '🏹',
+    icon: 'set-hunter',
     color: '#7fb069',
     slots: ['weapon', 'cape', 'gloves', 'boots', 'amulet', 'ring'],
     bonuses: [
@@ -94,7 +94,7 @@ export const SETS = [
     id: 'arcane',
     name: 'Arkana Cüppesi',
     prefix: 'Arkana',
-    icon: '🪄',
+    icon: 'set-arcane',
     color: '#9b6fd6',
     slots: ['weapon', 'armor', 'helmet', 'amulet', 'ring', 'belt'],
     bonuses: [
@@ -107,7 +107,7 @@ export const SETS = [
     id: 'shadow',
     name: 'Gölge Mirası',
     prefix: 'Gölge',
-    icon: '🗡️',
+    icon: 'set-shadow',
     color: '#4a4a5e',
     slots: ['weapon', 'gloves', 'boots', 'cape', 'amulet', 'belt'],
     bonuses: [
@@ -120,7 +120,7 @@ export const SETS = [
     id: 'sanctum',
     name: 'Kutsal Mühür',
     prefix: 'Kutsal',
-    icon: '✨',
+    icon: 'set-sanctum',
     color: '#f2d27a',
     slots: ['helmet', 'armor', 'shield', 'amulet', 'ring', 'gloves'],
     bonuses: [

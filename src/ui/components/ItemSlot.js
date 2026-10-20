@@ -29,6 +29,7 @@ export function createItemSlot(item, opts) {
     if (set) {
       node.classList.add('has-set');
       node.style.setProperty('--set', set.color);
+      node.append(el('span', { class: 'slot-set-icon' }, [icon(set.icon, `${set.name} seti`)]));
     }
 
     node.addEventListener('mouseenter', (e) => {

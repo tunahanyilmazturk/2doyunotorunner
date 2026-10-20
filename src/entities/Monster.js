@@ -26,11 +26,10 @@ export class Monster extends Entity {
     const goldMult = boss ? Balance.bossGoldMult : this.isElite ? Balance.eliteGoldMult : 1;
     // Kabus döngüsü çarpanları
     this.cycle = Balance.cycleOf(stage);
-    const c = this.cycle;
-    this.maxHp = Balance.monsterHp(def.hp, stage) * hpMult * Math.pow(Balance.cycleHpMult, c);
+    this.maxHp = Balance.monsterHp(def.hp, stage) * hpMult * Balance.cycleHpMultiplier(stage);
     this.hp = this.maxHp;
-    this.atk = Balance.monsterAtk(def.atk, stage) * atkMult * Math.pow(Balance.cycleAtkMult, c);
-    this.gold = Balance.monsterGold(def.gold, stage) * goldMult * Math.pow(Balance.cycleGoldMult, c);
+    this.atk = Balance.monsterAtk(def.atk, stage) * atkMult * Balance.cycleAtkMultiplier(stage);
+    this.gold = Balance.monsterGold(def.gold, stage) * goldMult * Balance.cycleGoldMultiplier(stage);
     this.atkSpeed = def.atkSpeed;
     this.speed = def.speed;
     this.damageTaken = 1; // alınan hasar çarpanı

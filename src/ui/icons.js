@@ -1,17 +1,28 @@
 import { ICON_RECTS } from './iconRects.js';
 
-// Generated pixel-art atlases. Original files are preserved; alpha bounds prevent bleed.
+// Generated pixel-art atlases. The original sheets remain intact; each new sheet is registered by cell.
 const sheets = {
   weapons: { file: 'weapons-v1.png', cols: 5, rows: 7 },
   equipment: { file: 'equipment-v1.png', cols: 9, rows: 7 },
   powers: { file: 'powers-v1.png', cols: 8, rows: 6 },
   interface: { file: 'interface-v1.png', cols: 8, rows: 8 },
+  weaponsV2: { file: 'weapons-v2.png', cols: 3, rows: 7 },
+  assassinDaggersV2: { file: 'assassin-daggers-v2.png', cols: 3, rows: 3 },
+  factionsV2: { file: 'factions-v2.png', cols: 5, rows: 5 },
+  collectionV2: { file: 'collection-v2.png', cols: 6, rows: 6 },
 };
 
 export const ICONS = {};
 function register(sheet, keys) {
   keys.forEach((key, i) => {
-    ICONS[key] = { ...sheets[sheet], sheet, col: i % sheets[sheet].cols, row: Math.floor(i / sheets[sheet].cols), rect: ICON_RECTS[key] };
+    const { cols, rows, file } = sheets[sheet];
+    const col = i % cols;
+    const row = Math.floor(i / cols);
+    const png = sheet === 'weaponsV2' ? [821, 1916] : ['assassinDaggersV2', 'factionsV2', 'collectionV2'].includes(sheet) ? [1254, 1254] : null;
+    const rect = sheet === 'assassinDaggersV2'
+      ? [col * png[0] / cols, row * png[1] / rows, png[0] / cols, png[1] / rows, ...png]
+      : ICON_RECTS[key] ?? (png ? [col * png[0] / cols, row * png[1] / rows, png[0] / cols, png[1] / rows, ...png] : undefined);
+    ICONS[key] = { ...sheets[sheet], sheet, file, col, row, rect };
   });
 }
 
@@ -19,6 +30,10 @@ const weaponKinds = ['sword', 'axe', 'hammer', 'spear', 'dagger'];
 const equipmentSlots = ['helmet', 'armor', 'boots', 'ring', 'amulet', 'cape', 'shield', 'gloves', 'belt'];
 register('weapons', Array.from({ length: 7 }, (_, row) => weaponKinds.map((kind) => `item-${kind}-${row}`)).flat());
 register('equipment', Array.from({ length: 7 }, (_, row) => equipmentSlots.map((slot) => `item-${slot}-${row}`)).flat());
+export const GENERATED_WEAPON_KEYS = Array.from({ length: 7 }, (_, row) => ['bow', 'staff', 'scepter'].map((kind) => `item-${kind}-${row}`)).flat();
+register('weaponsV2', GENERATED_WEAPON_KEYS);
+export const GENERATED_ASSASSIN_WEAPON_KEYS = Array.from({ length: 7 }, (_, row) => `item-dagger-${row}`);
+register('assassinDaggersV2', GENERATED_ASSASSIN_WEAPON_KEYS);
 register('powers', [
   'skill-powerStrike', 'skill-frenzy', 'skill-goldRush', 'skill-divineHeal', 'skill-meteor', 'branch-combat', 'branch-survival', 'branch-wealth',
   'branch-gear', 'branch-arcane', 'upgrade-power', 'upgrade-vitality', 'upgrade-defense', 'upgrade-regen', 'upgrade-haste', 'upgrade-precision',
@@ -38,27 +53,25 @@ register('interface', [
   'export', 'import', 'reset', 'confirm', 'close', 'expand', 'collapse', 'link',
 ]);
 
-// Atlas ızgaraları tamamen dolu (her satır/hücre kullanılıyor), bu yüzden yeni
-// çizim eklemek yerine var olan simgeler paylaştırılır. Arayüz bu anahtarları
-// şablonla üretir (`achievement-${group}`), eksik olursa iconHTML fırlatır.
-ICONS['achievement-sets'] = { ...ICONS['achievement-items'] };
-ICONS['achievement-setTypes'] = { ...ICONS['achievement-gear'] };
-ICONS['achievement-tower'] = { ...ICONS['boss'] };
-ICONS['achievement-companions'] = { ...ICONS['gift'] };
-ICONS['achievement-runes'] = { ...ICONS['achievement-mythic'] };
-ICONS['achievement-daily'] = { ...ICONS['elixir-luck'] };
+// Yeni sınıflar, yetenekler, setler ve kalıcı koleksiyonlar için özgün çizimler.
+export const GENERATED_FACTION_KEYS = [
+  'class-warrior', 'class-archer', 'class-mage', 'class-assassin', 'class-healer', 'ability-warCry', 'ability-eagleEye',
+  'ability-arcaneBlast', 'ability-shadowStep', 'ability-sanctuary', 'set-crimson', 'set-glacier', 'set-storm', 'set-life',
+  'set-oracle', 'set-hunter', 'set-arcane', 'set-shadow', 'set-sanctum', 'rune-ruby', 'rune-emerald',
+  'rune-sapphire', 'rune-topaz', 'rune-amethyst', 'rune-onyx',
+];
+register('factionsV2', GENERATED_FACTION_KEYS);
 
-// Yeni silah türleri ve iksirler: atlasta yer yok, görsel olarak en yakın simgeyi paylaşır.
-for (let row = 0; row < 7; row++) {
-  ICONS[`item-bow-${row}`] = { ...ICONS[`item-spear-${row}`] };
-  ICONS[`item-staff-${row}`] = { ...ICONS[`item-hammer-${row}`] };
-  ICONS[`item-scepter-${row}`] = { ...ICONS[`item-staff-${row}`] };
-}
-ICONS['elixir-swift'] = { ...ICONS['elixir-wrath'] };
-ICONS['elixir-precision'] = { ...ICONS['elixir-fortune'] };
-ICONS['elixir-vampire'] = { ...ICONS['elixir-wrath'] };
-ICONS['elixir-haven'] = { ...ICONS['elixir-ironskin'] };
-ICONS['elixir-shade'] = { ...ICONS['elixir-luck'] };
+export const GENERATED_COLLECTION_KEYS = [
+  'companion-wolfPup', 'companion-goldBeetle', 'companion-owl', 'companion-fairy', 'companion-golemling', 'companion-sparrow',
+  'companion-shadowWolf', 'companion-dragonling', 'egg', 'elixir-swift', 'elixir-precision', 'elixir-vampire',
+  'elixir-haven', 'elixir-shade', 'reward-elixir', 'achievement-sets', 'achievement-setTypes', 'achievement-tower',
+  'achievement-companions', 'achievement-runes', 'achievement-daily', 'tower-key', 'gem', 'class-seal', 'class-unlock',
+  'quest-daily', 'quest-weekly', 'quest-monthly', 'menu-tower', 'menu-classes', 'menu-companions',
+  'companion-rarity-0', 'companion-rarity-1', 'companion-rarity-2', 'companion-rarity-3', 'quest-bonus',
+];
+register('collectionV2', GENERATED_COLLECTION_KEYS);
+export const GENERATED_ATLAS_KEYS = [...GENERATED_WEAPON_KEYS, ...GENERATED_ASSASSIN_WEAPON_KEYS, ...GENERATED_FACTION_KEYS, ...GENERATED_COLLECTION_KEYS];
 
 export function itemArtKey(item) {
   const type = item.slot === 'weapon' ? (item.kind || 'sword') : item.slot;
@@ -100,6 +113,8 @@ export const aliases = {
   '💥': 'skill-powerStrike', '🔥': 'skill-frenzy', '☄️': 'skill-meteor', '🧪': 'potion', '👑': 'boss', '💨': 'upgrade-haste', '🎯': 'upgrade-precision', '💚': 'upgrade-regen', '🩸': 'upgrade-vampirism', '🍃': 'upgrade-evasion', '🍀': 'upgrade-fortune', '🌵': 'stat-thorns',
   '📦': 'chest-wood', '🧰': 'chest-iron', '🍷': 'elixir-wrath', '🧉': 'elixir-ironskin', '🍯': 'elixir-fortune', '📜': 'elixir-luck', '🎁': 'gift', '🎮': 'gamepad', '⌨️': 'keyboard',
   '🔄': 'refresh', '↕': 'sort', '🤖': 'auto', '⚠️': 'warning', '⚠': 'warning', '🔗': 'link', '🔮': 'tree-a3', '🌀': 'tree-a1', '📯': 'tree-a4', '⏳': 'tree-c4', '⏱️': 'achievement-fastBoss', '⭐': 'achievement-elite', '🌟': 'achievement-legend', '🔴': 'achievement-mythic', '📖': 'achievement-bestiary', '🗺️': 'achievement-stage', '🏦': 'tree-w3', '🚀': 'tree-w4', '🤝': 'tree-w5', '😡': 'skill-frenzy', '⛰️': 'upgrade-slayer', '⚔': 'combat', '❤': 'health', '💫': 'tree-a1', '★': 'achievement-elite',
+  '🦅': 'ability-eagleEye', '🕊️': 'ability-sanctuary', '🎭': 'menu-classes', '🐾': 'menu-companions', '🗼': 'menu-tower', '🔷': 'class-seal', '💎': 'gem', '🎟️': 'tower-key', '🗝️': 'tower-key', '🥚': 'egg', '📅': 'quest-weekly', '🗓️': 'quest-monthly',
+  '💠': 'achievement-sets',
 };
 const escapedAliases = Object.keys(aliases).sort((a, b) => b.length - a.length).map((s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
 const pattern = new RegExp(`\\[\\[icon:([a-zA-Z0-9-]+)\\]\\]|${escapedAliases.join('|')}`, 'gu');

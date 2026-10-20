@@ -7,6 +7,7 @@ import { itemDisplayName } from '../../systems/ItemFactory.js';
 import { el } from '../../utils/dom.js';
 import { formatNumber } from '../../utils/format.js';
 import { createItemSlot } from '../components/ItemSlot.js';
+import { icon, iconToken } from '../icons.js';
 
 // Demirci > Rünler: solda rün çantası (tür × kademe), sağda kuşanılan eşyaların yuvaları.
 // Akış: çantadan rün seç → boş yuvaya tıkla (tak). Dolu yuvaya tıkla → çıkar.
@@ -88,7 +89,7 @@ export class RunesView {
     ]);
     const rows = RUNE_TYPES.map((t) =>
       el('div', { class: 'rune-row' }, [
-        el('span', { class: 'rune-type', style: { color: t.color }, text: t.name, title: STAT_DEFS[t.stat].label }),
+        el('span', { class: 'rune-type', style: { color: t.color }, title: STAT_DEFS[t.stat].label }, [icon(`rune-${t.id}`, `${t.name} rünü`), document.createTextNode(` ${t.name}`)]),
         ...Array.from({ length: RUNE_GRADES }, (_, i) => {
           const grade = i + 1;
           const n = runes.count(t.id, grade);
@@ -164,7 +165,7 @@ export class RunesView {
     if (s) {
       const t = RUNE_MAP[s.typeId];
       const n = game.runes.count(s.typeId, s.grade);
-      this.selInfo.innerHTML = `<b style="color:${t.color}">◆ ${runeName(s.typeId, s.grade)}</b> +%${runeValue(s.typeId, s.grade)} ${STAT_DEFS[t.stat].label} · ${n} adet`;
+      this.selInfo.innerHTML = `<b style="color:${t.color}">${iconToken(`rune-${s.typeId}`)} ${runeName(s.typeId, s.grade)}</b> +%${runeValue(s.typeId, s.grade)} ${STAT_DEFS[t.stat].label} · ${n} adet`;
       const canGrade = s.grade < RUNE_GRADES;
       this.combineBtn.hidden = !canGrade;
       this.combineBtn.textContent = `Birleştir (${RUNES_TO_COMBINE}→1) · 🪙 ${formatNumber(combineCost(s.grade))}`;

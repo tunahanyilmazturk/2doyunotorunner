@@ -79,7 +79,7 @@ export const COMPANION_MAP = Object.fromEntries(COMPANIONS.map((c) => [c.id, c])
 export const COMPANION_IDS = COMPANIONS.map((c) => c.id);
 
 /** Normal bir bossun yumurta düşürme ihtimali (kule bossları hariç) */
-export const BOSS_EGG_CHANCE = 0.3;
+export const BOSS_EGG_CHANCE = 0.4;
 export const MAX_COMPANION_LEVEL = 50;
 export const EGG_HATCH_KILLS = 120;
 export const MAX_EGGS = 99;

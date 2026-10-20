@@ -19,6 +19,8 @@ export const MONSTERS = {
     colors: { body: '#f2c14e', dark: '#2a2018', eye: '#1a1010' }, features: ['stripes', 'stinger'] },
   treant: { name: 'Ent', shape: 'humanoid', hp: 60, atk: 5, atkSpeed: 0.6, gold: 8, speed: 25, size: 56,
     colors: { body: '#8a6a44', dark: '#4e3822', eye: '#ffe14d', cloth: '#6b4a2c' }, features: ['bark', 'leaves'] },
+  thornling: { name: 'Dikenli Filiz', shape: 'flora', hp: 38, atk: 5, atkSpeed: 0.9, gold: 6, speed: 42, size: 42,
+    colors: { body: '#78a943', dark: '#355c2e', eye: '#f5d64a' }, features: ['thorns', 'bud'] },
 
   // ---------- Çöl ----------
   scorpion: { name: 'Akrep', shape: 'beast', hp: 32, atk: 5, atkSpeed: 1.0, gold: 5, speed: 55, size: 40,
@@ -31,6 +33,8 @@ export const MONSTERS = {
     colors: { body: '#d9a15c', dark: '#9c6a32', eye: '#3a1a08' }, features: ['burrow', 'teeth'] },
   vulture: { name: 'Akbaba', shape: 'flyer', hp: 26, atk: 5, atkSpeed: 1.2, gold: 6, speed: 95, size: 34,
     colors: { body: '#6b4a3a', dark: '#3a2a22', eye: '#ffcf4d' }, features: ['beak'] },
+  glassScarab: { name: 'Cam Kınkanat', shape: 'beetle', hp: 42, atk: 6, atkSpeed: 0.85, gold: 7, speed: 48, size: 42,
+    colors: { body: '#d9a84e', dark: '#70452e', eye: '#ffe58a' }, features: ['horn', 'crystal'] },
 
   // ---------- Mağara ----------
   bat: { name: 'Yarasa', shape: 'flyer', hp: 22, atk: 4, atkSpeed: 1.4, gold: 5, speed: 100, size: 32,
@@ -43,6 +47,8 @@ export const MONSTERS = {
     colors: { body: '#d8e2ff', dark: '#8f9ccf', eye: '#2a1a4a' } },
   troll: { name: 'Mağara Trolü', shape: 'humanoid', hp: 70, atk: 6.5, atkSpeed: 0.6, gold: 9, speed: 25, size: 58,
     colors: { body: '#7f9a7a', dark: '#4f644c', eye: '#ffcc33', cloth: '#5a4632' }, features: ['bulky', 'tusks', 'club'] },
+  caveScarab: { name: 'Obsidyen Kınkanat', shape: 'beetle', hp: 48, atk: 7, atkSpeed: 0.8, gold: 8, speed: 44, size: 44,
+    colors: { body: '#655c88', dark: '#29263f', eye: '#6ff5e6' }, features: ['horn', 'crystal'] },
 
   // ---------- Buzul ----------
   iceSlime: { name: 'Buz Balçığı', shape: 'slime', hp: 34, atk: 4.5, atkSpeed: 0.8, gold: 6, speed: 40, size: 38,
@@ -55,6 +61,8 @@ export const MONSTERS = {
     colors: { body: '#a8d8f0', dark: '#5a9ac0', eye: '#e8ffff', cloth: '#7fbfe0' }, features: ['block', 'crystal'] },
   frostWisp: { name: 'Ayaz Ruhu', shape: 'ghost', hp: 30, atk: 6, atkSpeed: 1.2, gold: 7, speed: 60, size: 36,
     colors: { body: '#9fe4ff', dark: '#3a8fc8', eye: '#0d2c3d' }, features: ['wisp'] },
+  frostMoth: { name: 'Ayaz Güvesi', shape: 'flyer', hp: 34, atk: 6, atkSpeed: 1.1, gold: 7, speed: 82, size: 38,
+    colors: { body: '#d8f4ff', dark: '#669bb8', eye: '#183b64' }, features: ['moth', 'crown'] },
 
   // ---------- Volkan ----------
   imp: { name: 'İblisçik', shape: 'flyer', hp: 28, atk: 6, atkSpeed: 1.4, gold: 7, speed: 100, size: 32,
@@ -67,6 +75,8 @@ export const MONSTERS = {
     colors: { body: '#e0482f', dark: '#7a1a0e', eye: '#ffe14d' }, features: ['spikes', 'teeth'] },
   hellhound: { name: 'Cehennem Tazısı', shape: 'beast', hp: 45, atk: 7.5, atkSpeed: 1.3, gold: 9, speed: 100, size: 46,
     colors: { body: '#3a2220', dark: '#1e1010', eye: '#ff6a1f' }, features: ['flames', 'tail'] },
+  ashKnight: { name: 'Kül Muhafızı', shape: 'humanoid', hp: 58, atk: 8, atkSpeed: 0.85, gold: 10, speed: 38, size: 50,
+    colors: { body: '#74605b', dark: '#35282b', eye: '#ffb02e', cloth: '#493338' }, features: ['block', 'cracks', 'sword'] },
 };
 
 // Bosslar: normal canavar tanımı + scale. Her biyomda iki boss vardır:

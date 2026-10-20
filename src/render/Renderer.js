@@ -149,10 +149,10 @@ export class Renderer {
     this.background.draw(lc, game.world.distance);
 
     const player = game.player;
-    const monster = game.spawn.current;
+    const monsters = game.spawn.monsters;
     const auras = game.skills.activeBuffSkills().map((sk) => sk.color);
 
-    if (monster) {
+    for (const monster of monsters) {
       this.drawShadow(lc, monster.x, monster.y, monster.size * 0.45 * (monster.flying ? 0.6 : 1), monster.dead ? 1 - monster.deathTimer / 0.45 : 1);
       if ((monster.isElite || monster.isBoss) && !monster.dead) this.drawGlow(lc, monster);
       const boxH = monster.size * 1.9 + (monster.flying ? FLY_HEIGHT + 30 : 16);

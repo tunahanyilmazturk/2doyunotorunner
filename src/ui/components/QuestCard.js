@@ -1,8 +1,16 @@
 import { QUEST_MAP } from '../../data/quests.js';
 import { describeReward } from '../../systems/rewards.js';
 import { el } from '../../utils/dom.js';
+import { iconToken } from '../icons.js';
 
 const NEAR_RATIO = 0.8; // bu oranın üstündeki görevler "tamamlanmak üzere" işaretlenir
+const QUEST_ART = {
+  kills: 'achievement-kills', elites: 'achievement-elite', bosses: 'achievement-boss', skills: 'menu-skills',
+  loot: 'achievement-items', runes: 'rune-ruby', enhance: 'achievement-enhance', tower: 'achievement-tower',
+  upgrades: 'menu-upgrades', companions: 'menu-companions', elixirs: 'elixir-swift', sockets: 'rune-sapphire', alchemy: 'rune-amethyst',
+  wkKills: 'achievement-kills', wkTower: 'achievement-tower', wkBosses: 'achievement-boss', wkSkills: 'menu-skills', wkUpgrades: 'menu-upgrades',
+  moKills: 'achievement-kills', moTower: 'achievement-tower', moBosses: 'achievement-boss', moUpgrades: 'menu-upgrades', moCombine: 'rune-amethyst',
+};
 
 /**
  * Bir görev kartı: ilerleme çubuğu, ödül ve alma düğmesi.
@@ -15,7 +23,7 @@ export function createQuestCard(game, kind, i, quest) {
   const btn = el('button', { class: 'btn btn-buy btn-sm', onclick: () => game.quests.claim(i, kind) });
   const node = el('div', { class: 'quest-card' }, [
     el('div', { class: 'quest-info' }, [
-      el('b', { text: t.name }),
+      el('b', {}, [iconToken(QUEST_ART[quest.id] ?? `quest-${kind}`), ` ${t.name}`]),
       el('div', { class: 'muted', text: t.desc(quest.target) }),
       bar,
       el('div', { class: 'quest-reward', text: `Ödül: ${describeReward(game, quest.reward)}` }),

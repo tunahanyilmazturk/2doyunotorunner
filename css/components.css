@@ -189,6 +189,23 @@
   box-shadow: 0 0 5px var(--set);
   transform: rotate(45deg);
 }
+.item-slot.has-set::before { display: none; }
+.slot-set-icon {
+  position: absolute;
+  z-index: 2;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  background: var(--bg-2);
+  border: 1px solid var(--set);
+  border-radius: 50%;
+  box-shadow: 0 1px 3px #09070c;
+}
+.slot-set-icon .pixel-icon { --icon-size: 14px; }
 
 @keyframes rarity-glow {
   from {

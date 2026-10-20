@@ -15,7 +15,7 @@ import { PERK_KEYS, TREE_NODES, BRANCHES } from '../src/data/soulTree.js';
 import { UPGRADES } from '../src/data/upgrades.js';
 import { SKILLS } from '../src/data/skills.js';
 import { createDefaultState } from '../src/core/GameState.js';
-import { SHAPES } from '../src/render/sprites/monsters/index.js';
+import { drawMonster, SHAPES } from '../src/render/sprites/monsters/index.js';
 import { ICONS, aliases, iconRuns, itemArtKey } from '../src/ui/icons.js';
 import { STAGES_PER_BIOME } from '../src/config/constants.js';
 
@@ -71,6 +71,34 @@ test('her canavar ve boss eksiksiz ve geçerli tanımlı', () => {
 test('her biyomda en az bir hayalet/uçan/yılan çeşitliliği var', () => {
   const shapes = new Set(BIOMES.flatMap((b) => b.monsters.map((id) => MONSTERS[id].shape)));
   assert.ok(shapes.size >= 4, 'şekil çeşitliliği yetersiz');
+});
+
+test('yeni biyom düşmanları kayıtlı, havuzlarında ve özel çizim şekillerine sahip', () => {
+  const additions = {
+    forest: ['thornling'],
+    desert: ['glassScarab'],
+    cave: ['caveScarab'],
+    tundra: ['frostMoth'],
+    volcano: ['ashKnight'],
+  };
+  for (const biome of BIOMES) {
+    for (const id of additions[biome.id]) {
+      assert.ok(MONSTERS[id], `${id}: canavar verisi eksik`);
+      assert.ok(biome.monsters.includes(id), `${biome.id}: düşman havuzunda değil`);
+      assert.ok(SHAPES[MONSTERS[id].shape], `${id}: özel çizimi kayıtlı değil`);
+    }
+  }
+  assert.equal(typeof SHAPES.beetle, 'function');
+  assert.equal(typeof SHAPES.flora, 'function');
+});
+
+test('yeni düşman çizimleri animasyon sırasında hata vermez', () => {
+  const ctx = new Proxy({}, { get: () => () => {} });
+  for (const id of ['thornling', 'glassScarab', 'caveScarab', 'frostMoth', 'ashKnight']) {
+    const def = MONSTERS[id];
+    drawMonster(ctx, { def, x: 100, y: 200, animTime: 1.2, seed: 0.4, attackAnim: 0.5,
+      dead: false, deathTimer: 0, scale: 1, hitFlash: 0, state: 'approach', flying: def.shape === 'flyer' });
+  }
 });
 
 test('elit özellikleri uygulanabilir ve kimlikleri benzersiz', () => {

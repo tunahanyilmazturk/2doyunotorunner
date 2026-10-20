@@ -195,6 +195,7 @@
   color: var(--set);
   font-weight: 700;
 }
+.set-name .pixel-icon { --icon-size: 24px; }
 .set-pieces {
   color: var(--muted);
 }

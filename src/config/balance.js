@@ -58,6 +58,9 @@ export const Balance = {
   cycleHpMult: 6,
   cycleAtkMult: 3.5,
   cycleGoldMult: 3,
+  cycleHpMultiplier: (stage) => Math.pow(Balance.cycleHpMult, Balance.cycleOf(stage)),
+  cycleAtkMultiplier: (stage) => Math.pow(Balance.cycleAtkMult, Balance.cycleOf(stage)),
+  cycleGoldMultiplier: (stage) => Math.pow(Balance.cycleGoldMult, Balance.cycleOf(stage)),
 
   // Ağır vuruş: bosslar ve elitler belirli aralıklarla (önceden uyararak) sert vurur.
   // Zırhın sadece bir kısmı bu vuruşa karşı işe yarar.

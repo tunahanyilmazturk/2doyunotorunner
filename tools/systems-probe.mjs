@@ -1,6 +1,6 @@
 // Yeni sistemlerin denge raporu: `node tools/systems-probe.mjs`
-// Oyuncu gücü balance-model.mjs'deki otomatik alım eğrisinden gelir (alt sınır:
-// ekipman, yetenek ve iksir yok). Kule, rün ve yoldaş tahminleri buradan hesaplanır.
+// Oyuncu gücü balance-model.mjs'deki teorik otomatik alım eğrisinden gelir:
+// sınıf, ekipman, yetenek, iksir, Ruh Ağacı ve elitler modellenmez.
 import { BOSS_EVERY, KILLS_PER_STAGE } from '../src/config/constants.js';
 import { Balance } from '../src/config/balance.js';
 import { BOSSES } from '../src/data/monsters.js';
@@ -17,27 +17,44 @@ const pad = (s, w) => String(s).padStart(w);
 const rows = runStages(1, Math.max(...PLAYER_STAGES));
 const at = (stage) => rows.find((r) => r.stage === stage);
 
-// 1) KULE: oyuncu bölge S'deyken, her katın bossunu TOWER_TIME içinde yenebilir mi?
+// 1) KULE: kulede oyuncu canı katlar arasında taşındığından süre ve hayatta kalma birlikte izlenir.
 console.log(`\n=== Boss Kulesi: oyuncu bölgesine göre ulaşılabilen en yüksek kat (süre ${TOWER_TIME} sn) ===`);
-console.log('Kule bossu: towerStage(kat) bölgesinde, can ×' + TOWER_HP_MULT + '. Hız = otomatik alım DPS\'i.\n');
-console.log(pad('oyuncu', 8) + pad('DPS', 10) + pad('son geçilen kat', 20) + pad('kat 1 TTK', 12) + pad('kat 1 bölge', 13));
+console.log('Ekipman/yetenek/iksir yok; katlar arası %30 can yenilemesi hesaba katılır.\n');
+console.log(pad('oyuncu', 8) + pad('DPS', 10) + pad('son geçilen kat', 20) + pad('kat 1 TTK', 12) + pad('kat 1 dayan', 13));
 for (const S of PLAYER_STAGES) {
   const r = at(S);
+  const netRateFor = (boss, stage) => {
+    const armor = Balance.armorReduction(r.armor, S);
+    const regular = 1 - armor;
+    const heavy = Balance.heavyMult.boss * (1 - armor * Balance.heavyArmorFactor);
+    const attackFactor = ((Balance.heavyEvery.boss - 1) * regular + heavy) / Balance.heavyEvery.boss;
+    const incoming = Balance.monsterAtk(boss.atk, stage) * Balance.cycleAtkMultiplier(stage) * Balance.bossAtkMult * boss.atkSpeed * attackFactor * (1 - r.dodgeChance);
+    const healing = r.regen + r.lifesteal * r.dps * r.bossDmgMult;
+    return incoming - healing;
+  };
   let wall = null;
+  let hp = r.maxHp;
   for (let f = 1; f <= MAX_FLOOR; f++) {
     const boss = BOSSES[towerBossId(f)];
-    const ttk = (Balance.monsterHp(boss.hp, towerStage(f)) * Balance.bossHpMult * TOWER_HP_MULT) / (r.dps * 1);
-    if (ttk > TOWER_TIME) { wall = f; break; }
+    const stage = towerStage(f);
+    const ttk = (Balance.monsterHp(boss.hp, stage) * Balance.cycleHpMultiplier(stage) * Balance.bossHpMult * TOWER_HP_MULT) / (r.dps * r.bossDmgMult);
+    const netRate = netRateFor(boss, stage);
+    const survive = netRate <= 0 ? Infinity : hp / netRate;
+    if (ttk > TOWER_TIME || ttk > survive) { wall = f; break; }
+    hp = Math.min(r.maxHp, hp - netRate * ttk + r.maxHp * 0.3);
   }
   const b1 = BOSSES[towerBossId(1)];
-  const ttk1 = (Balance.monsterHp(b1.hp, towerStage(1)) * Balance.bossHpMult * TOWER_HP_MULT) / r.dps;
+  const floorStage = towerStage(1);
+  const ttk1 = (Balance.monsterHp(b1.hp, floorStage) * Balance.cycleHpMultiplier(floorStage) * Balance.bossHpMult * TOWER_HP_MULT) / (r.dps * r.bossDmgMult);
+  const rate1 = netRateFor(b1, floorStage);
+  const survive1 = rate1 <= 0 ? Infinity : r.maxHp / rate1;
   console.log(
     pad(S, 8) + pad(fmt(r.dps, 0), 10) + pad(wall ? `${wall - 1}. kat` : `>=${MAX_FLOOR}`, 20) +
-    pad(fmt(ttk1, 1) + 'sn', 12) + pad(towerStage(1), 13)
+    pad(fmt(ttk1, 1) + 'sn', 12) + pad(fmt(survive1, 1) + 'sn', 13)
   );
 }
 console.log(`\nKilit: ${TOWER_UNLOCK_STAGE}. bölge. Kat 1 bossu bölge ${towerStage(1)} gücünde.`);
-console.log('Not: kule bossunun saldırı gücü dahil edilmedi; hayatta kalma ayrıca test edilmeli.');
+console.log('Tahmin ekipman, yetenek, iksir ve sınıf imza etkilerini içermez.');
 
 // 2) RÜN: bölge başına beklenen rün sayısı ve kademe
 console.log('\n=== Rün üretimi (bölge başına beklenen) ===');

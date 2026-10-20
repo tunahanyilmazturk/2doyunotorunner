@@ -4,12 +4,13 @@ import { describeReward } from '../systems/rewards.js';
 import { el } from '../utils/dom.js';
 import { formatTime } from '../utils/format.js';
 import { createQuestCard, updateQuestCard } from './components/QuestCard.js';
+import { iconToken } from './icons.js';
 
 const PAGES = [
-  { id: 'daily', label: '📜 Günlük' },
-  { id: 'weekly', label: '📅 Haftalık' },
-  { id: 'monthly', label: '🗓️ Aylık' },
-  { id: 'calendar', label: '🎁 Giriş takvimi' },
+  { id: 'daily', label: `${iconToken('quest-daily')} Günlük` },
+  { id: 'weekly', label: `${iconToken('quest-weekly')} Haftalık` },
+  { id: 'monthly', label: `${iconToken('quest-monthly')} Aylık` },
+  { id: 'calendar', label: `${iconToken('quest-monthly')} Giriş takvimi` },
 ];
 const WEEKDAYS = ['Pt', 'Sa', 'Ça', 'Pe', 'Cu', 'Ct', 'Pz'];
 const pad = (n) => String(n).padStart(2, '0');
@@ -70,7 +71,7 @@ export class GoalsModal {
     return el('div', { class: 'goals-section' }, [
       el('div', { class: 'section-head' }, [el('h4', { class: 'section-title', text: 'Bugünün görevleri' }), this.dailyReset]),
       el('div', { class: 'quest-list' }, this.cards.map((c) => c.node)),
-      el('div', { class: 'quest-bonus' }, [el('span', { text: `Üçünü de tamamla: ${ALL_DONE_REWARDS.map((r) => describeReward(game, r)).join(' + ')}` }), this.bonusBtn]),
+      el('div', { class: 'quest-bonus' }, [el('span', { text: `${iconToken('quest-bonus')} Üçünü de tamamla: ${ALL_DONE_REWARDS.map((r) => describeReward(game, r)).join(' + ')}` }), this.bonusBtn]),
       el('div', { class: 'section-head' }, [el('h4', { class: 'section-title', text: 'Günlük giriş ödülü' }), loginBtn]),
       el('div', { class: 'muted', text: `Seri: ${Math.max(1, d.streak)}. gün · bugünün ödülü: ${describeReward(game, game.quests.loginReward)}` }),
     ]);
@@ -87,9 +88,9 @@ export class GoalsModal {
     const title = kind === 'weekly' ? 'Bu haftanın hedefleri' : 'Bu ayın hedefleri';
     this.boardKind = kind;
     return el('div', { class: 'goals-section' }, [
-      el('div', { class: 'section-head' }, [el('h4', { class: 'section-title', text: title }), this.boardReset]),
+      el('div', { class: 'section-head' }, [el('h4', { class: 'section-title', text: `${iconToken(kind === 'weekly' ? 'quest-weekly' : 'quest-monthly')} ${title}` }), this.boardReset]),
       el('div', { class: 'quest-list' }, this.cards.map((c) => c.node)),
-      el('div', { class: 'quest-bonus' }, [el('span', { text: `Üçünü de tamamla: ${bonus.map((r) => describeReward(game, r)).join(' + ')}` }), this.boardBtn]),
+      el('div', { class: 'quest-bonus' }, [el('span', { text: `${iconToken('quest-bonus')} Üçünü de tamamla: ${bonus.map((r) => describeReward(game, r)).join(' + ')}` }), this.boardBtn]),
     ]);
   }
 

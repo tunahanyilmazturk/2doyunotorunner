@@ -3,6 +3,7 @@ import { ARMOR_CLASSES, CLASSES } from '../../data/classes.js';
 import { WEAPON_KINDS } from '../../data/items.js';
 import { drawPlayerDoll } from '../../render/sprites/PlayerSprite.js';
 import { el } from '../../utils/dom.js';
+import { icon } from '../icons.js';
 
 // Sınıflar sekmesi: her sınıfın karakter tasarımı, silah/zırh türleri ve açma/geçiş.
 // Önizleme seçili sınıfın görünümünü gösterir; aktif sınıfta kuşanılmış ekipman da görünür.
@@ -114,7 +115,7 @@ export class ClassesPanel {
     ctx.clearRect(0, 0, this.previewCanvas.width, this.previewCanvas.height);
     // Kuşanılmış ekipman yalnızca aktif sınıfın önizlemesinde görünür
     drawPlayerDoll(ctx, sel.id === active ? game.state.equipment : NO_GEAR, this.previewCanvas.width, this.previewCanvas.height, sel.look);
-    this.previewName.textContent = `${sel.icon} ${sel.name}`;
+    this.previewName.replaceChildren(icon(sel.icon, sel.name), document.createTextNode(` ${sel.name}`));
     this.previewInfo.textContent = `${sel.desc} · ${sel.bonusText} · Pasif ${sel.signature.name}: ${sel.signature.desc} · Yetenek (G) ${sel.ability.name}: ${sel.ability.desc}`;
     const isActive = sel.id === active;
     this.previewAction.textContent = isActive ? 'Aktif sınıf' : sys.isUnlocked(sel.id) ? 'Bu sınıfa geç' : `Aç · 🔷 ${sel.cost}`;

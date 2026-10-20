@@ -55,9 +55,11 @@ function drawHeadgear(ctx, look, x0, top, w) {
   if (!g || g === 'none') return;
   ctx.fillStyle = look.trim;
   if (g === 'hood') {
-    ctx.fillRect(x0 - 1, top - 2, w + 2, 6);
-    ctx.fillRect(x0 - 2, top + 2, 2, 7);
-    ctx.fillRect(x0 + w, top + 2, 2, 7);
+    ctx.fillRect(x0 - 2, top - 3, w + 4, 8);
+    ctx.fillRect(x0 - 3, top + 2, 3, 9);
+    ctx.fillRect(x0 + w, top + 2, 3, 9);
+    ctx.fillStyle = lighten(look.trim, 0.22);
+    ctx.fillRect(x0 - 1, top - 2, w + 2, 1);
   } else if (g === 'hat') {
     ctx.beginPath();
     ctx.moveTo(x0 - 3, top - 1);
@@ -69,16 +71,97 @@ function drawHeadgear(ctx, look, x0, top, w) {
     ctx.fillStyle = lighten(look.trim, 0.35);
     ctx.fillRect(x0 + w / 2 - 1, top - 9, 2, 2);
   } else if (g === 'mask') {
-    ctx.fillRect(x0 - 1, top + 3, w + 2, 4);
-    ctx.fillStyle = '#e8e2c8';
-    ctx.fillRect(x0 + 1, top + 4, 3, 2);
-    ctx.fillRect(x0 + w - 4, top + 4, 3, 2);
+    ctx.fillRect(x0 - 1, top + 2, w + 2, 6);
+    ctx.fillStyle = look.accent ?? '#a84b69';
+    ctx.fillRect(x0 + 1, top + 3, 3, 1);
+    ctx.fillRect(x0 + w - 4, top + 3, 3, 1);
+    ctx.fillStyle = darken(look.trim, 0.2);
+    ctx.fillRect(x0 + 1, top + 6, w - 2, 1);
   } else if (g === 'halo') {
     ctx.strokeStyle = look.trim;
     ctx.lineWidth = 1.4;
     ctx.beginPath();
     ctx.ellipse(x0 + w / 2, top - 4, w / 2 + 3, 2, 0, 0, Math.PI * 2);
     ctx.stroke();
+    ctx.fillStyle = lighten(look.trim, 0.28);
+    ctx.fillRect(x0 + w / 2 - 1, top - 8, 2, 2);
+  } else if (g === 'circlet') {
+    ctx.fillRect(x0 - 1, top - 2, w + 2, 2);
+    ctx.fillStyle = lighten(look.trim, 0.28);
+    ctx.fillRect(x0 + w / 2 - 1, top - 3, 3, 3);
+  }
+}
+
+/** Sınıfa özgü küçük siluet ve kıyafet ayrıntıları. */
+function drawClassDetails(ctx, look, shoulderY, hipY, accent = look.accent ?? look.trim) {
+  switch (look.style) {
+    case 'warrior':
+      ctx.fillStyle = darken(look.tunic, 0.18);
+      ctx.fillRect(-9, shoulderY + 1, 4, 8);
+      ctx.fillRect(5, shoulderY + 1, 4, 8);
+      ctx.fillStyle = accent;
+      ctx.fillRect(-8, shoulderY + 2, 2, 4);
+      ctx.fillRect(6, shoulderY + 2, 2, 4);
+      ctx.fillStyle = '#f1d27b';
+      ctx.fillRect(-1, shoulderY + 8, 3, 5);
+      ctx.fillRect(-3, shoulderY + 9, 7, 2);
+      break;
+    case 'archer':
+      // Sırt sadağı ve üç okun tüyleri, omuzun arkasında görünür.
+      ctx.fillStyle = '#704624';
+      ctx.fillRect(-11, shoulderY + 5, 4, 14);
+      ctx.fillStyle = '#b9864c';
+      ctx.fillRect(-11, shoulderY + 6, 4, 2);
+      ctx.fillStyle = '#e5dfc9';
+      ctx.fillRect(-10, shoulderY + 1, 1, 9);
+      ctx.fillRect(-8, shoulderY, 1, 10);
+      ctx.fillRect(-6, shoulderY + 2, 1, 8);
+      ctx.fillStyle = accent;
+      ctx.fillRect(-12, shoulderY + 1, 2, 3);
+      ctx.fillRect(-8, shoulderY, 2, 3);
+      ctx.fillRect(-6, shoulderY + 2, 2, 3);
+      ctx.fillStyle = '#c9ad68';
+      ctx.fillRect(1, hipY - 10, 2, 2);
+      break;
+    case 'mage':
+      // Katmanlı, sivri etek ve arkana taşı.
+      ctx.fillStyle = darken(look.tunic, 0.18);
+      ctx.beginPath();
+      ctx.moveTo(-7, hipY - 2); ctx.lineTo(7, hipY - 2);
+      ctx.lineTo(10, hipY + 5); ctx.lineTo(0, hipY + 2); ctx.lineTo(-10, hipY + 5);
+      ctx.closePath(); ctx.fill();
+      ctx.fillStyle = accent;
+      ctx.fillRect(-1, shoulderY + 8, 3, 3);
+      ctx.fillRect(-2, hipY - 1, 5, 1);
+      ctx.fillStyle = lighten(look.tunic, 0.24);
+      ctx.fillRect(6, shoulderY + 4, 2, 12);
+      break;
+    case 'assassin':
+      ctx.fillStyle = darken(look.tunic, 0.1);
+      ctx.beginPath();
+      ctx.moveTo(-7, shoulderY + 1); ctx.lineTo(-13, shoulderY + 6);
+      ctx.lineTo(-10, hipY + 5); ctx.lineTo(-4, hipY - 1); ctx.closePath(); ctx.fill();
+      ctx.fillStyle = accent;
+      ctx.fillRect(-7, shoulderY + 2, 2, 12);
+      ctx.fillRect(-8, hipY - 3, 10, 2);
+      ctx.fillStyle = '#9ba4b5';
+      ctx.fillRect(-10, hipY + 1, 1, 5);
+      ctx.fillRect(-12, hipY + 1, 1, 4);
+      break;
+    case 'healer':
+      // Omuzdan inen kutsal stole ve göğüsteki altın işaret.
+      ctx.fillStyle = darken(look.tunic, 0.12);
+      ctx.fillRect(-7, shoulderY + 1, 3, hipY - shoulderY - 1);
+      ctx.fillRect(4, shoulderY + 1, 3, hipY - shoulderY - 1);
+      ctx.fillStyle = accent;
+      ctx.fillRect(-6, shoulderY + 2, 1, hipY - shoulderY - 4);
+      ctx.fillRect(5, shoulderY + 2, 1, hipY - shoulderY - 4);
+      ctx.fillRect(-1, shoulderY + 8, 3, 7);
+      ctx.fillRect(-3, shoulderY + 10, 7, 3);
+      ctx.fillStyle = '#fff8d9';
+      ctx.fillRect(0, shoulderY + 10, 1, 3);
+      ctx.fillRect(-1, shoulderY + 11, 3, 1);
+      break;
   }
 }
 
@@ -200,6 +283,7 @@ export function drawPlayer(ctx, player, equipment, look = DEFAULT_LOOK, anim = '
   ctx.fillRect(-7, hipY - 4, 14, 3);
   ctx.fillStyle = '#e0b84a';
   ctx.fillRect(1, hipY - 4, 3, 3);
+  drawClassDetails(ctx, look, shoulderY, hipY);
 
   // ---- Kafa ----
   const headY = shoulderY - 7;
@@ -209,12 +293,6 @@ export function drawPlayer(ctx, player, equipment, look = DEFAULT_LOOK, anim = '
   ctx.fillRect(-4, headY + 2, 10, 3);
   ctx.fillStyle = '#1d1420';
   ctx.fillRect(3, headY - 2, 2, 3);
-  if (!helmetTint) {
-    ctx.fillStyle = look.hair;
-    ctx.fillRect(-5, headY - 7, 12, 3);
-    drawHeadgear(ctx, look, -4, headY - 6, 10);
-  }
-
   if (helmetTint) {
     const steel = mix(STEEL, helmetTint, 0.35);
     ctx.fillStyle = steel;
@@ -233,11 +311,12 @@ export function drawPlayer(ctx, player, equipment, look = DEFAULT_LOOK, anim = '
     ctx.closePath();
     ctx.fill();
   } else {
-    ctx.fillStyle = HAIR;
+    ctx.fillStyle = look.hair ?? HAIR;
     ctx.fillRect(-5, headY - 8, 11, 4);
     ctx.fillRect(-5, headY - 6, 4, 6);
-    ctx.fillStyle = lighten(HAIR, 0.2);
+    ctx.fillStyle = lighten(look.hair ?? HAIR, 0.2);
     ctx.fillRect(0, headY - 8, 4, 2);
+    drawHeadgear(ctx, look, -4, headY - 6, 10);
   }
   ctx.restore();
 
@@ -686,6 +765,82 @@ function dollTorso(ctx, c) {
   ctx.fillRect(-9, -31, 18, 1);
 }
 
+/** Sınıf önizlemesinde karakteri uzaktan da ayırt ettiren sabit imza parçaları. */
+function dollClassDetails(ctx, look) {
+  const accent = look.accent ?? look.trim;
+  switch (look.style) {
+    case 'warrior':
+      ctx.fillStyle = darken(look.tunic, 0.18);
+      ctx.fillRect(-16, -54, 9, 7);
+      ctx.fillRect(7, -54, 9, 7);
+      ctx.fillStyle = accent;
+      ctx.fillRect(-14, -53, 5, 2);
+      ctx.fillRect(9, -53, 5, 2);
+      ctx.fillStyle = '#f1d27b';
+      ctx.fillRect(-2, -46, 4, 6);
+      ctx.fillRect(-4, -44, 8, 2);
+      break;
+    case 'archer':
+      ctx.fillStyle = '#704624';
+      ctx.fillRect(-15, -52, 5, 19);
+      ctx.fillStyle = '#b9864c';
+      ctx.fillRect(-15, -50, 5, 2);
+      ctx.fillStyle = '#eadfbe';
+      ctx.fillRect(-13, -62, 1, 13);
+      ctx.fillRect(-10, -61, 1, 12);
+      ctx.fillRect(-7, -59, 1, 10);
+      ctx.fillStyle = accent;
+      ctx.fillRect(-14, -63, 3, 3);
+      ctx.fillRect(-11, -62, 3, 3);
+      ctx.fillRect(-8, -60, 3, 3);
+      ctx.fillStyle = '#d2bb78';
+      ctx.fillRect(-11, -28, 22, 2);
+      break;
+    case 'mage':
+      ctx.fillStyle = darken(look.tunic, 0.18);
+      ctx.beginPath();
+      ctx.moveTo(-11, -30); ctx.lineTo(11, -30);
+      ctx.lineTo(15, -7); ctx.lineTo(7, -10); ctx.lineTo(0, -7); ctx.lineTo(-7, -10); ctx.lineTo(-15, -7);
+      ctx.closePath(); ctx.fill();
+      ctx.fillStyle = accent;
+      ctx.fillRect(-2, -48, 4, 4);
+      ctx.fillRect(-2, -27, 4, 3);
+      ctx.fillStyle = lighten(look.tunic, 0.25);
+      ctx.fillRect(-10, -10, 4, 1);
+      ctx.fillRect(6, -10, 4, 1);
+      break;
+    case 'assassin':
+      ctx.fillStyle = darken(look.tunic, 0.12);
+      ctx.beginPath();
+      ctx.moveTo(-10, -52); ctx.lineTo(-18, -47); ctx.lineTo(-14, -19); ctx.lineTo(-8, -28);
+      ctx.closePath(); ctx.fill();
+      ctx.fillStyle = accent;
+      ctx.fillRect(-11, -50, 2, 18);
+      ctx.fillRect(-11, -30, 22, 2);
+      ctx.fillStyle = '#adb6c5';
+      ctx.fillRect(-17, -26, 2, 10);
+      ctx.fillRect(15, -26, 2, 10);
+      ctx.fillStyle = darken('#adb6c5', 0.35);
+      ctx.fillRect(-18, -17, 4, 2);
+      ctx.fillRect(14, -17, 4, 2);
+      break;
+    case 'healer':
+      ctx.fillStyle = darken(look.tunic, 0.12);
+      ctx.fillRect(-8, -51, 4, 21);
+      ctx.fillRect(4, -51, 4, 21);
+      ctx.fillStyle = accent;
+      ctx.fillRect(-7, -50, 2, 18);
+      ctx.fillRect(5, -50, 2, 18);
+      ctx.fillRect(-2, -46, 4, 9);
+      ctx.fillRect(-5, -43, 10, 3);
+      ctx.fillStyle = '#fff8d9';
+      ctx.fillRect(-1, -45, 2, 7);
+      ctx.fillRect(-4, -42, 8, 1);
+      ctx.fillRect(-11, -9, 22, 2);
+      break;
+  }
+}
+
 /** Kollar: sol kol her zaman sarkar; silah varsa sağ kol dirsekten yukarı kıvrılır. */
 function dollArms(ctx, c, armed) {
   const hanging = (cx) => {
@@ -824,6 +979,7 @@ function drawDollFigure(ctx, equipment, look = DEFAULT_LOOK) {
   dollCape(ctx, c);
   dollLegs(ctx, c);
   dollTorso(ctx, c);
+  dollClassDetails(ctx, look);
   dollArms(ctx, c, !!weapon);
   // Silah başın arkasında kalır: geniş başlı balta/çekiçte kafa örtülmesin.
   dollWeaponArm(ctx, c, weapon);

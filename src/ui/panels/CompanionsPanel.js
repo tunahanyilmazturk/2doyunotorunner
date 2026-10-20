@@ -4,6 +4,7 @@ import {
 } from '../../data/companions.js';
 import { STAT_DEFS } from '../../data/stats.js';
 import { el } from '../../utils/dom.js';
+import { iconToken } from '../icons.js';
 
 // Yoldaşlar sekmesi: solda yumurta/kuluçka, sağda yoldaş koleksiyonu.
 export class CompanionsPanel {
@@ -33,10 +34,10 @@ export class CompanionsPanel {
         btn: el('button', { class: 'btn btn-sm', onclick: () => sys.setActive(def.id) }),
       };
       c.node = el('div', { class: 'comp-card', style: { '--c': rarity.color } }, [
-        el('div', { class: 'comp-emoji', 'data-raw-icon': '', text: def.emoji }),
+        el('div', { class: 'comp-emoji', text: iconToken(`companion-${def.id}`) }),
         el('div', { class: 'comp-body' }, [
           el('div', { class: 'up-name' }, [el('b', { text: def.name }), c.level]),
-          el('div', { class: 'comp-rarity', text: rarity.name }),
+          el('div', { class: 'comp-rarity', text: `${iconToken(`companion-rarity-${def.rarity}`)} ${rarity.name}` }),
           c.info,
           el('div', { class: 'bar comp-xp' }, [c.xpFill, c.xpText]),
         ]),
@@ -50,7 +51,7 @@ export class CompanionsPanel {
       el('div', { class: 'comp-layout' }, [
         el('aside', { class: 'comp-side' }, [
           el('div', { class: 'egg-box' }, [
-            el('div', { class: 'egg-emoji', 'data-raw-icon': '', text: '🥚' }),
+            el('div', { class: 'egg-emoji', text: iconToken('egg') }),
             el('div', {}, ['Yumurta: ', this.eggCount]),
             el('div', { class: 'bar egg-bar' }, [this.hatchFill, this.hatchText]),
             this.incubateBtn,

@@ -5,11 +5,12 @@ import { describeReward } from '../../systems/rewards.js';
 import { el } from '../../utils/dom.js';
 import { formatTime } from '../../utils/format.js';
 import { createQuestCard, updateQuestCard } from '../components/QuestCard.js';
+import { iconToken } from '../icons.js';
 import { AchievementsPanel } from './AchievementsPanel.js';
 
 const PAGES = [
-  { id: 'daily', label: '📜 Görevler' },
-  { id: 'achievements', label: '🏆 Başarımlar' },
+  { id: 'daily', label: `${iconToken('quest-daily')} Görevler` },
+  { id: 'achievements', label: `${iconToken('menu-achievements')} Başarımlar` },
 ];
 const NEAR_COUNT = 2; // "yakında tamamlanacak" başarım sayısı (dar ekranda tek satır)
 
@@ -80,7 +81,7 @@ export class GoalsPanel {
           el('div', { class: 'section-head' }, [el('h4', { class: 'section-title', text: 'Bugünün görevleri' }), this.resetIn]),
           this.questList,
           el('div', { class: 'quest-bonus' }, [
-            el('span', { text: `Üçünü de tamamla: ${ALL_DONE_REWARDS.map((r) => describeReward(this.game, r)).join(' + ')}` }),
+            el('span', { text: `${iconToken('quest-bonus')} Üçünü de tamamla: ${ALL_DONE_REWARDS.map((r) => describeReward(this.game, r)).join(' + ')}` }),
             this.bonusBtn,
           ]),
         ]),
@@ -88,7 +89,7 @@ export class GoalsPanel {
           el('div', { class: 'section-head' }, [el('h4', { class: 'section-title', text: 'Haftalık hedefler' }), this.weekResetIn]),
           this.weeklyList,
           el('div', { class: 'quest-bonus' }, [
-            el('span', { text: `Üçünü de tamamla: ${WEEKLY_BONUS_REWARDS.map((r) => describeReward(this.game, r)).join(' + ')}` }),
+            el('span', { text: `${iconToken('quest-bonus')} Üçünü de tamamla: ${WEEKLY_BONUS_REWARDS.map((r) => describeReward(this.game, r)).join(' + ')}` }),
             this.weeklyBonusBtn,
           ]),
           el('div', { class: 'section-head' }, [el('h4', { class: 'section-title', text: 'Yakında tamamlanacak başarımlar' })]),
@@ -143,7 +144,7 @@ export class GoalsPanel {
     this.nearList.replaceChildren(
       ...near.map(({ a, ratio }) =>
         el('button', { class: 'near-row', onclick: () => this.showPage('achievements') }, [
-          el('span', { class: 'near-icon', text: a.icon }),
+          el('span', { class: 'near-icon', text: iconToken(`achievement-${a.group}`) }),
           el('div', { class: 'near-info' }, [
             el('b', { text: a.name }),
             el('div', { class: 'bar near-bar' }, [el('div', { class: 'fill', style: { width: `${ratio * 100}%` } }), el('span', { text: `%${Math.round(ratio * 100)}` })]),

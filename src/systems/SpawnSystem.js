@@ -6,11 +6,19 @@ import { BOSSES, MONSTERS } from '../data/monsters.js';
 import { Monster } from '../entities/Monster.js';
 import { chance, pick } from '../utils/random.js';
 
+/** Dağlım: çoğu dalga tek düşman, bazen ikili, nadiren üçlü gelir. */
+export function waveSizeForRoll(roll) {
+  if (roll < 0.06) return 3;
+  if (roll < 0.34) return 2;
+  return 1;
+}
+
 // Canavar doğurma + bölge ilerlemesi + boss zamanlayıcısı.
 export class SpawnSystem {
-  constructor(game) {
+  constructor(game, { random = Math.random } = {}) {
     this.game = game;
-    this.current = null;
+    this.monsters = [];
+    this.random = random;
     this.spawnTimer = SPAWN_DELAY;
     this.bossTimer = 0;
     this.bossTimeTotal = Balance.bossTimeLimit(1);
@@ -23,6 +31,15 @@ export class SpawnSystem {
     return this.game.state;
   }
 
+  /** Öndeki yaşayan düşman; eski tek düşman kullanan sistemlerle uyumludur. */
+  get current() {
+    return this.monsters.find((monster) => !monster.dead) ?? this.monsters[0] ?? null;
+  }
+
+  set current(monster) {
+    this.monsters = monster ? [monster] : [];
+  }
+
   get isBossStage() {
     return this.state.stage % BOSS_EVERY === 0;
   }
@@ -32,23 +49,45 @@ export class SpawnSystem {
   }
 
   update(dt) {
-    const m = this.current;
-    if (m) {
-      m.update(dt);
-      if (m.dead) {
-        if (m.removable) this.current = null;
-      } else {
-        if (m.state === 'approach') m.x -= (this.game.world.scrollSpeed + m.speed * this.game.world.speedScale) * dt;
-        // Savaşta olan canavar temas mesafesine kadar yürür (menzilli oyuncuya yaklaşır)
-        else if (m.state === 'fight' && this.game.combat.gapTo(m) > PLAYER_ATTACK_RANGE) m.x -= m.speed * this.game.world.speedScale * dt;
-        if (this.bossActive && !this.game.player.dead) {
-          this.bossTimer -= dt;
-          if (this.bossTimer <= 0) this.failBoss();
+    // Cesetler yaşayan düşman listesine girmediği için kendi ölüm zamanlayıcısını
+    // burada ilerlet; aksi halde `removable` hiç true olmaz ve spawn kilitlenir.
+    for (const monster of this.monsters) {
+      if (monster.dead) monster.update(dt);
+    }
+    this.monsters = this.monsters.filter((monster) => !monster.removable);
+    const active = this.monsters.filter((monster) => !monster.dead);
+    if (active.length) {
+      const front = active[0];
+      for (let i = 0; i < active.length; i++) {
+        const monster = active[i];
+        monster.update(dt);
+        if (monster.dead) continue;
+
+        if (i === 0) {
+          if (monster.state === 'approach') {
+            monster.x -= (this.game.world.scrollSpeed + monster.speed * this.game.world.speedScale) * dt;
+          } else if (this.game.combat.gapTo(monster) > PLAYER_ATTACK_RANGE) {
+            // Savaşta olan canavar temas mesafesine kadar yürür.
+            monster.x -= monster.speed * this.game.world.speedScale * dt;
+          }
+        } else {
+          // Grup üyeleri öndeki düşmanla aralığını korur ve sırayla savaşa girer.
+          const previous = active[i - 1];
+          const targetX = previous.x + (previous.size + monster.size) * 0.5 + 18;
+          if (monster.x > targetX) {
+            monster.x = Math.max(targetX, monster.x - (this.game.world.scrollSpeed + monster.speed * this.game.world.speedScale) * dt);
+          }
         }
       }
+      if (front.isBoss && !front.dead && !this.game.player.dead) {
+        this.bossTimer -= dt;
+        if (this.bossTimer <= 0) this.failBoss();
+      }
     } else if (!this.game.player.dead) {
-      this.spawnTimer -= dt;
-      if (this.spawnTimer <= 0) (this.game.tower.active ? this.spawnTowerBoss() : this.spawnNext());
+      if (!this.monsters.length) {
+        this.spawnTimer -= dt;
+        if (this.spawnTimer <= 0) (this.game.tower.active ? this.spawnTowerBoss() : this.spawnNext());
+      }
     }
   }
 
@@ -64,12 +103,18 @@ export class SpawnSystem {
       this.bossTimer = this.bossTimeTotal;
       this.game.bus.emit(Events.BOSS_SPAWNED, { monster });
     } else {
-      const elite = this.state.stage >= Balance.eliteMinStage && chance(Balance.eliteChance(this.state.stage));
-      monster = new Monster(MONSTERS[pick(biome.monsters)], this.state.stage, { elite, spawnX });
+      const count = waveSizeForRoll(this.random());
+      this.monsters = [];
+      for (let i = 0; i < count; i++) {
+        const elite = this.state.stage >= Balance.eliteMinStage && chance(Balance.eliteChance(this.state.stage));
+        monster = new Monster(MONSTERS[pick(biome.monsters)], this.state.stage, { elite, spawnX: spawnX + i * 110 });
+        this.monsters.push(monster);
+        this.game.bus.emit(Events.MONSTER_SPAWNED, { monster, waveSize: count, waveIndex: i });
+      }
     }
-    this.current = monster;
+    if (spawnBoss) this.current = monster;
     this.spawnTimer = SPAWN_DELAY;
-    this.game.bus.emit(Events.MONSTER_SPAWNED, { monster });
+    if (spawnBoss) this.game.bus.emit(Events.MONSTER_SPAWNED, { monster, waveSize: 1, waveIndex: 0 });
   }
 
   /** Kuledeyken: sıradaki katın bossu (ana bölge ilerlemesi donuk kalır) */
@@ -164,7 +209,7 @@ export class SpawnSystem {
   }
 
   reset() {
-    this.current = null;
+    this.monsters = [];
     this.spawnTimer = SPAWN_DELAY;
     this.bossTimer = 0;
   }

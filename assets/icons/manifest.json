@@ -74,19 +74,19 @@
   {
     "id": "item-dagger-0",
     "label": "Paslı Hançer",
-    "file": "weapons-v1.png",
-    "cols": 5,
-    "rows": 7,
-    "sheet": "weapons",
-    "col": 4,
+    "file": "assassin-daggers-v2.png",
+    "cols": 3,
+    "rows": 3,
+    "sheet": "assassinDaggersV2",
+    "col": 0,
     "row": 0,
     "rect": [
-      884,
-      38,
-      150,
-      165,
-      1060,
-      1484
+      0,
+      0,
+      418,
+      418,
+      1254,
+      1254
     ]
   },
   {
@@ -164,19 +164,19 @@
   {
     "id": "item-dagger-1",
     "label": "Demir Hançer",
-    "file": "weapons-v1.png",
-    "cols": 5,
-    "rows": 7,
-    "sheet": "weapons",
-    "col": 4,
-    "row": 1,
+    "file": "assassin-daggers-v2.png",
+    "cols": 3,
+    "rows": 3,
+    "sheet": "assassinDaggersV2",
+    "col": 1,
+    "row": 0,
     "rect": [
-      885,
-      234,
-      150,
-      167,
-      1060,
-      1484
+      418,
+      0,
+      418,
+      418,
+      1254,
+      1254
     ]
   },
   {
@@ -254,19 +254,19 @@
   {
     "id": "item-dagger-2",
     "label": "Suikastçı Hançeri",
-    "file": "weapons-v1.png",
-    "cols": 5,
-    "rows": 7,
-    "sheet": "weapons",
-    "col": 4,
-    "row": 2,
+    "file": "assassin-daggers-v2.png",
+    "cols": 3,
+    "rows": 3,
+    "sheet": "assassinDaggersV2",
+    "col": 2,
+    "row": 0,
     "rect": [
-      881,
-      422,
-      164,
-      189,
-      1060,
-      1484
+      836,
+      0,
+      418,
+      418,
+      1254,
+      1254
     ]
   },
   {
@@ -344,19 +344,19 @@
   {
     "id": "item-dagger-3",
     "label": "Rün Hançeri",
-    "file": "weapons-v1.png",
-    "cols": 5,
-    "rows": 7,
-    "sheet": "weapons",
-    "col": 4,
-    "row": 3,
+    "file": "assassin-daggers-v2.png",
+    "cols": 3,
+    "rows": 3,
+    "sheet": "assassinDaggersV2",
+    "col": 0,
+    "row": 1,
     "rect": [
-      878,
-      631,
-      166,
-      198,
-      1060,
-      1484
+      0,
+      418,
+      418,
+      418,
+      1254,
+      1254
     ]
   },
   {
@@ -434,19 +434,19 @@
   {
     "id": "item-dagger-4",
     "label": "Mithril Hançer",
-    "file": "weapons-v1.png",
-    "cols": 5,
-    "rows": 7,
-    "sheet": "weapons",
-    "col": 4,
-    "row": 4,
+    "file": "assassin-daggers-v2.png",
+    "cols": 3,
+    "rows": 3,
+    "sheet": "assassinDaggersV2",
+    "col": 1,
+    "row": 1,
     "rect": [
-      878,
-      855,
-      165,
-      192,
-      1060,
-      1484
+      418,
+      418,
+      418,
+      418,
+      1254,
+      1254
     ]
   },
   {
@@ -524,19 +524,19 @@
   {
     "id": "item-dagger-5",
     "label": "Ejder Pençesi",
-    "file": "weapons-v1.png",
-    "cols": 5,
-    "rows": 7,
-    "sheet": "weapons",
-    "col": 4,
-    "row": 5,
+    "file": "assassin-daggers-v2.png",
+    "cols": 3,
+    "rows": 3,
+    "sheet": "assassinDaggersV2",
+    "col": 2,
+    "row": 1,
     "rect": [
-      873,
-      1067,
-      172,
-      193,
-      1060,
-      1484
+      836,
+      418,
+      418,
+      418,
+      1254,
+      1254
     ]
   },
   {
@@ -614,19 +614,19 @@
   {
     "id": "item-dagger-6",
     "label": "Yıldız Hançeri",
-    "file": "weapons-v1.png",
-    "cols": 5,
-    "rows": 7,
-    "sheet": "weapons",
-    "col": 4,
-    "row": 6,
+    "file": "assassin-daggers-v2.png",
+    "cols": 3,
+    "rows": 3,
+    "sheet": "assassinDaggersV2",
+    "col": 0,
+    "row": 2,
     "rect": [
-      883,
-      1267,
-      162,
-      196,
-      1060,
-      1484
+      0,
+      836,
+      418,
+      418,
+      1254,
+      1254
     ]
   },
   {
@@ -3133,7 +3133,7 @@
   },
   {
     "id": "achievement-weapons",
-    "label": "Silah Ustası",
+    "label": "Silah ustası başarımı",
     "file": "interface-v1.png",
     "cols": 8,
     "rows": 8,
@@ -3775,6 +3775,1482 @@
       1104,
       134,
       122,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "item-bow-0",
+    "label": "Ahşap Yay",
+    "file": "weapons-v2.png",
+    "cols": 3,
+    "rows": 7,
+    "sheet": "weaponsV2",
+    "col": 0,
+    "row": 0,
+    "rect": [
+      0,
+      0,
+      273.6666666666667,
+      273.7142857142857,
+      821,
+      1916
+    ]
+  },
+  {
+    "id": "item-staff-0",
+    "label": "Ahşap Büyücü asası",
+    "file": "weapons-v2.png",
+    "cols": 3,
+    "rows": 7,
+    "sheet": "weaponsV2",
+    "col": 1,
+    "row": 0,
+    "rect": [
+      273.6666666666667,
+      0,
+      273.6666666666667,
+      273.7142857142857,
+      821,
+      1916
+    ]
+  },
+  {
+    "id": "item-scepter-0",
+    "label": "Ahşap Kutsal asa",
+    "file": "weapons-v2.png",
+    "cols": 3,
+    "rows": 7,
+    "sheet": "weaponsV2",
+    "col": 2,
+    "row": 0,
+    "rect": [
+      547.3333333333334,
+      0,
+      273.6666666666667,
+      273.7142857142857,
+      821,
+      1916
+    ]
+  },
+  {
+    "id": "item-bow-1",
+    "label": "Demir Yay",
+    "file": "weapons-v2.png",
+    "cols": 3,
+    "rows": 7,
+    "sheet": "weaponsV2",
+    "col": 0,
+    "row": 1,
+    "rect": [
+      0,
+      273.7142857142857,
+      273.6666666666667,
+      273.7142857142857,
+      821,
+      1916
+    ]
+  },
+  {
+    "id": "item-staff-1",
+    "label": "Demir Büyücü asası",
+    "file": "weapons-v2.png",
+    "cols": 3,
+    "rows": 7,
+    "sheet": "weaponsV2",
+    "col": 1,
+    "row": 1,
+    "rect": [
+      273.6666666666667,
+      273.7142857142857,
+      273.6666666666667,
+      273.7142857142857,
+      821,
+      1916
+    ]
+  },
+  {
+    "id": "item-scepter-1",
+    "label": "Demir Kutsal asa",
+    "file": "weapons-v2.png",
+    "cols": 3,
+    "rows": 7,
+    "sheet": "weaponsV2",
+    "col": 2,
+    "row": 1,
+    "rect": [
+      547.3333333333334,
+      273.7142857142857,
+      273.6666666666667,
+      273.7142857142857,
+      821,
+      1916
+    ]
+  },
+  {
+    "id": "item-bow-2",
+    "label": "Çelik Yay",
+    "file": "weapons-v2.png",
+    "cols": 3,
+    "rows": 7,
+    "sheet": "weaponsV2",
+    "col": 0,
+    "row": 2,
+    "rect": [
+      0,
+      547.4285714285714,
+      273.6666666666667,
+      273.7142857142857,
+      821,
+      1916
+    ]
+  },
+  {
+    "id": "item-staff-2",
+    "label": "Çelik Büyücü asası",
+    "file": "weapons-v2.png",
+    "cols": 3,
+    "rows": 7,
+    "sheet": "weaponsV2",
+    "col": 1,
+    "row": 2,
+    "rect": [
+      273.6666666666667,
+      547.4285714285714,
+      273.6666666666667,
+      273.7142857142857,
+      821,
+      1916
+    ]
+  },
+  {
+    "id": "item-scepter-2",
+    "label": "Çelik Kutsal asa",
+    "file": "weapons-v2.png",
+    "cols": 3,
+    "rows": 7,
+    "sheet": "weaponsV2",
+    "col": 2,
+    "row": 2,
+    "rect": [
+      547.3333333333334,
+      547.4285714285714,
+      273.6666666666667,
+      273.7142857142857,
+      821,
+      1916
+    ]
+  },
+  {
+    "id": "item-bow-3",
+    "label": "Rünlü Yay",
+    "file": "weapons-v2.png",
+    "cols": 3,
+    "rows": 7,
+    "sheet": "weaponsV2",
+    "col": 0,
+    "row": 3,
+    "rect": [
+      0,
+      821.1428571428571,
+      273.6666666666667,
+      273.7142857142857,
+      821,
+      1916
+    ]
+  },
+  {
+    "id": "item-staff-3",
+    "label": "Rünlü Büyücü asası",
+    "file": "weapons-v2.png",
+    "cols": 3,
+    "rows": 7,
+    "sheet": "weaponsV2",
+    "col": 1,
+    "row": 3,
+    "rect": [
+      273.6666666666667,
+      821.1428571428571,
+      273.6666666666667,
+      273.7142857142857,
+      821,
+      1916
+    ]
+  },
+  {
+    "id": "item-scepter-3",
+    "label": "Rünlü Kutsal asa",
+    "file": "weapons-v2.png",
+    "cols": 3,
+    "rows": 7,
+    "sheet": "weaponsV2",
+    "col": 2,
+    "row": 3,
+    "rect": [
+      547.3333333333334,
+      821.1428571428571,
+      273.6666666666667,
+      273.7142857142857,
+      821,
+      1916
+    ]
+  },
+  {
+    "id": "item-bow-4",
+    "label": "Mitril Yay",
+    "file": "weapons-v2.png",
+    "cols": 3,
+    "rows": 7,
+    "sheet": "weaponsV2",
+    "col": 0,
+    "row": 4,
+    "rect": [
+      0,
+      1094.857142857143,
+      273.6666666666667,
+      273.7142857142857,
+      821,
+      1916
+    ]
+  },
+  {
+    "id": "item-staff-4",
+    "label": "Mitril Büyücü asası",
+    "file": "weapons-v2.png",
+    "cols": 3,
+    "rows": 7,
+    "sheet": "weaponsV2",
+    "col": 1,
+    "row": 4,
+    "rect": [
+      273.6666666666667,
+      1094.857142857143,
+      273.6666666666667,
+      273.7142857142857,
+      821,
+      1916
+    ]
+  },
+  {
+    "id": "item-scepter-4",
+    "label": "Mitril Kutsal asa",
+    "file": "weapons-v2.png",
+    "cols": 3,
+    "rows": 7,
+    "sheet": "weaponsV2",
+    "col": 2,
+    "row": 4,
+    "rect": [
+      547.3333333333334,
+      1094.857142857143,
+      273.6666666666667,
+      273.7142857142857,
+      821,
+      1916
+    ]
+  },
+  {
+    "id": "item-bow-5",
+    "label": "Ejderha Yay",
+    "file": "weapons-v2.png",
+    "cols": 3,
+    "rows": 7,
+    "sheet": "weaponsV2",
+    "col": 0,
+    "row": 5,
+    "rect": [
+      0,
+      1368.5714285714287,
+      273.6666666666667,
+      273.7142857142857,
+      821,
+      1916
+    ]
+  },
+  {
+    "id": "item-staff-5",
+    "label": "Ejderha Büyücü asası",
+    "file": "weapons-v2.png",
+    "cols": 3,
+    "rows": 7,
+    "sheet": "weaponsV2",
+    "col": 1,
+    "row": 5,
+    "rect": [
+      273.6666666666667,
+      1368.5714285714287,
+      273.6666666666667,
+      273.7142857142857,
+      821,
+      1916
+    ]
+  },
+  {
+    "id": "item-scepter-5",
+    "label": "Ejderha Kutsal asa",
+    "file": "weapons-v2.png",
+    "cols": 3,
+    "rows": 7,
+    "sheet": "weaponsV2",
+    "col": 2,
+    "row": 5,
+    "rect": [
+      547.3333333333334,
+      1368.5714285714287,
+      273.6666666666667,
+      273.7142857142857,
+      821,
+      1916
+    ]
+  },
+  {
+    "id": "item-bow-6",
+    "label": "Yıldız Yay",
+    "file": "weapons-v2.png",
+    "cols": 3,
+    "rows": 7,
+    "sheet": "weaponsV2",
+    "col": 0,
+    "row": 6,
+    "rect": [
+      0,
+      1642.2857142857142,
+      273.6666666666667,
+      273.7142857142857,
+      821,
+      1916
+    ]
+  },
+  {
+    "id": "item-staff-6",
+    "label": "Yıldız Büyücü asası",
+    "file": "weapons-v2.png",
+    "cols": 3,
+    "rows": 7,
+    "sheet": "weaponsV2",
+    "col": 1,
+    "row": 6,
+    "rect": [
+      273.6666666666667,
+      1642.2857142857142,
+      273.6666666666667,
+      273.7142857142857,
+      821,
+      1916
+    ]
+  },
+  {
+    "id": "item-scepter-6",
+    "label": "Yıldız Kutsal asa",
+    "file": "weapons-v2.png",
+    "cols": 3,
+    "rows": 7,
+    "sheet": "weaponsV2",
+    "col": 2,
+    "row": 6,
+    "rect": [
+      547.3333333333334,
+      1642.2857142857142,
+      273.6666666666667,
+      273.7142857142857,
+      821,
+      1916
+    ]
+  },
+  {
+    "id": "class-warrior",
+    "label": "Savaşçı sınıf nişanı",
+    "file": "factions-v2.png",
+    "cols": 5,
+    "rows": 5,
+    "sheet": "factionsV2",
+    "col": 0,
+    "row": 0,
+    "rect": [
+      0,
+      0,
+      250.8,
+      250.8,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "class-archer",
+    "label": "Okçu sınıf nişanı",
+    "file": "factions-v2.png",
+    "cols": 5,
+    "rows": 5,
+    "sheet": "factionsV2",
+    "col": 1,
+    "row": 0,
+    "rect": [
+      250.8,
+      0,
+      250.8,
+      250.8,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "class-mage",
+    "label": "Büyücü sınıf nişanı",
+    "file": "factions-v2.png",
+    "cols": 5,
+    "rows": 5,
+    "sheet": "factionsV2",
+    "col": 2,
+    "row": 0,
+    "rect": [
+      501.6,
+      0,
+      250.8,
+      250.8,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "class-assassin",
+    "label": "Suikastçı sınıf nişanı",
+    "file": "factions-v2.png",
+    "cols": 5,
+    "rows": 5,
+    "sheet": "factionsV2",
+    "col": 3,
+    "row": 0,
+    "rect": [
+      752.4,
+      0,
+      250.8,
+      250.8,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "class-healer",
+    "label": "Şifacı sınıf nişanı",
+    "file": "factions-v2.png",
+    "cols": 5,
+    "rows": 5,
+    "sheet": "factionsV2",
+    "col": 4,
+    "row": 0,
+    "rect": [
+      1003.2,
+      0,
+      250.8,
+      250.8,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "ability-warCry",
+    "label": "Savaş Narası simgesi",
+    "file": "factions-v2.png",
+    "cols": 5,
+    "rows": 5,
+    "sheet": "factionsV2",
+    "col": 0,
+    "row": 1,
+    "rect": [
+      0,
+      250.8,
+      250.8,
+      250.8,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "ability-eagleEye",
+    "label": "Kartal Gözü simgesi",
+    "file": "factions-v2.png",
+    "cols": 5,
+    "rows": 5,
+    "sheet": "factionsV2",
+    "col": 1,
+    "row": 1,
+    "rect": [
+      250.8,
+      250.8,
+      250.8,
+      250.8,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "ability-arcaneBlast",
+    "label": "Arkana Patlaması simgesi",
+    "file": "factions-v2.png",
+    "cols": 5,
+    "rows": 5,
+    "sheet": "factionsV2",
+    "col": 2,
+    "row": 1,
+    "rect": [
+      501.6,
+      250.8,
+      250.8,
+      250.8,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "ability-shadowStep",
+    "label": "Gölge Adımı simgesi",
+    "file": "factions-v2.png",
+    "cols": 5,
+    "rows": 5,
+    "sheet": "factionsV2",
+    "col": 3,
+    "row": 1,
+    "rect": [
+      752.4,
+      250.8,
+      250.8,
+      250.8,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "ability-sanctuary",
+    "label": "Kutsal Sığınak simgesi",
+    "file": "factions-v2.png",
+    "cols": 5,
+    "rows": 5,
+    "sheet": "factionsV2",
+    "col": 4,
+    "row": 1,
+    "rect": [
+      1003.2,
+      250.8,
+      250.8,
+      250.8,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "set-crimson",
+    "label": "Kızıl Nişan set arması",
+    "file": "factions-v2.png",
+    "cols": 5,
+    "rows": 5,
+    "sheet": "factionsV2",
+    "col": 0,
+    "row": 2,
+    "rect": [
+      0,
+      501.6,
+      250.8,
+      250.8,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "set-glacier",
+    "label": "Buzul Siperi set arması",
+    "file": "factions-v2.png",
+    "cols": 5,
+    "rows": 5,
+    "sheet": "factionsV2",
+    "col": 1,
+    "row": 2,
+    "rect": [
+      250.8,
+      501.6,
+      250.8,
+      250.8,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "set-storm",
+    "label": "Fırtına Örtüsü set arması",
+    "file": "factions-v2.png",
+    "cols": 5,
+    "rows": 5,
+    "sheet": "factionsV2",
+    "col": 2,
+    "row": 2,
+    "rect": [
+      501.6,
+      501.6,
+      250.8,
+      250.8,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "set-life",
+    "label": "Yaşam Yemini set arması",
+    "file": "factions-v2.png",
+    "cols": 5,
+    "rows": 5,
+    "sheet": "factionsV2",
+    "col": 3,
+    "row": 2,
+    "rect": [
+      752.4,
+      501.6,
+      250.8,
+      250.8,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "set-oracle",
+    "label": "Kâhin Gözü set arması",
+    "file": "factions-v2.png",
+    "cols": 5,
+    "rows": 5,
+    "sheet": "factionsV2",
+    "col": 4,
+    "row": 2,
+    "rect": [
+      1003.2,
+      501.6,
+      250.8,
+      250.8,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "set-hunter",
+    "label": "Avcı Yemini set arması",
+    "file": "factions-v2.png",
+    "cols": 5,
+    "rows": 5,
+    "sheet": "factionsV2",
+    "col": 0,
+    "row": 3,
+    "rect": [
+      0,
+      752.4,
+      250.8,
+      250.8,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "set-arcane",
+    "label": "Arkana Cüppesi set arması",
+    "file": "factions-v2.png",
+    "cols": 5,
+    "rows": 5,
+    "sheet": "factionsV2",
+    "col": 1,
+    "row": 3,
+    "rect": [
+      250.8,
+      752.4,
+      250.8,
+      250.8,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "set-shadow",
+    "label": "Gölge Mirası set arması",
+    "file": "factions-v2.png",
+    "cols": 5,
+    "rows": 5,
+    "sheet": "factionsV2",
+    "col": 2,
+    "row": 3,
+    "rect": [
+      501.6,
+      752.4,
+      250.8,
+      250.8,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "set-sanctum",
+    "label": "Kutsal Mühür set arması",
+    "file": "factions-v2.png",
+    "cols": 5,
+    "rows": 5,
+    "sheet": "factionsV2",
+    "col": 3,
+    "row": 3,
+    "rect": [
+      752.4,
+      752.4,
+      250.8,
+      250.8,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "rune-ruby",
+    "label": "Yakut rünü",
+    "file": "factions-v2.png",
+    "cols": 5,
+    "rows": 5,
+    "sheet": "factionsV2",
+    "col": 4,
+    "row": 3,
+    "rect": [
+      1003.2,
+      752.4,
+      250.8,
+      250.8,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "rune-emerald",
+    "label": "Zümrüt rünü",
+    "file": "factions-v2.png",
+    "cols": 5,
+    "rows": 5,
+    "sheet": "factionsV2",
+    "col": 0,
+    "row": 4,
+    "rect": [
+      0,
+      1003.2,
+      250.8,
+      250.8,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "rune-sapphire",
+    "label": "Safir rünü",
+    "file": "factions-v2.png",
+    "cols": 5,
+    "rows": 5,
+    "sheet": "factionsV2",
+    "col": 1,
+    "row": 4,
+    "rect": [
+      250.8,
+      1003.2,
+      250.8,
+      250.8,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "rune-topaz",
+    "label": "Topaz rünü",
+    "file": "factions-v2.png",
+    "cols": 5,
+    "rows": 5,
+    "sheet": "factionsV2",
+    "col": 2,
+    "row": 4,
+    "rect": [
+      501.6,
+      1003.2,
+      250.8,
+      250.8,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "rune-amethyst",
+    "label": "Ametist rünü",
+    "file": "factions-v2.png",
+    "cols": 5,
+    "rows": 5,
+    "sheet": "factionsV2",
+    "col": 3,
+    "row": 4,
+    "rect": [
+      752.4,
+      1003.2,
+      250.8,
+      250.8,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "rune-onyx",
+    "label": "Oniks rünü",
+    "file": "factions-v2.png",
+    "cols": 5,
+    "rows": 5,
+    "sheet": "factionsV2",
+    "col": 4,
+    "row": 4,
+    "rect": [
+      1003.2,
+      1003.2,
+      250.8,
+      250.8,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "companion-wolfPup",
+    "label": "Kurt Yavrusu",
+    "file": "collection-v2.png",
+    "cols": 6,
+    "rows": 6,
+    "sheet": "collectionV2",
+    "col": 0,
+    "row": 0,
+    "rect": [
+      0,
+      0,
+      209,
+      209,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "companion-goldBeetle",
+    "label": "Altın Böceği",
+    "file": "collection-v2.png",
+    "cols": 6,
+    "rows": 6,
+    "sheet": "collectionV2",
+    "col": 1,
+    "row": 0,
+    "rect": [
+      209,
+      0,
+      209,
+      209,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "companion-owl",
+    "label": "Bilge Baykuş",
+    "file": "collection-v2.png",
+    "cols": 6,
+    "rows": 6,
+    "sheet": "collectionV2",
+    "col": 2,
+    "row": 0,
+    "rect": [
+      418,
+      0,
+      209,
+      209,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "companion-fairy",
+    "label": "Orman Perisi",
+    "file": "collection-v2.png",
+    "cols": 6,
+    "rows": 6,
+    "sheet": "collectionV2",
+    "col": 3,
+    "row": 0,
+    "rect": [
+      627,
+      0,
+      209,
+      209,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "companion-golemling",
+    "label": "Taş Golemcik",
+    "file": "collection-v2.png",
+    "cols": 6,
+    "rows": 6,
+    "sheet": "collectionV2",
+    "col": 4,
+    "row": 0,
+    "rect": [
+      836,
+      0,
+      209,
+      209,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "companion-sparrow",
+    "label": "Serçe",
+    "file": "collection-v2.png",
+    "cols": 6,
+    "rows": 6,
+    "sheet": "collectionV2",
+    "col": 5,
+    "row": 0,
+    "rect": [
+      1045,
+      0,
+      209,
+      209,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "companion-shadowWolf",
+    "label": "Gölge Kurdu",
+    "file": "collection-v2.png",
+    "cols": 6,
+    "rows": 6,
+    "sheet": "collectionV2",
+    "col": 0,
+    "row": 1,
+    "rect": [
+      0,
+      209,
+      209,
+      209,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "companion-dragonling",
+    "label": "Ejder Yavrusu",
+    "file": "collection-v2.png",
+    "cols": 6,
+    "rows": 6,
+    "sheet": "collectionV2",
+    "col": 1,
+    "row": 1,
+    "rect": [
+      209,
+      209,
+      209,
+      209,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "egg",
+    "label": "Yoldaş yumurtası",
+    "file": "collection-v2.png",
+    "cols": 6,
+    "rows": 6,
+    "sheet": "collectionV2",
+    "col": 2,
+    "row": 1,
+    "rect": [
+      418,
+      209,
+      209,
+      209,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "elixir-swift",
+    "label": "Çeviklik iksiri",
+    "file": "collection-v2.png",
+    "cols": 6,
+    "rows": 6,
+    "sheet": "collectionV2",
+    "col": 3,
+    "row": 1,
+    "rect": [
+      627,
+      209,
+      209,
+      209,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "reward-elixir",
+    "label": "Rastgele iksir ödülü",
+    "file": "collection-v2.png",
+    "cols": 6,
+    "rows": 6,
+    "sheet": "collectionV2",
+    "col": 2,
+    "row": 2,
+    "rect": [
+      418,
+      418,
+      209,
+      209,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "elixir-precision",
+    "label": "Keskin göz özü",
+    "file": "collection-v2.png",
+    "cols": 6,
+    "rows": 6,
+    "sheet": "collectionV2",
+    "col": 4,
+    "row": 1,
+    "rect": [
+      836,
+      209,
+      209,
+      209,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "elixir-vampire",
+    "label": "Kan damlası",
+    "file": "collection-v2.png",
+    "cols": 6,
+    "rows": 6,
+    "sheet": "collectionV2",
+    "col": 5,
+    "row": 1,
+    "rect": [
+      1045,
+      209,
+      209,
+      209,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "elixir-haven",
+    "label": "Diriliş özü",
+    "file": "collection-v2.png",
+    "cols": 6,
+    "rows": 6,
+    "sheet": "collectionV2",
+    "col": 0,
+    "row": 2,
+    "rect": [
+      0,
+      418,
+      209,
+      209,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "elixir-shade",
+    "label": "Gölge tozu",
+    "file": "collection-v2.png",
+    "cols": 6,
+    "rows": 6,
+    "sheet": "collectionV2",
+    "col": 1,
+    "row": 2,
+    "rect": [
+      209,
+      418,
+      209,
+      209,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "achievement-tower",
+    "label": "Kule fatihi başarımı",
+    "file": "collection-v2.png",
+    "cols": 6,
+    "rows": 6,
+    "sheet": "collectionV2",
+    "col": 5,
+    "row": 2,
+    "rect": [
+      1045,
+      418,
+      209,
+      209,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "tower-key",
+    "label": "Boss Kulesi anahtarı",
+    "file": "collection-v2.png",
+    "cols": 6,
+    "rows": 6,
+    "sheet": "collectionV2",
+    "col": 3,
+    "row": 3,
+    "rect": [
+      627,
+      627,
+      209,
+      209,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "gem",
+    "label": "Zümrüt elmas",
+    "file": "collection-v2.png",
+    "cols": 6,
+    "rows": 6,
+    "sheet": "collectionV2",
+    "col": 4,
+    "row": 3,
+    "rect": [
+      836,
+      627,
+      209,
+      209,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "class-seal",
+    "label": "Kule mührü",
+    "file": "collection-v2.png",
+    "cols": 6,
+    "rows": 6,
+    "sheet": "collectionV2",
+    "col": 5,
+    "row": 3,
+    "rect": [
+      1045,
+      627,
+      209,
+      209,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "class-unlock",
+    "label": "Sınıf açma nişanı",
+    "file": "collection-v2.png",
+    "cols": 6,
+    "rows": 6,
+    "sheet": "collectionV2",
+    "col": 0,
+    "row": 4,
+    "rect": [
+      0,
+      836,
+      209,
+      209,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "quest-daily",
+    "label": "Günlük görev mührü",
+    "file": "collection-v2.png",
+    "cols": 6,
+    "rows": 6,
+    "sheet": "collectionV2",
+    "col": 1,
+    "row": 4,
+    "rect": [
+      209,
+      836,
+      209,
+      209,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "quest-weekly",
+    "label": "Haftalık görev mührü",
+    "file": "collection-v2.png",
+    "cols": 6,
+    "rows": 6,
+    "sheet": "collectionV2",
+    "col": 2,
+    "row": 4,
+    "rect": [
+      418,
+      836,
+      209,
+      209,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "quest-monthly",
+    "label": "Aylık takvim mührü",
+    "file": "collection-v2.png",
+    "cols": 6,
+    "rows": 6,
+    "sheet": "collectionV2",
+    "col": 3,
+    "row": 4,
+    "rect": [
+      627,
+      836,
+      209,
+      209,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "achievement-sets",
+    "label": "Set koleksiyoncusu başarımı",
+    "file": "collection-v2.png",
+    "cols": 6,
+    "rows": 6,
+    "sheet": "collectionV2",
+    "col": 3,
+    "row": 2,
+    "rect": [
+      627,
+      418,
+      209,
+      209,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "achievement-setTypes",
+    "label": "Farklı setler başarımı",
+    "file": "collection-v2.png",
+    "cols": 6,
+    "rows": 6,
+    "sheet": "collectionV2",
+    "col": 4,
+    "row": 2,
+    "rect": [
+      836,
+      418,
+      209,
+      209,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "achievement-companions",
+    "label": "Yoldaş koleksiyoncusu başarımı",
+    "file": "collection-v2.png",
+    "cols": 6,
+    "rows": 6,
+    "sheet": "collectionV2",
+    "col": 0,
+    "row": 3,
+    "rect": [
+      0,
+      627,
+      209,
+      209,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "achievement-runes",
+    "label": "Rün ustası başarımı",
+    "file": "collection-v2.png",
+    "cols": 6,
+    "rows": 6,
+    "sheet": "collectionV2",
+    "col": 1,
+    "row": 3,
+    "rect": [
+      209,
+      627,
+      209,
+      209,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "achievement-daily",
+    "label": "Görev tamamlayıcısı başarımı",
+    "file": "collection-v2.png",
+    "cols": 6,
+    "rows": 6,
+    "sheet": "collectionV2",
+    "col": 2,
+    "row": 3,
+    "rect": [
+      418,
+      627,
+      209,
+      209,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "menu-tower",
+    "label": "Boss Kulesi menüsü",
+    "file": "collection-v2.png",
+    "cols": 6,
+    "rows": 6,
+    "sheet": "collectionV2",
+    "col": 4,
+    "row": 4,
+    "rect": [
+      836,
+      836,
+      209,
+      209,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "menu-classes",
+    "label": "Sınıflar menüsü",
+    "file": "collection-v2.png",
+    "cols": 6,
+    "rows": 6,
+    "sheet": "collectionV2",
+    "col": 5,
+    "row": 4,
+    "rect": [
+      1045,
+      836,
+      209,
+      209,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "menu-companions",
+    "label": "Yoldaşlar menüsü",
+    "file": "collection-v2.png",
+    "cols": 6,
+    "rows": 6,
+    "sheet": "collectionV2",
+    "col": 0,
+    "row": 5,
+    "rect": [
+      0,
+      1045,
+      209,
+      209,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "companion-rarity-0",
+    "label": "Yaygın yoldaş nişanı",
+    "file": "collection-v2.png",
+    "cols": 6,
+    "rows": 6,
+    "sheet": "collectionV2",
+    "col": 1,
+    "row": 5,
+    "rect": [
+      209,
+      1045,
+      209,
+      209,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "companion-rarity-1",
+    "label": "Nadir yoldaş nişanı",
+    "file": "collection-v2.png",
+    "cols": 6,
+    "rows": 6,
+    "sheet": "collectionV2",
+    "col": 2,
+    "row": 5,
+    "rect": [
+      418,
+      1045,
+      209,
+      209,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "companion-rarity-2",
+    "label": "Destansı yoldaş nişanı",
+    "file": "collection-v2.png",
+    "cols": 6,
+    "rows": 6,
+    "sheet": "collectionV2",
+    "col": 3,
+    "row": 5,
+    "rect": [
+      627,
+      1045,
+      209,
+      209,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "companion-rarity-3",
+    "label": "Efsanevi yoldaş nişanı",
+    "file": "collection-v2.png",
+    "cols": 6,
+    "rows": 6,
+    "sheet": "collectionV2",
+    "col": 4,
+    "row": 5,
+    "rect": [
+      836,
+      1045,
+      209,
+      209,
+      1254,
+      1254
+    ]
+  },
+  {
+    "id": "quest-bonus",
+    "label": "Görev bonusu mührü",
+    "file": "collection-v2.png",
+    "cols": 6,
+    "rows": 6,
+    "sheet": "collectionV2",
+    "col": 5,
+    "row": 5,
+    "rect": [
+      1045,
+      1045,
+      209,
+      209,
       1254,
       1254
     ]

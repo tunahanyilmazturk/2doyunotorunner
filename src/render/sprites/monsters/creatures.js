@@ -130,11 +130,23 @@ export function flyer(ctx, s, c, t, features) {
     if (has('stripes')) ctx.fillStyle = dir > 0 ? 'rgba(220,240,255,0.55)' : 'rgba(240,250,255,0.75)';
     ctx.beginPath();
     ctx.moveTo(0, -r);
-    ctx.lineTo(dir * s * 0.75, -r - s * 0.35 * flap);
-    ctx.lineTo(dir * s * 0.55, -r + s * 0.1);
-    ctx.lineTo(dir * s * 0.35, -r - s * 0.05 * flap);
+    if (has('moth')) {
+      ctx.lineTo(dir * s * 0.92, -r - s * 0.48 * flap);
+      ctx.lineTo(dir * s * 0.82, -r + s * 0.05);
+      ctx.lineTo(dir * s * 0.62, -r + s * 0.02 * flap);
+      ctx.lineTo(dir * s * 0.45, -r + s * 0.2);
+      ctx.lineTo(dir * s * 0.25, -r + s * 0.08);
+    } else {
+      ctx.lineTo(dir * s * 0.75, -r - s * 0.35 * flap);
+      ctx.lineTo(dir * s * 0.55, -r + s * 0.1);
+      ctx.lineTo(dir * s * 0.35, -r - s * 0.05 * flap);
+    }
     ctx.closePath();
     ctx.fill();
+    if (has('moth')) {
+      ellipse(ctx, dir * s * 0.59, -r - s * 0.08 * flap, s * 0.09, s * 0.12, lighten(c.body, 0.34));
+      ellipse(ctx, dir * s * 0.59, -r - s * 0.08 * flap, s * 0.035, s * 0.06, c.dark);
+    }
   }
   if (has('stinger')) {
     ctx.fillStyle = c.dark;
@@ -151,6 +163,16 @@ export function flyer(ctx, s, c, t, features) {
     for (let i = 0; i < 3; i++) ctx.fillRect(-r * 0.4 + i * r * 0.5, -r * 1.9, r * 0.22, r * 1.8);
   }
   ellipse(ctx, -r * 0.25, -r * 1.45, r * 0.45, r * 0.2, lighten(c.body, 0.18));
+  if (has('moth')) {
+    ctx.strokeStyle = c.dark;
+    ctx.lineWidth = Math.max(1, s * 0.025);
+    for (const dir of [-1, 1]) {
+      ctx.beginPath();
+      ctx.moveTo(dir * s * 0.06, -r * 1.75);
+      ctx.quadraticCurveTo(dir * s * 0.12, -r * 2.05, dir * s * 0.24, -r * 2.12);
+      ctx.stroke();
+    }
+  }
   if (has('horns')) {
     ctx.fillStyle = '#2a0a05';
     for (const dir of [-1, 1]) {

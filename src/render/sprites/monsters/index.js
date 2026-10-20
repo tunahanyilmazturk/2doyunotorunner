@@ -4,11 +4,13 @@
 import { ghost, mushroom, slime } from './blobs.js';
 import { beast, flyer, serpent } from './creatures.js';
 import { humanoid } from './humanoid.js';
+import { beetle } from './beetle.js';
+import { flora } from './flora.js';
 
 export const FLY_HEIGHT = 50;
 
 /** Canavarların `shape` alanının geçerli değerleri (data/monsters.js ile eşleşmeli). */
-export const SHAPES = { slime, mushroom, ghost, humanoid, beast, flyer, serpent };
+export const SHAPES = { slime, mushroom, ghost, humanoid, beast, flyer, serpent, beetle, flora };
 
 export function drawMonster(ctx, m) {
   const def = m.def;

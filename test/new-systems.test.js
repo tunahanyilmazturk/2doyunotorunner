@@ -394,10 +394,11 @@ test('kayıt: sınıflar, mühürler ve saklı ekipman korunur; bozuk sınıf va
 });
 
 test('sınıf: her sınıfın geçerli bir karakter görünümü var', () => {
-  const kinds = new Set(['none', 'hood', 'hat', 'mask', 'halo']);
+  const kinds = new Set(['none', 'hood', 'hat', 'mask', 'halo', 'circlet']);
   const hex = /^#[0-9a-f]{6}$/i;
   for (const c of CLASSES) {
     assert.ok(c.look, `${c.id}: görünüm tanımlı`);
+    assert.equal(c.look.style, c.id, `${c.id}: sınıfa özel çizim stili tanımlı`);
     assert.ok(kinds.has(c.look.headgear), `${c.id}: bilinmeyen kafa aksesuarı ${c.look.headgear}`);
     for (const key of ['tunic', 'hair', 'trim']) assert.match(c.look[key], hex, `${c.id}.${key} geçerli renk olmalı`);
   }
