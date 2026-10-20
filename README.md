@@ -236,6 +236,8 @@ Ayarlar, kayıt işlemleri ve istatistikler üst bardaki ⚙️ butonundadır.
   Yazılar, can barları ve afişler tam çözünürlükte üst katmana çizilir. Ayarlar → "Piksel sanat görünümü" ile kapatılabilir.
 - **Harita katmanları:** gökyüzü, güneş ışınları/yıldızlar, bulutlar, kenar ışıklı dağlar, pus, uzak siluetler,
   yakın süslemeler, patikalı zemin, ortam partikülleri ve karakterlerin önünden geçen ön plan.
+- **Boss Kulesi sahnesi:** kuledeyken arka plan taş duvara döner (kayan tuğla derzleri, sütunlar, titreyen meşaleler,
+  taş döşeme); ember partikülleri uçuşur. Çıkınca bölgenin biyomu çapraz geçişle geri gelir.
 - **Arayüz teması:** zindan taşı paneller, pirinç çerçeveler, parşömen yazı (`css/base.css` içindeki token'lar).
   Yazı tipleri projeye gömülüdür (`assets/fonts/`, `css/fonts.css`): başlık/sayı için *Pixelify Sans*,
   açıklamalar için *Jost*. İkisi de SIL Open Font License 1.1 ile lisanslıdır; internet gerekmez.

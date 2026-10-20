@@ -68,6 +68,14 @@ export class HUD {
     this.buildActionBar();
 
     this.game.bus.on(Events.SETTINGS_CHANGED, () => this.renderSpeed());
+    // Elmas kazanımı: gösterge üzerinde kısa bir "+N" (1 sn sonra kaybolur)
+    const gemsPill = document.querySelector('.currency.gems');
+    this.game.bus.on(Events.GEMS_EARNED, ({ amount }) => {
+      if (!gemsPill) return;
+      const pop = el('span', { class: 'gain-pop', text: `+${formatNumber(amount)}` });
+      gemsPill.append(pop);
+      setTimeout(() => pop.remove(), 1000);
+    });
     this.game.bus.on(Events.GAME_SAVED, () => {
       this.els.saved.classList.add('show');
       clearTimeout(this.savedTimer);

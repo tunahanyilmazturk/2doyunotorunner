@@ -84,7 +84,8 @@ export class Renderer {
 
   render(dt) {
     const { ctx, game } = this;
-    this.background.setBiome(getBiomeIndex(game.state.stage));
+    // Boss Kulesi'ndeyken kendi taş sahnesi; çıkınca bölgenin biyomuna dönülür (çapraz geçişle)
+    this.background.setBiome(game.tower.active ? 'tower' : getBiomeIndex(game.state.stage));
     this.background.update(dt);
 
     let sx = 0;

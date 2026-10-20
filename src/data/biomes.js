@@ -53,3 +53,15 @@ export const getBiomeTitle = (stage) => {
   const name = getBiome(stage).name;
   return c ? `${name} · Kabus ${ROMAN[c] ?? c}` : name;
 };
+
+/**
+ * Boss Kulesi'nin özel arka planı: taş duvar, sütunlar ve meşaleler. BIOMES dizisinin
+ * parçası değildir; kule aktifken Background bunu kullanır (bkz. Background.resolve).
+ */
+export const TOWER_BIOME = {
+  id: 'tower', name: 'Boss Kulesi',
+  sky: ['#120c18', '#3b2f44'], far: '#2a2033', mid: '#352841', near: '#241b2c',
+  ground: '#2b2233', groundTop: '#6d5c7a', groundLine: '#18121f', path: '#3a3045', fore: '#120c17',
+  decor: 'pillar', particle: 'ember',
+  monsters: [], bosses: [],
+};

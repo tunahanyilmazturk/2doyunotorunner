@@ -865,3 +865,73 @@
   border-color: #7fd9ff;
   color: #7fd9ff;
 }
+
+/* Üst çubuk: elmas göstergesi altın ve ruh ile aynı ölçüde; kazanımda "+N" yükselir */
+.currency.gems {
+  min-width: 90px;
+}
+.currency.gems .ico {
+  font-size: 20px;
+  line-height: 1;
+}
+.currency {
+  position: relative;
+}
+.gain-pop {
+  position: absolute;
+  top: -10px;
+  right: 8px;
+  font-family: var(--font-pixel);
+  font-size: 13px;
+  font-weight: 600;
+  color: #7fd9ff;
+  text-shadow: 1px 1px 0 var(--edge);
+  pointer-events: none;
+  animation: gain-rise 1s ease-out forwards;
+}
+@keyframes gain-rise {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-18px);
+  }
+}
+/* Alt panel küçüldüğü için envanter ızgarası sıkı: oyun alanına yer açılır */
+.inv-col .inventory-grid {
+  grid-template-columns: repeat(auto-fill, minmax(42px, 1fr));
+  gap: 4px;
+}
+/* Hedefler ve karakter sekmeleri: alt panel küçüldüğünde içerik sığsın diye kompakt metin */
+.goals-page .quest-info b {
+  font-size: 13px;
+}
+.goals-page .quest-info .muted,
+.goals-page .quest-reward {
+  font-size: 10px;
+  line-height: 1.2;
+}
+.goals-page .goals-section {
+  gap: 4px;
+}
+.goals-page .quest-list {
+  gap: 4px;
+}
+.goals-page .near-row {
+  padding: 3px 6px;
+}
+/* Karakter ve yükseltme sekmeleri: alt panel küçük kalsın diye dikey boşluklar dar */
+.inv-col .toolbar {
+  margin-bottom: 4px;
+}
+.inv-col .hint {
+  margin-top: 2px;
+}
+.upgrade-row {
+  padding: 2px 6px;
+}
+.upgrade-list {
+  gap: 3px;
+}

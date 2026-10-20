@@ -1,5 +1,5 @@
 import { BASE_VIEW_WIDTH, GAME_HEIGHT, GROUND_Y } from '../config/constants.js';
-import { BIOMES } from '../data/biomes.js';
+import { BIOMES, TOWER_BIOME } from '../data/biomes.js';
 import { lighten, withAlpha } from '../utils/color.js';
 import { hash } from '../utils/random.js';
 import { EnvironmentLayer } from './EnvironmentLayer.js';
@@ -23,11 +23,17 @@ export class Background {
     this.environment = new EnvironmentLayer();
   }
 
-  setBiome(index) {
-    if (index === this.biomeIndex) return;
+  /** key: biyom indeksi, ya da Boss Kulesi için 'tower' */
+  setBiome(key) {
+    if (key === this.biomeIndex) return;
     this.prevIndex = this.biomeIndex;
-    this.biomeIndex = index;
-    this.transition = this.prevIndex < 0 ? 1 : 0;
+    this.biomeIndex = key;
+    this.transition = this.prevIndex === -1 ? 1 : 0;
+  }
+
+  /** Anahtarı biyom tanımına çevirir ('tower' → kule arka planı). */
+  resolve(key) {
+    return key === 'tower' ? TOWER_BIOME : BIOMES[key];
   }
 
   update(dt) {
@@ -44,18 +50,22 @@ export class Background {
   }
 
   withTransition(ctx, fn) {
-    if (this.transition < 1 && this.prevIndex >= 0) {
-      fn(BIOMES[this.prevIndex]);
+    if (this.transition < 1 && this.prevIndex !== -1) {
+      fn(this.resolve(this.prevIndex));
       ctx.save();
       ctx.globalAlpha = this.transition;
-      fn(BIOMES[this.biomeIndex]);
+      fn(this.resolve(this.biomeIndex));
       ctx.restore();
     } else {
-      fn(BIOMES[this.biomeIndex]);
+      fn(this.resolve(this.biomeIndex));
     }
   }
 
   drawBiome(ctx, biome, distance) {
+    if (biome.id === 'tower') {
+      this.drawTower(ctx, biome, distance);
+      return;
+    }
     this.drawSky(ctx, biome);
     if (biome.stars) this.drawStars(ctx, biome);
     if (biome.id === 'tundra') this.environment.aurora(ctx, this.w, this.time);
@@ -76,6 +86,94 @@ export class Background {
     this.environment.verge(ctx, biome, distance, this.w);
     this.environment.motes(ctx, biome, this.w, this.time, distance);
     this.drawAmbient(ctx, biome, distance);
+  }
+
+  /**
+   * Boss Kulesi sahnesi: taş duvar, kayan tuğla derzleri, sütunlar, titreyen meşaleler
+   * ve taş döşeme. Kule ilerledikçe (ve kat geçildikçe) duvar yavaşça kayar.
+   */
+  drawTower(ctx, biome, distance) {
+    const w = this.w;
+    const t = this.time;
+    const d = distance + t * 25; // hareketsiz dövüşte bile sahne canlı kalsın
+
+    const g = ctx.createLinearGradient(0, 0, 0, GROUND_Y);
+    g.addColorStop(0, biome.sky[0]);
+    g.addColorStop(1, biome.sky[1]);
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, w, H);
+
+    // Tuğla derzleri: sıra başına yarım kaydırma (örgü hissi)
+    const brickW = 46;
+    const brickH = 22;
+    const off = d * 0.2 % brickW;
+    ctx.fillStyle = 'rgba(0,0,0,0.28)';
+    for (let row = 0, y = 0; y < GROUND_Y; row++, y += brickH) {
+      const shift = (row % 2) * (brickW / 2);
+      for (let x = -brickW + ((shift - off) % brickW + brickW) % brickW; x < w; x += brickW) ctx.fillRect(x, y, 2, brickH);
+      ctx.fillRect(0, y, w, 2);
+    }
+
+    // Uzak kemerli pencereler: mor-mavi ay ışığı
+    const winSpacing = 260;
+    const winOff = (d * 0.3) % winSpacing;
+    for (let i = -1; i < w / winSpacing + 2; i++) {
+      const x = i * winSpacing - winOff + 90;
+      const top = 70;
+      const bottom = 190;
+      const grad = ctx.createLinearGradient(0, top, 0, bottom);
+      grad.addColorStop(0, 'rgba(160,140,255,0.55)');
+      grad.addColorStop(1, 'rgba(90,70,160,0.15)');
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.moveTo(x - 20, bottom);
+      ctx.lineTo(x - 20, top + 20);
+      ctx.arc(x, top + 20, 20, Math.PI, 0);
+      ctx.lineTo(x + 20, bottom);
+      ctx.closePath();
+      ctx.fill();
+    }
+
+    // Sütunlar (orta plan): gövde, başlık ve kaide
+    const colSpacing = 170;
+    const colOff = (d * 0.55) % colSpacing;
+    for (let i = -1; i < w / colSpacing + 2; i++) {
+      const x = i * colSpacing - colOff;
+      ctx.fillStyle = biome.near;
+      ctx.fillRect(x - 13, 40, 26, GROUND_Y - 40);
+      ctx.fillStyle = biome.mid;
+      ctx.fillRect(x - 17, 34, 34, 10);
+      ctx.fillRect(x - 17, GROUND_Y - 14, 34, 14);
+      ctx.fillStyle = 'rgba(255,255,255,0.06)';
+      ctx.fillRect(x - 13, 40, 4, GROUND_Y - 54);
+
+      // Meşale: sütunun yanında titreyen ateş ve ışık hâlesi
+      const fx = x + 36;
+      const fy = 150;
+      const flick = 0.75 + 0.25 * Math.sin(t * 9 + i * 2.3) + 0.08 * Math.sin(t * 23 + i);
+      const halo = ctx.createRadialGradient(fx, fy, 4, fx, fy, 90 * flick);
+      halo.addColorStop(0, 'rgba(255,170,70,0.38)');
+      halo.addColorStop(1, 'rgba(255,120,40,0)');
+      ctx.fillStyle = halo;
+      ctx.fillRect(fx - 90, fy - 90, 180, 180);
+      ctx.fillStyle = '#4a3a2a';
+      ctx.fillRect(fx - 3, fy, 6, 14);
+      ctx.fillStyle = `rgba(255,190,80,${0.85 * flick})`;
+      ctx.beginPath();
+      ctx.ellipse(fx, fy - 2, 4 * flick, 7 * flick, 0, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // Taş döşeme: ön yüzde derz çizgileri kayar, üst kenar parlak
+    ctx.fillStyle = biome.ground;
+    ctx.fillRect(0, GROUND_Y, w, H - GROUND_Y);
+    ctx.fillStyle = biome.groundTop;
+    ctx.fillRect(0, GROUND_Y, w, 3);
+    ctx.fillStyle = biome.groundLine;
+    const tileW = 64;
+    const tileOff = d % tileW;
+    for (let x = -tileW + (tileOff > 0 ? tileOff - tileW : 0); x < w; x += tileW) ctx.fillRect(x, GROUND_Y + 3, 2, H - GROUND_Y - 3);
+    ctx.fillRect(0, GROUND_Y + 22, w, 2);
   }
 
   drawSky(ctx, biome) {
