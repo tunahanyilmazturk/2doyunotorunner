@@ -28,6 +28,10 @@ export class EquipmentSystem {
       this.game.bus.emit(Events.TOAST, { text: 'Bu yuva kilitli. Ruh Ağacı\'ndan açılır 🔒', type: 'error' });
       return false;
     }
+    if (this.game.classes?.canUse(item) === false) {
+      this.game.bus.emit(Events.TOAST, { text: `Bu eşya ${this.game.classes.active.name} sınıfına ait`, type: 'error' });
+      return false;
+    }
     const previous = this.slots[item.slot];
     this.slots[item.slot] = item;
     const kinds = this.game.state.stats.weaponKinds;
@@ -49,7 +53,7 @@ export class EquipmentSystem {
       let bestIndex = -1;
       let bestScore = current ? itemRating(current, ref) * 1.02 : -1;
       inv.forEach((item, i) => {
-        if (!item || item.slot !== slot) return;
+        if (!item || item.slot !== slot || this.game.classes?.canUse(item) === false) return;
         const score = itemRating(item, ref);
         if (score > bestScore) {
           bestScore = score;

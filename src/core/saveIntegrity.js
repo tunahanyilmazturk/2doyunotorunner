@@ -20,6 +20,7 @@ import { COMPANION_IDS, COMPANION_MAP, EGG_HATCH_KILLS, MAX_COMPANION_LEVEL, MAX
 import { DAILY_QUEST_COUNT, QUEST_MAP } from '../data/quests.js';
 import { MAX_SOCKETS_BY_TIER, RUNE_GRADES, RUNE_IDS } from '../data/runes.js';
 import { TOWER_DAILY_ATTEMPTS } from '../data/tower.js';
+import { ARMOR_CLASS_IDS, ARMOR_SLOTS, CLASS_IDS, DEFAULT_CLASS } from '../data/classes.js';
 import { RARITIES } from '../data/rarities.js';
 import { isSetForSlot, itemName } from '../data/sets.js';
 import { MAX_ELIXIR_SECONDS, ELIXIR_MAP } from '../data/shop.js';
@@ -135,6 +136,7 @@ function sanitizeItem(raw, allocateId) {
   };
   if (kind) item.kind = kind;
   if (setId) item.set = setId;
+  if (ARMOR_SLOTS.includes(slot) && ARMOR_CLASS_IDS.includes(raw.armorClass)) item.armorClass = raw.armorClass;
   // Güçlendirme, nadirliğin izin verdiği üst sınırı aşamaz (dosyada elle şişirilemesin).
   const enhance = int(raw.enhance, 0, Balance.maxEnhance(tier), 0);
   if (enhance > 0) item.enhance = enhance;
@@ -214,6 +216,24 @@ function sanitizeDaily(raw) {
   return out;
 }
 
+/**
+ * Sınıflar: açılmış sınıflar, aktif sınıf ve aktif olmayanların ekipman setleri.
+ * Aktif sınıfın ekipmanı state.equipment'tadır, sets'te tekrarlanmaz.
+ */
+function sanitizeClasses(raw, allocateId) {
+  const active = CLASS_IDS.includes(raw?.active) ? raw.active : DEFAULT_CLASS;
+  const unlocked = Object.fromEntries(CLASS_IDS.map((id) => [id, id === DEFAULT_CLASS || raw?.unlocked?.[id] === true]));
+  unlocked[active] = true;
+  const sets = {};
+  for (const id of CLASS_IDS) {
+    if (id === active || !unlocked[id] || !isObject(raw?.sets?.[id])) continue;
+    const equipment = {};
+    for (const slot of SLOT_ORDER) equipment[slot] = sanitizeItem(raw.sets[id][slot], allocateId);
+    sets[id] = equipment;
+  }
+  return { active, unlocked, sets };
+}
+
 function sanitizeItemList(rawList, allocateId) {
   if (!Array.isArray(rawList)) return [];
   return rawList.map((raw) => sanitizeItem(raw, allocateId));
@@ -286,6 +306,9 @@ export function sanitizeSave(raw) {
     attempts: int(raw.tower?.attempts, 0, TOWER_DAILY_ATTEMPTS, TOWER_DAILY_ATTEMPTS),
     keys: int(raw.tower?.keys, 0, MAX_KEYS, 0),
   };
+
+  out.seals = int(raw.seals, 0, 1e6, 0); // Kule mührü (sınıf açma para birimi)
+  out.classes = sanitizeClasses(raw.classes, allocateId);
 
   out.shop = { items: [], refreshAt: Math.max(0, num(raw.shop?.refreshAt, 0)) };
   if (Array.isArray(raw.shop?.items)) {

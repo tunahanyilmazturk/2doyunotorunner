@@ -48,6 +48,18 @@ ICONS['achievement-companions'] = { ...ICONS['gift'] };
 ICONS['achievement-runes'] = { ...ICONS['achievement-mythic'] };
 ICONS['achievement-daily'] = { ...ICONS['elixir-luck'] };
 
+// Yeni silah türleri ve iksirler: atlasta yer yok, görsel olarak en yakın simgeyi paylaşır.
+for (let row = 0; row < 7; row++) {
+  ICONS[`item-bow-${row}`] = { ...ICONS[`item-spear-${row}`] };
+  ICONS[`item-staff-${row}`] = { ...ICONS[`item-hammer-${row}`] };
+  ICONS[`item-scepter-${row}`] = { ...ICONS[`item-staff-${row}`] };
+}
+ICONS['elixir-swift'] = { ...ICONS['elixir-wrath'] };
+ICONS['elixir-precision'] = { ...ICONS['elixir-fortune'] };
+ICONS['elixir-vampire'] = { ...ICONS['elixir-wrath'] };
+ICONS['elixir-haven'] = { ...ICONS['elixir-ironskin'] };
+ICONS['elixir-shade'] = { ...ICONS['elixir-luck'] };
+
 export function itemArtKey(item) {
   const type = item.slot === 'weapon' ? (item.kind || 'sword') : item.slot;
   const level = Number(item.level) || 1;
@@ -83,7 +95,8 @@ export const aliases = {
   '🎒': 'inventory', '⬆️': 'menu-upgrades', '✨': 'menu-skills', '🔨': 'menu-forge', '🏪': 'menu-shop', '🏆': 'menu-achievements', '🌳': 'menu-prestige',
   '⚙️': 'settings', '🪙': 'gold', '💰': 'gold', '👻': 'soul', '❤️': 'health', '♥': 'health', '💾': 'save', '🔒': 'lock', '⚡': 'equip-best', '📊': 'stats',
   '🪖': 'item-helmet-1', '📿': 'item-amulet-2', '🧣': 'item-cape-1', '⚔️': 'combat', '🛡️': 'item-shield-1', '🦺': 'item-armor-2', '🧤': 'item-gloves-1', '🪢': 'item-belt-1', '💍': 'item-ring-2', '👢': 'item-boots-1',
-  '🗡️': 'item-sword-1', '🪓': 'item-axe-1', '🔱': 'item-spear-1', '🔪': 'item-dagger-1',
+  '🗡️': 'item-sword-1', '🪓': 'item-axe-1', '🔱': 'item-spear-1', '🔪': 'item-dagger-1', '🏹': 'item-bow-1', '🪄': 'item-staff-1',
+  '💨': 'elixir-swift', '🔍': 'elixir-precision', '🩸': 'elixir-vampire', '🌿': 'elixir-haven', '🌑': 'elixir-shade',
   '💥': 'skill-powerStrike', '🔥': 'skill-frenzy', '☄️': 'skill-meteor', '🧪': 'potion', '👑': 'boss', '💨': 'upgrade-haste', '🎯': 'upgrade-precision', '💚': 'upgrade-regen', '🩸': 'upgrade-vampirism', '🍃': 'upgrade-evasion', '🍀': 'upgrade-fortune', '🌵': 'stat-thorns',
   '📦': 'chest-wood', '🧰': 'chest-iron', '🍷': 'elixir-wrath', '🧉': 'elixir-ironskin', '🍯': 'elixir-fortune', '📜': 'elixir-luck', '🎁': 'gift', '🎮': 'gamepad', '⌨️': 'keyboard',
   '🔄': 'refresh', '↕': 'sort', '🤖': 'auto', '⚠️': 'warning', '⚠': 'warning', '🔗': 'link', '🔮': 'tree-a3', '🌀': 'tree-a1', '📯': 'tree-a4', '⏳': 'tree-c4', '⏱️': 'achievement-fastBoss', '⭐': 'achievement-elite', '🌟': 'achievement-legend', '🔴': 'achievement-mythic', '📖': 'achievement-bestiary', '🗺️': 'achievement-stage', '🏦': 'tree-w3', '🚀': 'tree-w4', '🤝': 'tree-w5', '😡': 'skill-frenzy', '⛰️': 'upgrade-slayer', '⚔': 'combat', '❤': 'health', '💫': 'tree-a1', '★': 'achievement-elite',

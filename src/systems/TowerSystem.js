@@ -72,6 +72,8 @@ export class TowerSystem {
   onFloorCleared(monster) {
     const floor = monster.towerFloor;
     const firstClear = floor > this.data.best;
+    // Her kat geçişi bir Kule Mührü verir (sınıf açmak için)
+    this.game.state.seals = (this.game.state.seals || 0) + 1;
     let rewards = [];
     if (firstClear) {
       this.data.best = floor;

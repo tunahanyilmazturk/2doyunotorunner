@@ -210,7 +210,7 @@ export function drawPlayer(ctx, player, equipment) {
 
 // ---------- Silah çizimleri: (0,0) el, +x yönü silahın ucu ----------
 
-const WEAPON_REACH = { sword: 28, axe: 26, hammer: 26, spear: 40, dagger: 14 };
+const WEAPON_REACH = { sword: 28, axe: 26, hammer: 26, spear: 40, dagger: 14, bow: 30, staff: 34, scepter: 32 };
 
 function bladeColorOf(tint) {
   return tint ? mix('#dfe6ee', tint, 0.35) : '#cfd6de';
@@ -299,6 +299,46 @@ const WEAPON_DRAWERS = {
     }
   },
 
+  bow(ctx, len, tint, gem) {
+    // Kavis gövde, gerili tel ve tutma yeri; uç tintle parlar
+    const arc = len * 0.5;
+    ctx.strokeStyle = WOOD;
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(4, -arc);
+    ctx.quadraticCurveTo(len * 0.45, 0, 4, arc);
+    ctx.stroke();
+    ctx.strokeStyle = 'rgba(240,235,220,0.8)';
+    ctx.lineWidth = 0.9;
+    ctx.beginPath();
+    ctx.moveTo(4, -arc);
+    ctx.lineTo(4, arc);
+    ctx.stroke();
+    ctx.fillStyle = gem;
+    ctx.fillRect(2, -1.5, 4, 3);
+    ctx.fillStyle = bladeColorOf(tint);
+    ctx.fillRect(4 + len * 0.45 - 1, -1, 2, 2);
+  },
+  staff(ctx, len, tint, gem) {
+    // Uzun ağaç gövde; ucunda tintle parlayan küre
+    ctx.fillStyle = WOOD;
+    ctx.fillRect(-2, -1.5, len + 2, 3);
+    ctx.fillStyle = gem;
+    ctx.beginPath();
+    ctx.arc(len + 4, 0, 4.2, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = bladeColorOf(tint);
+    ctx.beginPath();
+    ctx.arc(len + 4, 0, 2.2, 0, Math.PI * 2);
+    ctx.fill();
+  },
+  scepter(ctx, len, tint, gem, weapon) {
+    // Kutsal asa: asanın üstünde haç benzeri bir başlık
+    WEAPON_DRAWERS.staff(ctx, len, tint, gem, weapon);
+    ctx.fillStyle = gem;
+    ctx.fillRect(len + 2, -4, 2, 8);
+    ctx.fillRect(len - 1, -1, 6, 2);
+  },
   spear(ctx, len, tint, gem, weapon) {
     const tip = bladeColorOf(tint);
     ctx.fillStyle = WOOD;
@@ -429,6 +469,9 @@ const WEAPON_TIP = {
   hammer: { forward: 17, side: 8 },
   spear: { forward: 14, side: 3.5 },
   dagger: { forward: 21, side: 2.5 },
+  bow: { forward: 14, side: 9 },
+  staff: { forward: 30, side: 4 },
+  scepter: { forward: 28, side: 4 },
 };
 
 /** Bebekte silahı kısaltır: silah uzunluğu seviyeyle büyür ama panelde sabit kalır. */

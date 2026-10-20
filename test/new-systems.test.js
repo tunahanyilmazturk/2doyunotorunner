@@ -14,6 +14,10 @@ import { QuestSystem } from '../src/systems/QuestSystem.js';
 import { RuneSystem } from '../src/systems/RuneSystem.js';
 import { TowerSystem } from '../src/systems/TowerSystem.js';
 import { createItem } from '../src/systems/ItemFactory.js';
+import { ClassSystem } from '../src/systems/ClassSystem.js';
+import { EquipmentSystem } from '../src/systems/EquipmentSystem.js';
+import { ARMOR_SLOTS, CLASSES, CLASS_MAP } from '../src/data/classes.js';
+import { WEAPON_KINDS } from '../src/data/items.js';
 
 function makeGame(time = new Date(2026, 9, 20, 12).getTime()) {
   const state = createDefaultState();
@@ -26,7 +30,7 @@ function makeGame(time = new Date(2026, 9, 20, 12).getTime()) {
     bus,
     seen,
     clock,
-    tree: { perk: () => 0 },
+    tree: { perk: () => 0, isSlotUnlocked: () => true },
     spawn: { reset: () => {}, spawnTimer: 0 },
     player: {
       dead: false,
@@ -47,6 +51,8 @@ function makeGame(time = new Date(2026, 9, 20, 12).getTime()) {
   game.companions = new CompanionSystem(game);
   game.tower = new TowerSystem(game);
   game.quests = new QuestSystem(game, () => clock.time);
+  game.classes = new ClassSystem(game);
+  game.equipment = new EquipmentSystem(game);
   for (const name of Object.values(Events)) bus.on(name, (payload) => seen.push({ name, payload }));
   return game;
 }
@@ -293,4 +299,93 @@ test('kayıt doğrulama yeni alanları korur ve bozuk değerleri onarır', () =>
   assert.equal(fixed.companions.active, null);
   assert.ok(fixed.companions.eggs >= 0);
   assert.ok(fixed.tower.best >= 0 && fixed.tower.attempts <= TOWER_DAILY_ATTEMPTS && fixed.tower.keys >= 0);
+});
+
+test('sınıf: yalnızca kendi silah ve zırh türünü kuşanır', () => {
+  const game = makeGame();
+  const s = game.state;
+  s.gold = 0;
+  const bow = createItem(s, { level: 20, slot: 'weapon', kind: 'bow' });
+  const sword = createItem(s, { level: 20, slot: 'weapon', kind: 'sword' });
+  s.inventory[0] = bow;
+  s.inventory[1] = sword;
+  assert.equal(game.equipment.equipFromInventory(0), false, 'savaşçı yay kuşanamaz');
+  assert.equal(game.equipment.equipFromInventory(1), true, 'savaşçı kılıç kuşanabilir');
+
+  game.state.seals = 100;
+  game.classes.unlock('archer');
+  assert.equal(game.classes.switchTo('archer'), true);
+  assert.equal(game.equipment.equipFromInventory(0), true, 'okçu yay kuşanabilir');
+});
+
+test('sınıf: zırh sınıfı yalnızca zırh slotlarında uygulanır', () => {
+  const s = makeGame().state;
+  for (const slot of ARMOR_SLOTS) assert.ok(createItem(s, { level: 10, slot }).armorClass, `${slot} zırh sınıfı almalı`);
+  assert.equal(createItem(s, { level: 10, slot: 'amulet' }).armorClass, undefined, 'kolye herkese açık');
+});
+
+test('sınıf: her sınıfın silahları ve zırh sınıfı tanımlı', () => {
+  for (const c of CLASSES) {
+    for (const k of c.weaponKinds) assert.ok(WEAPON_KINDS[k], `${c.id}: bilinmeyen silah ${k}`);
+  }
+  assert.equal(new Set(CLASSES.map((c) => c.armorClass)).size, CLASSES.length, 'her sınıfın kendi zırh sınıfı var');
+  const kinds = CLASSES.flatMap((c) => c.weaponKinds);
+  assert.equal(new Set(kinds).size, kinds.length, 'silah türleri sınıflar arasında paylaşılmıyor');
+});
+
+test('sınıf: geçişte ekipman setleri takas edilir ve geri dönünce korunur', () => {
+  const game = makeGame();
+  const s = game.state;
+  const warriorSword = createItem(s, { level: 20, slot: 'weapon', kind: 'sword' });
+  s.equipment.weapon = warriorSword;
+  game.state.seals = 100;
+  game.classes.unlock('mage');
+  game.classes.switchTo('mage');
+  assert.equal(s.equipment.weapon, null, 'büyücünün ekipmanı boş başlar');
+
+  const staff = createItem(s, { level: 20, slot: 'weapon', kind: 'staff' });
+  s.equipment.weapon = staff;
+  game.classes.switchTo('warrior');
+  assert.equal(s.equipment.weapon, warriorSword, 'savaşçının kılıcı geri gelir');
+  game.classes.switchTo('mage');
+  assert.equal(s.equipment.weapon, staff, 'büyücünün asası korunur');
+});
+
+test('sınıf: açmak Kule Mührü harcar, yetmezse açılmaz; geçiş ücretsizdir', () => {
+  const game = makeGame();
+  game.state.seals = CLASS_MAP.archer.cost - 1;
+  assert.equal(game.classes.unlock('archer'), false);
+  game.state.seals = CLASS_MAP.archer.cost;
+  assert.equal(game.classes.unlock('archer'), true);
+  assert.equal(game.state.seals, 0, 'mühür harcandı');
+  assert.equal(game.classes.switchTo('archer'), true);
+  assert.equal(game.classes.switchTo('warrior'), true, 'geçiş mühür istemez');
+  assert.equal(game.classes.unlock('archer'), false, 'açık sınıf tekrar açılmaz');
+});
+
+test('kule: her kat geçişi bir Kule Mührü verir', () => {
+  const game = makeGame();
+  game.tower.enter();
+  game.tower.onFloorCleared(mob({ isBoss: true, towerFloor: 1 }));
+  game.tower.onFloorCleared(mob({ isBoss: true, towerFloor: 2 }));
+  assert.equal(game.state.seals, 2, 'tekrar geçişler de mühür verir');
+});
+
+test('kayıt: sınıflar, mühürler ve saklı ekipman korunur; bozuk sınıf varsayılana döner', () => {
+  const game = makeGame();
+  game.state.seals = 42;
+  game.classes.data.unlocked.archer = true;
+  game.state.classes.sets.archer = { weapon: createItem(game.state, { level: 9, slot: 'weapon', kind: 'bow' }) };
+  const out = sanitizeSave(JSON.parse(JSON.stringify(game.state)));
+  assert.equal(out.seals, 42);
+  assert.equal(out.classes.unlocked.archer, true);
+  assert.equal(out.classes.sets.archer.weapon.kind, 'bow');
+
+  const bad = JSON.parse(JSON.stringify(game.state));
+  bad.classes = { active: 'dragon', unlocked: { archer: 'yes' }, sets: { warrior: {} } };
+  bad.seals = -5;
+  const fixed = sanitizeSave(bad);
+  assert.equal(fixed.classes.active, 'warrior');
+  assert.equal(fixed.classes.unlocked.archer, false, 'geçersiz açılış değeri açık sayılmaz');
+  assert.equal(fixed.seals, 0);
 });

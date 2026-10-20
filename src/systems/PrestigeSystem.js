@@ -101,6 +101,7 @@ export class PrestigeSystem {
   resetRun() {
     const { state, bus } = this.game;
     this.game.tower.end('prestige');
+    this.game.classes?.clearRun(); // sınıfların saklı ekipmanı koşuya aittir
     // Rünler kalıcıdır: silinecek eşyalardaki rünler önce çantaya döner
     const reclaimed = this.game.runes.reclaimAll();
     if (reclaimed) bus.emit(Events.TOAST, { text: `◆ ${reclaimed} rün çantana geri döndü`, type: 'info' });

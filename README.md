@@ -49,11 +49,14 @@ Beş haritanın hareketli önizlemesi: sunucu açıkken `/tools/map-preview.html
 - **Eşya sistemi** — 10 yuva (Kask, Kolye, Pelerin, Silah, Kalkan, Zırh, Eldiven, Kemer, Yüzük, Çizme),
   6 nadirlik (Sıradan → Mitik), 7 seviye kademesi, seviyeye göre ölçeklenen rastgele statlar
 - **Eşya setleri** — 5 set (Kızıl Nişan, Buzul Siperi, Fırtına Örtüsü, Yaşam Yemini, Kâhin Gözü), her biri 6 yuva kapsar.
+- **Karakter sınıfları** — Savaşçı (varsayılan), Okçu, Büyücü, Suikastçı, Şifacı. Her sınıf kendi silah türünü ve zırh sınıfını kuşanır;
+  diğer sınıfların eşyaları envanterde durur ama kuşanılamaz. Sınıf açmak **Kule Mührü** (🔷) harcar; her Boss Kulesi kat geçişi 1 mühür verir.
+  Geçiş ücretsizdir ve her sınıfın ekipmanı ayrı saklanır. Yeniden doğuşta ekipmanlar silinir, açılan sınıflar kalır.
   Nadir ve üstü eşyalar set parçası olabilir (nadirlik arttıkça şans artar); aynı setten **2 / 4 / 6 parça**
   kuşanınca kademeli bonus açılır. Parçalar yuva kenarındaki elmasla işaretlenir, Karakter sekmesinde
   aktif bonuslar özetlenir ve tooltip "kuşanılırsa kaç parça olur"u gösterir. Set parçaları **oto-satıştan muaftır**
-- **5 silah türü** — Kılıç, Balta (+kritik hasar), Çekiç (+boss hasarı, en yüksek saldırı), Mızrak (+kritik şansı),
-  Hançer (+saldırı hızı); her biri karakterin elinde farklı çizilir
+- **7 silah türü** — Kılıç, Balta (+kritik hasar), Çekiç (+boss hasarı, en yüksek saldırı), Mızrak (+kritik şansı),
+  Hançer (+saldırı hızı), Yay (+kaçınma), Asa (+yenilenme); her biri karakterin elinde farklı çizilir
 - **Statlar** — saldırı, can, zırh, yenilenme, saldırı hızı, kritik, can çalma, altın, şans,
   **kaçınma**, **diken** (vurulunca geri hasar) ve **boss hasarı**
 - **Envanter** — 30 yuva, kuşan / sat / kilitle / sırala / toplu sat / otomatik sat (set parçaları hariç),
@@ -68,8 +71,8 @@ Beş haritanın hareketli önizlemesi: sunucu açıkken `/tools/map-preview.html
   altın başına en çok kazandıranı seçer), sıralama / filtre / arama; ilk yeniden doğuştan sonra
   **otomatik alım** (öncelik profili: en ucuz / verim / hasar / hayatta kalma / altın)
 - **Mağaza** — üç bölüm: **Eşyalar** (5 dakikada bir yenilenen vitrin, ▲ daha iyi işareti),
-  **Sandıklar** (Tahta / Demir / Altın: garanti nadirlikte eşya), **İksirler** (Can İksiri + 4 süreli iksir:
-  Öfke, Demir Deri, Altın, Şans Parşömeni; süreleri kayıtla korunur)
+  **Sandıklar** (Tahta / Demir / Altın: garanti nadirlikte eşya), **İksirler** (Can İksiri + 9 süreli iksir:
+  Öfke, Demir Deri, Altın, Şans, Çeviklik, Keskin Göz, Kan Damlası, Diriliş, Gölge Tozu; süreleri kayıtla korunur)
 - **Tehlikeli düşmanlar** — bosslar her 4., elitler her 5. saldırıda zırhı yarı delen **ağır vuruş** yapar;
   öncesinde kırmızı parıltı ve "⚠ Ağır vuruş geliyor!" uyarısı çıkar
 - **Yeniden Doğuş + Ruh Ağacı** — 20. bölgeden sonra yeniden doğ (ilerleme durunca HUD öneri düğmesi çıkar): temiz bir koşu

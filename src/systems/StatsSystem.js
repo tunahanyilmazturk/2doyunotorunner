@@ -48,6 +48,8 @@ export class StatsSystem {
     }
     const buffs = this.game.skills?.activeModifiers() ?? {};
     for (const [key, value] of Object.entries(buffs)) raw[key] = (raw[key] || 0) + value;
+    // Aktif sınıfın sabit bonusu
+    for (const [key, value] of Object.entries(this.game.classes?.bonuses() ?? {})) raw[key] = (raw[key] || 0) + value;
     const elixirs = this.game.elixirs?.activeModifiers() ?? {};
     for (const [key, value] of Object.entries(elixirs)) raw[key] = (raw[key] || 0) + value;
     // Kuşanılan eşyalara takılı rünler ve yanındaki yoldaşın pasif bonusu

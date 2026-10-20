@@ -27,6 +27,10 @@ export class CharacterPanel {
     const { game } = this;
     root.classList.add('character-layout');
 
+    this.classBtn = el('button', { class: 'btn btn-sm btn-block', title: 'Sınıf seç: yeni silah ve zırh türleri', onclick: () => this.ui.classModal.open() });
+    this.updateClassBtn();
+    game.bus.on(Events.CLASS_CHANGED, () => this.updateClassBtn());
+    game.bus.on(Events.TOWER_CHANGED, () => this.updateClassBtn()); // kule mührü kazanımı
     this.dollCanvas = el('canvas', { class: 'doll-canvas' });
     this.dollLeft = el('div', { class: 'doll-col doll-left' });
     this.dollRight = el('div', { class: 'doll-col doll-right' });
@@ -62,6 +66,7 @@ export class CharacterPanel {
         el('h4', { class: 'section-title', text: '🛡️ Ekipman' }),
         this.doll,
         el('button', { class: 'btn btn-sm btn-primary btn-block', text: '⚡ En İyileri Kuşan', onclick: () => this.equipBest() }),
+        this.classBtn,
         this.setList,
       ]),
       el('div', { class: 'char-col inv-col' }, [
@@ -93,6 +98,12 @@ export class CharacterPanel {
     this.autoSellSelect.value = game.state.settings.autoSellTier;
 
     items();
+  }
+
+  /** Sınıf düğmesi: aktif sınıf adı ve kalan Kule Mührü */
+  updateClassBtn() {
+    const { game } = this;
+    this.classBtn.textContent = `🎭 ${game.classes.active.name} · 🔷 ${game.state.seals}`;
   }
 
   /** Menü rozeti: envanterde kuşanılandan daha iyi eşya sayısı */

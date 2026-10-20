@@ -15,6 +15,16 @@ export const ELIXIRS = [
     desc: '+%100 altın' },
   { id: 'luck', name: 'Şans Parşömeni', icon: '📜', color: '#59c9a5', stat: 'luck', value: 100, duration: 180, priceMult: 8,
     desc: '+%100 şans (daha çok ve daha nadir eşya)' },
+  { id: 'swift', name: 'Çeviklik İksiri', icon: '💨', color: '#7fe0ff', stat: 'aspd', value: 40, duration: 90, priceMult: 6,
+    desc: '+%40 saldırı hızı' },
+  { id: 'precision', name: 'Keskin Göz Özü', icon: '🔍', color: '#ffb36b', stat: 'crit', value: 15, duration: 120, priceMult: 7,
+    desc: '+15 kritik şansı' },
+  { id: 'vampire', name: 'Kan Damlası', icon: '🩸', color: '#c2185b', stat: 'lifesteal', value: 5, duration: 90, priceMult: 9,
+    desc: '+%5 can çalma' },
+  { id: 'haven', name: 'Diriliş Özü', icon: '🌿', color: '#7bd389', stat: 'regen', value: 3, duration: 120, priceMult: 5,
+    desc: '+3 can/sn yenilenme' },
+  { id: 'shade', name: 'Gölge Tozu', icon: '🌑', color: '#6b5b8a', stat: 'dodge', value: 8, duration: 60, priceMult: 7,
+    desc: '+%8 kaçınma' },
 ];
 
 export const ELIXIR_MAP = Object.fromEntries(ELIXIRS.map((e) => [e.id, e]));

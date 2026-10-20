@@ -52,6 +52,7 @@ export const Events = Object.freeze({
   QUEST_COMPLETED: 'quest:completed',
   REWARD_GRANTED: 'reward:granted',
   TOWER_CHANGED: 'tower:changed',
+  CLASS_CHANGED: 'class:changed',
   TOWER_STARTED: 'tower:started',
   TOWER_FLOOR_CLEARED: 'tower:floorCleared',
   TOWER_ENDED: 'tower:ended',

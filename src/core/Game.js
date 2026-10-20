@@ -25,6 +25,7 @@ import { SoulTreeSystem } from '../systems/SoulTreeSystem.js';
 import { SpawnSystem } from '../systems/SpawnSystem.js';
 import { StatsSystem } from '../systems/StatsSystem.js';
 import { TowerSystem } from '../systems/TowerSystem.js';
+import { ClassSystem } from '../systems/ClassSystem.js';
 import { UpgradeSystem } from '../systems/UpgradeSystem.js';
 import { UIManager } from '../ui/UIManager.js';
 import { damp } from '../utils/math.js';
@@ -64,6 +65,7 @@ export class Game {
     this.runes = new RuneSystem(this);
     this.companions = new CompanionSystem(this);
     this.tower = new TowerSystem(this);
+    this.classes = new ClassSystem(this);
     this.quests = new QuestSystem(this);
     this.prestige = new PrestigeSystem(this);
     this.offline = new OfflineSystem(this);

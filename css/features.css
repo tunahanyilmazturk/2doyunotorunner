@@ -421,3 +421,68 @@
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
+
+/* ---------- Karakter sınıfları penceresi ---------- */
+.class-modal {
+  width: min(680px, 84vw);
+}
+.class-seals {
+  margin-bottom: 8px;
+  font-family: var(--font-pixel);
+  font-size: 15px;
+  color: var(--soul);
+}
+.class-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 6px;
+}
+.class-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  background: var(--bg-2);
+  border: 2px solid var(--edge);
+  border-radius: var(--radius);
+  box-shadow: var(--bevel-sunk);
+}
+.class-card.active {
+  border-color: var(--gold);
+  background: linear-gradient(90deg, rgba(242, 193, 78, 0.14), var(--bg-2));
+}
+.class-card.locked {
+  opacity: 0.85;
+}
+.class-icon {
+  flex: none;
+  width: 34px;
+  font-size: 26px;
+  text-align: center;
+}
+.class-info {
+  flex: 1;
+  min-width: 0;
+  font-size: 12px;
+}
+.class-info b {
+  font-family: var(--font-pixel);
+  font-size: 15px;
+}
+.class-meta {
+  margin-top: 3px;
+  font-size: 11px;
+  color: var(--gold);
+}
+.class-tag {
+  flex: none;
+  font-family: var(--font-pixel);
+  font-size: 12px;
+  color: var(--good);
+}
+.class-card .btn {
+  flex: none;
+  width: auto;
+  min-width: 96px;
+  white-space: nowrap;
+}

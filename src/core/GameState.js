@@ -3,6 +3,7 @@ import { SLOT_ORDER } from '../data/items.js';
 import { emptyRuneBag } from '../data/runes.js';
 import { SKILLS } from '../data/skills.js';
 import { TOWER_DAILY_ATTEMPTS } from '../data/tower.js';
+import { DEFAULT_CLASS } from '../data/classes.js';
 import { UPGRADES } from '../data/upgrades.js';
 
 // Kaydedilen her şey bu düz (JSON'a çevrilebilir) nesnede yaşar.
@@ -43,6 +44,8 @@ export function createDefaultState() {
     companions: { owned: {}, active: null, eggs: 1, incubating: null }, // yoldaşlar (kalıcı); ilk yumurta hediye
     daily: { day: '', quests: [], bonusClaimed: false, streak: 0, lastLoginDay: '', loginClaimed: false },
     tower: { best: 0, attempts: TOWER_DAILY_ATTEMPTS, keys: 0 }, // Boss Kulesi (kalıcı)
+    seals: 0, // Kule mührü: sınıf açma para birimi (kalıcı)
+    classes: { active: DEFAULT_CLASS, unlocked: { [DEFAULT_CLASS]: true }, sets: {} }, // sınıflar; sets = aktif olmayanların ekipmanı
 
     shop: { items: [], refreshAt: 0 },
 

@@ -44,6 +44,18 @@ export const WEAPON_KINDS = {
     name: 'Hançer', icon: '🔪', weight: 1.5, primaryMult: 1.1, guaranteed: ['aspd'],
     tiers: tiersFrom(['Paslı Hançer', 'Demir Hançer', 'Suikastçı Hançeri', 'Rün Hançeri', 'Mithril Hançer', 'Ejder Pençesi', 'Yıldız Hançeri']),
   },
+  bow: {
+    name: 'Yay', icon: '🏹', weight: 1.5, primaryMult: 1.3, guaranteed: ['dodge'],
+    tiers: tiersFrom(['Odun Yay', 'Av Yayı', 'Uzun Yay', 'Rün Yayı', 'Mithril Yay', 'Ejder Kemiği Yay', 'Yıldız Yayı']),
+  },
+  staff: {
+    name: 'Asa', icon: '🪄', weight: 1, primaryMult: 1.7, guaranteed: ['regen'],
+    tiers: tiersFrom(['Dal Asa', 'Meşe Asa', 'Büyücü Asası', 'Rün Asası', 'Mithril Asa', 'Ejder Gözü Asa', 'Yıldız Asası']),
+  },
+  scepter: {
+    name: 'Kutsal Asa', icon: '⚜️', weight: 1, primaryMult: 1.5, guaranteed: ['hpPct'],
+    tiers: tiersFrom(['Kutsal Dal', 'Kutsal Değnek', 'Rahip Asası', 'Rün Değneği', 'Mithril Değnek', 'Ejder Kutsal Asası', 'Yıldız Değneği']),
+  },
 };
 
 export const ITEM_BASES = {
