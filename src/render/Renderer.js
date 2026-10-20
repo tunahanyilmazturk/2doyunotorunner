@@ -155,7 +155,7 @@ export class Renderer {
     this.drawCompanion(lc, pr);
     this.drawShadow(lc, player.x, player.y, 22, 1);
     drawPlayerAuras(lc, player, auras);
-    this.outliner.draw(lc, pr, { x: player.x, y: player.y + 8, w: 230, h: 185 }, (c) => drawPlayer(c, player, game.state.equipment));
+    this.outliner.draw(lc, pr, { x: player.x, y: player.y + 8, w: 230, h: 185 }, (c) => drawPlayer(c, player, game.state.equipment, game.classes.active.look));
 
     game.particles.draw(lc);
     this.background.drawForeground(lc, game.world.distance);

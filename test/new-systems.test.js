@@ -389,3 +389,15 @@ test('kayıt: sınıflar, mühürler ve saklı ekipman korunur; bozuk sınıf va
   assert.equal(fixed.classes.unlocked.archer, false, 'geçersiz açılış değeri açık sayılmaz');
   assert.equal(fixed.seals, 0);
 });
+
+test('sınıf: her sınıfın geçerli bir karakter görünümü var', () => {
+  const kinds = new Set(['none', 'hood', 'hat', 'mask', 'halo']);
+  const hex = /^#[0-9a-f]{6}$/i;
+  for (const c of CLASSES) {
+    assert.ok(c.look, `${c.id}: görünüm tanımlı`);
+    assert.ok(kinds.has(c.look.headgear), `${c.id}: bilinmeyen kafa aksesuarı ${c.look.headgear}`);
+    for (const key of ['tunic', 'hair', 'trim']) assert.match(c.look[key], hex, `${c.id}.${key} geçerli renk olmalı`);
+  }
+  const tunics = CLASSES.map((c) => c.look.tunic);
+  assert.equal(new Set(tunics).size, tunics.length, 'sınıf tunikleri birbirinden ayırt edilebilir');
+});

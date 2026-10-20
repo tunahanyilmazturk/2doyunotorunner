@@ -27,7 +27,7 @@ export class CharacterPanel {
     const { game } = this;
     root.classList.add('character-layout');
 
-    this.classBtn = el('button', { class: 'btn btn-sm btn-block', title: 'Sınıf seç: yeni silah ve zırh türleri', onclick: () => this.ui.classModal.open() });
+    this.classBtn = el('button', { class: 'btn btn-sm btn-block', title: 'Sınıflar sekmesini aç', onclick: () => this.ui.showTab('classes') });
     this.updateClassBtn();
     game.bus.on(Events.CLASS_CHANGED, () => this.updateClassBtn());
     game.bus.on(Events.TOWER_CHANGED, () => this.updateClassBtn()); // kule mührü kazanımı
@@ -154,7 +154,7 @@ export class CharacterPanel {
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, w, h);
     ctx.imageSmoothingEnabled = false;
-    drawPlayerDoll(ctx, this.game.state.equipment, w, h);
+    drawPlayerDoll(ctx, this.game.state.equipment, w, h, this.game.classes.active.look);
   }
 
   renderInventory() {

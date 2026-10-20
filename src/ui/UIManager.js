@@ -8,6 +8,7 @@ import { ToastManager } from './components/Toast.js';
 import { Tooltip } from './components/Tooltip.js';
 import { HUD } from './HUD.js';
 import { CharacterPanel } from './panels/CharacterPanel.js';
+import { ClassesPanel } from './panels/ClassesPanel.js';
 import { CompanionsPanel } from './panels/CompanionsPanel.js';
 import { GoalsPanel } from './panels/GoalsPanel.js';
 import { TowerPanel } from './panels/TowerPanel.js';
@@ -18,7 +19,6 @@ import { SkillsPanel } from './panels/SkillsPanel.js';
 import { UpgradePanel } from './panels/UpgradePanel.js';
 import { SettingsModal } from './SettingsModal.js';
 import { StatsModal } from './StatsModal.js';
-import { ClassModal } from './ClassModal.js';
 
 import { ICONS, iconToken } from './icons.js';
 
@@ -42,9 +42,9 @@ export class UIManager {
     this.hud = new HUD(game, this);
     this.settings = new SettingsModal(game, this);
     this.statsModal = new StatsModal(game, this);
-    this.classModal = new ClassModal(game, this);
     this.tabs = [
       { id: 'character', icon: '🎒', label: 'Karakter', panel: new CharacterPanel(game, this) },
+      { id: 'classes', icon: '🎭', label: 'Sınıflar', panel: new ClassesPanel(game, this) },
       { id: 'upgrades', icon: '⬆️', label: 'Yükseltmeler', panel: new UpgradePanel(game, this) },
       { id: 'skills', icon: '✨', label: 'Yetenekler', panel: new SkillsPanel(game, this) },
       { id: 'forge', icon: '🔨', label: 'Demirci', panel: new ForgePanel(game, this) },

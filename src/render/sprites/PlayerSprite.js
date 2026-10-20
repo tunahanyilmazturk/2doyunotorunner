@@ -21,6 +21,45 @@ const WOOD = '#6b4423';
 const TUNIC = '#3f6ea8';
 const SCARF = '#c8463d';
 
+/** Sınıf görünümü verilmezse eski (savaşçı) görünüm kullanılır */
+const DEFAULT_LOOK = { tunic: TUNIC, hair: HAIR, headgear: 'none', trim: '#c8b27a' };
+
+/**
+ * Sınıf kafa aksesuarı: kapüşon, şapka, maske ya da halo. (x0, top) kafa kutusunun sol üstü, w genişliği.
+ * Aynı mantık oyun içi ve kağıt bebek çiziminde kullanılır.
+ */
+function drawHeadgear(ctx, look, x0, top, w) {
+  const g = look.headgear;
+  if (!g || g === 'none') return;
+  ctx.fillStyle = look.trim;
+  if (g === 'hood') {
+    ctx.fillRect(x0 - 1, top - 2, w + 2, 6);
+    ctx.fillRect(x0 - 2, top + 2, 2, 7);
+    ctx.fillRect(x0 + w, top + 2, 2, 7);
+  } else if (g === 'hat') {
+    ctx.beginPath();
+    ctx.moveTo(x0 - 3, top - 1);
+    ctx.lineTo(x0 + w / 2, top - 14);
+    ctx.lineTo(x0 + w + 3, top - 1);
+    ctx.closePath();
+    ctx.fill();
+    ctx.fillRect(x0 - 4, top - 2, w + 8, 2);
+    ctx.fillStyle = lighten(look.trim, 0.35);
+    ctx.fillRect(x0 + w / 2 - 1, top - 9, 2, 2);
+  } else if (g === 'mask') {
+    ctx.fillRect(x0 - 1, top + 3, w + 2, 4);
+    ctx.fillStyle = '#e8e2c8';
+    ctx.fillRect(x0 + 1, top + 4, 3, 2);
+    ctx.fillRect(x0 + w - 4, top + 4, 3, 2);
+  } else if (g === 'halo') {
+    ctx.strokeStyle = look.trim;
+    ctx.lineWidth = 1.4;
+    ctx.beginPath();
+    ctx.ellipse(x0 + w / 2, top - 4, w / 2 + 3, 2, 0, 0, Math.PI * 2);
+    ctx.stroke();
+  }
+}
+
 const rarityColor = (item) => (item ? getRarity(item.tier).color : null);
 
 /** Aktif buffların arkadaki ışık halkaları (dış hattın dışında çizilir) */
@@ -41,9 +80,9 @@ export function drawPlayerAuras(ctx, player, colors) {
   });
 }
 
-export function drawPlayer(ctx, player, equipment) {
+export function drawPlayer(ctx, player, equipment, look = DEFAULT_LOOK) {
   const armorTint = rarityColor(equipment.armor);
-  const bodyColor = armorTint ? mix(STEEL, armorTint, 0.45) : TUNIC;
+  const bodyColor = armorTint ? mix(STEEL, armorTint, 0.45) : look.tunic;
   const helmetTint = rarityColor(equipment.helmet);
   const bootColor = equipment.boots ? mix(LEATHER, rarityColor(equipment.boots), 0.5) : LEATHER;
   const capeColor = rarityColor(equipment.cape);
@@ -143,6 +182,11 @@ export function drawPlayer(ctx, player, equipment) {
   ctx.fillRect(-4, headY + 2, 10, 3);
   ctx.fillStyle = '#1d1420';
   ctx.fillRect(3, headY - 2, 2, 3);
+  if (!helmetTint) {
+    ctx.fillStyle = look.hair;
+    ctx.fillRect(-5, headY - 7, 12, 3);
+    drawHeadgear(ctx, look, -4, headY - 6, 10);
+  }
 
   if (helmetTint) {
     const steel = mix(STEEL, helmetTint, 0.35);
@@ -512,7 +556,7 @@ export function playerDollBox(equipment) {
  * Karakter panelindeki kağıt bebek: kuşanılan eşyalarla birlikte önden duran
  * figürü, verilen kutuya sığacak ölçekte çizer. Kutu (0,0) sol üsttür.
  */
-export function drawPlayerDoll(ctx, equipment, w, h) {
+export function drawPlayerDoll(ctx, equipment, w, h, look = DEFAULT_LOOK) {
   const box = playerDollBox(equipment);
   const scale = Math.min((w - DOLL.pad * 2) / (box.maxX - box.minX), (h - DOLL.pad * 2) / (box.maxY - box.minY));
   ctx.save();
@@ -522,19 +566,20 @@ export function drawPlayerDoll(ctx, equipment, w, h) {
   ctx.beginPath();
   ctx.ellipse(0, 1, 15, 3.5, 0, 0, Math.PI * 2);
   ctx.fill();
-  drawDollFigure(ctx, equipment);
+  drawDollFigure(ctx, equipment, look);
   ctx.restore();
 }
 
 /** Bebek katmanlarının çözülmüş renkleri (nadirlik tonları dahil). */
-function dollColors(equipment) {
+function dollColors(equipment, look = DEFAULT_LOOK) {
   const armorTint = rarityColor(equipment.armor);
-  const body = armorTint ? mix(STEEL, armorTint, 0.45) : TUNIC;
+  const body = armorTint ? mix(STEEL, armorTint, 0.45) : look.tunic;
   return {
+    look,
     armored: !!armorTint,
     armorTint,
     body,
-    sleeve: armorTint ? darken(body, 0.2) : darken(TUNIC, 0.15),
+    sleeve: armorTint ? darken(body, 0.2) : darken(look.tunic, 0.15),
     helmet: rarityColor(equipment.helmet),
     cape: rarityColor(equipment.cape),
     belt: equipment.belt ? mix('#3a2418', rarityColor(equipment.belt), 0.5) : '#3a2418',
@@ -665,12 +710,13 @@ function dollHead(ctx, c) {
   ctx.fillStyle = SKIN_SHADE;
   ctx.fillRect(-1, -60, 3, 1);
   if (!c.helmet) {
-    ctx.fillStyle = HAIR;
+    ctx.fillStyle = c.look.hair;
     ctx.fillRect(-7, -70, 14, 4);
     ctx.fillRect(-7, -68, 3, 9);
     ctx.fillRect(4, -68, 3, 9);
-    ctx.fillStyle = lighten(HAIR, 0.22);
+    ctx.fillStyle = lighten(c.look.hair, 0.22);
     ctx.fillRect(-3, -70, 6, 2);
+    drawHeadgear(ctx, c.look, -6, -68, 12);
     return;
   }
   const steel = mix(STEEL, c.helmet, 0.45);
@@ -745,8 +791,8 @@ function dollWeaponArm(ctx, c, weapon) {
 }
 
 /** Bebeği katman katman çizer (yerel birimler, ayak tabanı 0,0). */
-function drawDollFigure(ctx, equipment) {
-  const c = dollColors(equipment);
+function drawDollFigure(ctx, equipment, look = DEFAULT_LOOK) {
+  const c = dollColors(equipment, look);
   const weapon = dollWeapon(equipment.weapon);
   dollCape(ctx, c);
   dollLegs(ctx, c);

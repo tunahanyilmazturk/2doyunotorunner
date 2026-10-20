@@ -115,14 +115,15 @@ Başlangıçta 6 ekipman yuvası açıktır; Kalkan, Eldiven, Kemer ve Pelerin a
 | Sekme | Kısayol | İçerik |
 |---|---|---|
 | 🎒 Karakter | 1 | Ekipman, envanter, statlar |
-| ⬆️ Yükseltmeler | 2 | Altınla kalıcı (yeniden doğuşa kadar) stat yükseltmeleri |
-| ✨ Yetenekler | 3 | Yetenek öğrenme / yükseltme / otomatik kullanım |
-| 🔨 Demirci | 4 | Eşya güçlendirme · rün çantası ve yuvalar |
-| 🐾 Yoldaşlar | 5 | Yumurta/kuluçka ve yoldaş koleksiyonu |
-| 🏪 Mağaza | 6 | İksirler ve eşya vitrini |
-| 🗼 Boss Kulesi | 7 | Günlük haklar, sıradaki katlar ve ödülleri |
-| 🏆 Hedefler | 8 | Günlük görevler, giriş serisi ve başarımlar |
-| 🌳 Ruh Ağacı | 9 | Yeniden doğuş ve kalıcı yükseltme ağacı |
+| 🎭 Sınıflar | 2 | Karakter sınıfları: tasarımları, silah/zırh türleri, açma ve geçiş |
+| ⬆️ Yükseltmeler | 3 | Altınla kalıcı (yeniden doğuşa kadar) stat yükseltmeleri |
+| ✨ Yetenekler | 4 | Yetenek öğrenme / yükseltme / otomatik kullanım |
+| 🔨 Demirci | 5 | Eşya güçlendirme · rün çantası ve yuvalar |
+| 🐾 Yoldaşlar | 6 | Yumurta/kuluçka ve yoldaş koleksiyonu |
+| 🏪 Mağaza | 7 | İksirler ve eşya vitrini |
+| 🗼 Boss Kulesi | 8 | Günlük haklar, sıradaki katlar ve ödülleri |
+| 🏆 Hedefler | 9 | Günlük görevler, giriş serisi ve başarımlar |
+| 🌳 Ruh Ağacı | 10 | Yeniden doğuş ve kalıcı yükseltme ağacı |
 
 Diğer kısayollar: **Q W E R T** yetenekler · **F** iksir · **B** ilerle / boss · **M** menüyü gizle/göster ·
 **P** duraklat/devam et · **Esc** ayarlar · **Ctrl+tık** eşya kilitle.
