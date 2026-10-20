@@ -76,6 +76,59 @@ export const SETS = [
       { pieces: 6, stats: { goldPct: 20, luck: 15, dodge: 5 } },
     ],
   },
+  // Sınıf temalı setler: karakter sınıflarının silah ve zırh kimliğini tamamlar.
+  {
+    id: 'hunter',
+    name: 'Avcı Yemini',
+    prefix: 'Avcı',
+    icon: '🏹',
+    color: '#7fb069',
+    slots: ['weapon', 'cape', 'gloves', 'boots', 'amulet', 'ring'],
+    bonuses: [
+      { pieces: 2, stats: { aspd: 6 } },
+      { pieces: 4, stats: { aspd: 8, crit: 4 } },
+      { pieces: 6, stats: { aspd: 10, crit: 6, critDmg: 25 } },
+    ],
+  },
+  {
+    id: 'arcane',
+    name: 'Arkana Cüppesi',
+    prefix: 'Arkana',
+    icon: '🪄',
+    color: '#9b6fd6',
+    slots: ['weapon', 'armor', 'helmet', 'amulet', 'ring', 'belt'],
+    bonuses: [
+      { pieces: 2, stats: { atkPct: 6 } },
+      { pieces: 4, stats: { atkPct: 8, goldPct: 8 } },
+      { pieces: 6, stats: { atkPct: 12, critDmg: 30, hpPct: 6 } },
+    ],
+  },
+  {
+    id: 'shadow',
+    name: 'Gölge Mirası',
+    prefix: 'Gölge',
+    icon: '🗡️',
+    color: '#4a4a5e',
+    slots: ['weapon', 'gloves', 'boots', 'cape', 'amulet', 'belt'],
+    bonuses: [
+      { pieces: 2, stats: { crit: 5 } },
+      { pieces: 4, stats: { crit: 6, critDmg: 25 } },
+      { pieces: 6, stats: { crit: 8, critDmg: 40, dodge: 6 } },
+    ],
+  },
+  {
+    id: 'sanctum',
+    name: 'Kutsal Mühür',
+    prefix: 'Kutsal',
+    icon: '✨',
+    color: '#f2d27a',
+    slots: ['helmet', 'armor', 'shield', 'amulet', 'ring', 'gloves'],
+    bonuses: [
+      { pieces: 2, stats: { hpPct: 6 } },
+      { pieces: 4, stats: { hpPct: 8, lifesteal: 3 } },
+      { pieces: 6, stats: { hpPct: 12, lifesteal: 4, dodge: 4 } },
+    ],
+  },
 ];
 
 export const SET_MAP = Object.fromEntries(SETS.map((s) => [s.id, s]));

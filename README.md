@@ -49,7 +49,9 @@ Beş haritanın hareketli önizlemesi: sunucu açıkken `/tools/map-preview.html
   her biri kalıcı +%2 saldırı ve altın verir
 - **Eşya sistemi** — 10 yuva (Kask, Kolye, Pelerin, Silah, Kalkan, Zırh, Eldiven, Kemer, Yüzük, Çizme),
   6 nadirlik (Sıradan → Mitik), 7 seviye kademesi, seviyeye göre ölçeklenen rastgele statlar
-- **Eşya setleri** — 5 set (Kızıl Nişan, Buzul Siperi, Fırtına Örtüsü, Yaşam Yemini, Kâhin Gözü), her biri 6 yuva kapsar.
+- **Eşya setleri** — 9 set, her biri 6 yuva kapsar. Genel setler: Kızıl Nişan, Buzul Siperi, Fırtına Örtüsü, Yaşam Yemini,
+  Kâhin Gözü. Sınıf temalı setler: Avcı Yemini (Okçu), Arkana Cüppesi (Büyücü), Gölge Mirası (Suikastçı), Kutsal Mühür (Şifacı).
+  Bonuslar yüzde statlarıdır ve 2 / 4 / 6 parçada kademeli açılır.
 - **Karakter sınıfları** — Savaşçı (varsayılan), Okçu, Büyücü, Suikastçı, Şifacı. Her sınıf kendi silah türünü ve zırh sınıfını kuşanır;
   diğer sınıfların eşyaları envanterde durur ama kuşanılamaz. Sınıf açmak **Kule Mührü** (🔷) harcar; her Boss Kulesi kat geçişi 1 mühür verir. Sınıflar **elmasla** (💎) da açılabilir.
 - **Elmas** (💎) — bosslardan (%35), Boss Kulesi kat geçişlerinden, haftalık/aylık/günlük hedef bonuslarından ve başarımlardan kazanılır.
