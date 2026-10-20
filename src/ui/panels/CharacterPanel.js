@@ -1,4 +1,3 @@
-import { Balance } from '../../config/balance.js';
 import { Events } from '../../core/events.js';
 import { SLOTS } from '../../data/items.js';
 import { RARITIES, getRarity } from '../../data/rarities.js';
@@ -7,7 +6,7 @@ import { formatStatLine } from '../../data/stats.js';
 import { isUpgradeOver, itemDisplayName, itemSellValue } from '../../systems/ItemFactory.js';
 import { drawPlayerDoll } from '../../render/sprites/PlayerSprite.js';
 import { el } from '../../utils/dom.js';
-import { formatNumber, formatPercent } from '../../utils/format.js';
+import { formatNumber } from '../../utils/format.js';
 import { createItemSlot } from '../components/ItemSlot.js';
 
 // Kağıt bebek: yuvalar figürün iki yanına, gövde yüksekliğine göre dizilir.
@@ -39,7 +38,6 @@ export class CharacterPanel {
     this.setList = el('div', { class: 'set-summary' });
     this.countEl = el('span', { class: 'inv-count' });
     this.grid = el('div', { class: 'inventory-grid' });
-    this.statList = el('ul', { class: 'stat-list' });
 
     this.bulkSelect = el(
       'select',
@@ -78,8 +76,7 @@ export class CharacterPanel {
         ]),
         this.grid,
         el('div', { class: 'hint', text: 'Sol tık: Kuşan · Sağ tık: Sat · Ctrl+tık: Kilitle 🔒 · ▲ daha iyi' }),
-      ]),
-      el('div', { class: 'char-col stats-col' }, [el('h4', { class: 'section-title', text: '📊 Statlar' }), this.statList])
+      ])
     );
 
     const bus = game.bus;
@@ -92,13 +89,10 @@ export class CharacterPanel {
     bus.on(Events.EQUIPMENT_CHANGED, items);
     bus.on(Events.ITEM_ENHANCED, () => this.renderEquipment());
     bus.on(Events.TREE_CHANGED, items);
-    bus.on(Events.STATS_CHANGED, () => this.renderStats());
-    bus.on(Events.STAGE_CHANGED, () => this.renderStats());
     bus.on(Events.SETTINGS_CHANGED, () => (this.autoSellSelect.value = game.state.settings.autoSellTier));
     this.autoSellSelect.value = game.state.settings.autoSellTier;
 
     items();
-    this.renderStats();
   }
 
   /** Menü rozeti: envanterde kuşanılandan daha iyi eşya sayısı */
@@ -203,31 +197,6 @@ export class CharacterPanel {
           next && el('div', { class: 'set-next', text: `${next.pieces} parça: ${Object.entries(next.stats).map(([k, v]) => formatStatLine(k, v)).join(' · ')}` }),
         ].filter(Boolean));
       })
-    );
-  }
-
-  renderStats() {
-    const s = this.game.stats.get();
-    const reduction = Balance.armorReduction(s.armor, this.game.state.stage) * 100;
-    const pct = (v) => formatPercent(+(v * 100).toFixed(1));
-    // Sıfır olan özel statlar gizlenir; böylece liste kısa kalır
-    const rows = [
-      ['⚔️ Saldırı', formatNumber(s.atk)],
-      ['❤️ Can', formatNumber(s.maxHp)],
-      ['🛡️ Zırh', `${formatNumber(s.armor)} (−${reduction.toFixed(0)}%)`],
-      ['💨 Saldırı Hızı', `${s.attackSpeed.toFixed(2)}/sn`],
-      ['🎯 Kritik', `${pct(s.critChance)} · x${s.critMult.toFixed(2)}`],
-      ['💚 Yenilenme', `${formatNumber(s.regen)}/sn`],
-      s.lifesteal > 0 && ['🩸 Can Çalma', pct(s.lifesteal)],
-      s.dodgeChance > 0 && ['🌀 Kaçınma', pct(s.dodgeChance)],
-      s.thorns > 0 && ['🌵 Diken', pct(s.thorns)],
-      s.bossDmgMult > 1 && ['👑 Boss Hasarı', `x${s.bossDmgMult.toFixed(2)}`],
-      ['💰 Altın', `x${s.goldMult.toFixed(2)}`],
-      ['🍀 Şans', formatPercent(+s.luck.toFixed(1))],
-    ].filter(Boolean);
-    this.statList.replaceChildren(
-      el('li', { class: 'stat-dps' }, [el('span', { text: 'Toplam DPS' }), el('b', { text: formatNumber(s.dps) })]),
-      ...rows.map(([k, v]) => el('li', {}, [el('span', { text: k }), el('b', { text: v })]))
     );
   }
 

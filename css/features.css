@@ -33,6 +33,32 @@
   border-radius: var(--radius);
 }
 
+/* ---------- Can barı yanındaki stat düğmesi ve stat penceresi ---------- */
+.hp-stats-btn {
+  flex: none;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  background: var(--panel-2);
+  border: 2px solid var(--edge);
+  border-radius: var(--radius);
+  box-shadow: var(--bevel);
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+}
+.hp-stats-btn:hover {
+  border-color: var(--gold);
+}
+.stat-modal {
+  min-width: min(360px, 80vw);
+}
+.stat-modal-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
 /* ---------- Rünler ---------- */
 .rune-layout {
   display: grid;

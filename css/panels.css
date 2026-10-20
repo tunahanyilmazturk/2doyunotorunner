@@ -118,7 +118,7 @@
 /* ---------- Karakter: Ekipman | Envanter | Statlar ---------- */
 .character-layout {
   display: grid;
-  grid-template-columns: 232px minmax(0, 1fr) 210px;
+  grid-template-columns: 232px minmax(0, 1fr);
   gap: 16px;
   align-items: start;
 }
@@ -679,19 +679,6 @@
   margin-top: 0;
 }
 
-/* Dar dock'ta statlar sütunu alta iner */
-@media (max-width: 1250px) {
-  .character-layout {
-    grid-template-columns: 232px minmax(0, 1fr);
-  }
-  .stats-col {
-    grid-column: 1 / -1;
-  }
-  .stats-col .stat-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-  }
-}
 
 @media (max-width: 900px) {
   .dock {
@@ -766,10 +753,6 @@
 .inv-count {
   font-size: 15px;
 }
-.stats-col .stat-list li {
-  padding: 1px 8px;
-}
-.stats-col .section-title,
 .equip-col .section-title {
   margin-bottom: 6px;
 }
@@ -781,9 +764,6 @@
 }
 .inv-col .hint {
   margin-top: 5px;
-}
-.stats-col .stat-list li {
-  line-height: 1.25;
 }
 
 .forge-list {
@@ -1110,10 +1090,6 @@
 }
 .ach-grid {
   grid-template-columns: repeat(auto-fill, minmax(172px, 1fr));
-}
-.stats-col .stat-list li {
-  padding: 0 8px;
-  line-height: 1.2;
 }
 .prestige-box,
 .tree-detail {

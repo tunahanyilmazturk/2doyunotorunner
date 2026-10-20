@@ -42,6 +42,7 @@ export class HUD {
     };
 
     this.els.bossBtn.addEventListener('click', () => this.game.spawn.challengeBoss());
+    $('#hud-stats-btn').addEventListener('click', () => this.ui.statsModal.open());
     this.els.prestigePill.addEventListener('click', () => this.ui.showTab('prestige'));
     this.els.towerExit.addEventListener('click', () => this.game.tower.end('exit'));
     this.game.bus.on(Events.PRESTIGE_ADVICE, ({ recommended, souls }) => {
