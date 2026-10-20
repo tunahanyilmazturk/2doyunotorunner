@@ -44,6 +44,9 @@ export const Events = Object.freeze({
 
   RUNES_CHANGED: 'rune:changed',
   RUNE_FOUND: 'rune:found',
+  RUNE_COMBINED: 'rune:combined',
+  SOCKET_OPENED: 'socket:opened',
+  ELIXIR_DRUNK: 'elixir:drunk',
   COMPANIONS_CHANGED: 'companion:changed',
   COMPANION_HATCHED: 'companion:hatched',
   COMPANION_LEVELED: 'companion:leveled',

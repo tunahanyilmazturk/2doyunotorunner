@@ -17,7 +17,7 @@ import { ELITE_TRAITS } from '../data/eliteTraits.js';
 import { ITEM_BASES, SLOT_ORDER, WEAPON_KINDS } from '../data/items.js';
 import { BOSSES, MONSTERS } from '../data/monsters.js';
 import { COMPANION_IDS, COMPANION_MAP, EGG_HATCH_KILLS, MAX_COMPANION_LEVEL, MAX_EGGS, xpToNext } from '../data/companions.js';
-import { DAILY_QUEST_COUNT, QUEST_MAP } from '../data/quests.js';
+import { DAILY_QUEST_COUNT, MONTHLY_QUEST_COUNT, QUEST_MAP, WEEKLY_QUEST_COUNT } from '../data/quests.js';
 import { MAX_SOCKETS_BY_TIER, RUNE_GRADES, RUNE_IDS } from '../data/runes.js';
 import { TOWER_DAILY_ATTEMPTS } from '../data/tower.js';
 import { ARMOR_CLASS_IDS, ARMOR_SLOTS, CLASS_IDS, DEFAULT_CLASS } from '../data/classes.js';
@@ -156,7 +156,7 @@ function sanitizeRune(raw) {
 
 const MAX_RUNE_STACK = 1e6;
 const MAX_KEYS = 999;
-const DAY_KEY = /^d{4}-d{2}-d{2}$/;
+const DAY_KEY = /^\d{4}-\d{2}-\d{2}$/;
 
 function sanitizeRuneBag(raw) {
   const out = {};
@@ -195,8 +195,11 @@ function sanitizeReward(raw) {
 }
 
 function sanitizeDaily(raw) {
-  const out = { day: '', quests: [], bonusClaimed: false, streak: 0, lastLoginDay: '', loginClaimed: false };
+  const out = { day: '', quests: [], bonusClaimed: false, streak: 0, lastLoginDay: '', loginClaimed: false, loginDays: [] };
   if (!isObject(raw)) return out;
+  if (Array.isArray(raw.loginDays)) {
+    out.loginDays = raw.loginDays.filter((d) => typeof d === 'string' && DAY_KEY.test(d)).slice(-62);
+  }
   out.day = typeof raw.day === 'string' && DAY_KEY.test(raw.day) ? raw.day : '';
   out.lastLoginDay = typeof raw.lastLoginDay === 'string' && DAY_KEY.test(raw.lastLoginDay) ? raw.lastLoginDay : '';
   out.streak = int(raw.streak, 0, 100000, 0);
@@ -215,6 +218,31 @@ function sanitizeDaily(raw) {
   if (out.quests.length !== DAILY_QUEST_COUNT) out.day = '';
   return out;
 }
+
+/**
+ * Dönemsel hedef tahtası (haftalık / aylık): dönem anahtarı, görevler ve bonus.
+ * Görev listesi bozuksa dönem anahtarı sıfırlanır; QuestSystem bu dönemin görevlerini yeniden üretir.
+ */
+function sanitizeBoard(raw, periodKey, periodRe, questCount) {
+  const out = { [periodKey]: '', quests: [], bonusClaimed: false };
+  if (!isObject(raw)) return out;
+  out[periodKey] = typeof raw[periodKey] === 'string' && periodRe.test(raw[periodKey]) ? raw[periodKey] : '';
+  out.bonusClaimed = bool(raw.bonusClaimed, false);
+  if (Array.isArray(raw.quests)) {
+    for (const q of raw.quests.slice(0, questCount)) {
+      if (!isObject(q) || !QUEST_MAP[q.id]) continue;
+      const reward = sanitizeReward(q.reward);
+      if (!reward) continue;
+      const target = int(q.target, 1, 1e7, 1);
+      out.quests.push({ id: q.id, target, progress: int(q.progress, 0, target, 0), claimed: bool(q.claimed, false), reward });
+    }
+  }
+  if (out.quests.length !== questCount) out[periodKey] = '';
+  return out;
+}
+
+const sanitizeWeekly = (raw) => sanitizeBoard(raw, 'week', /^-?\d{1,7}$/, WEEKLY_QUEST_COUNT);
+const sanitizeMonthly = (raw) => sanitizeBoard(raw, 'month', /^\d{4}-\d{2}$/, MONTHLY_QUEST_COUNT);
 
 /**
  * Sınıflar: açılmış sınıflar, aktif sınıf ve aktif olmayanların ekipman setleri.
@@ -301,6 +329,8 @@ export function sanitizeSave(raw) {
   out.runes = sanitizeRuneBag(raw.runes);
   out.companions = sanitizeCompanions(raw.companions);
   out.daily = sanitizeDaily(raw.daily);
+  out.weekly = sanitizeWeekly(raw.weekly);
+  out.monthly = sanitizeMonthly(raw.monthly);
   out.tower = {
     best: int(raw.tower?.best, 0, MAX_STAGE, 0),
     attempts: int(raw.tower?.attempts, 0, TOWER_DAILY_ATTEMPTS, TOWER_DAILY_ATTEMPTS),

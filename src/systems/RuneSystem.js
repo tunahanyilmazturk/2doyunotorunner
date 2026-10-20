@@ -66,6 +66,7 @@ export class RuneSystem {
     if (!this.game.economy.spend(combineCost(grade))) return false;
     this.bag[typeId][grade - 1] -= RUNES_TO_COMBINE;
     this.bag[typeId][grade] += 1;
+    this.game.bus.emit(Events.RUNE_COMBINED, { typeId, grade: grade + 1 });
     this.trackGrade(grade + 1);
     this.changed();
     this.game.bus.emit(Events.TOAST, { text: `◆ ${runeName(typeId, grade + 1)} elde edildi`, type: 'success' });
@@ -90,6 +91,7 @@ export class RuneSystem {
     if (!this.canOpenSocket(item)) return false;
     if (!this.game.economy.spend(socketCost(item))) return false;
     item.sockets = [...(item.sockets ?? []), null];
+    this.game.bus.emit(Events.SOCKET_OPENED, { slot });
     this.changed(true);
     return true;
   }

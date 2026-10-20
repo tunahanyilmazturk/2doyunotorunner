@@ -43,6 +43,16 @@ export class HUD {
 
     this.els.bossBtn.addEventListener('click', () => this.game.spawn.challengeBoss());
     $('#hud-stats-btn').addEventListener('click', () => this.ui.statsModal.open());
+    const goalsBadge = $('#hud-goals-badge');
+    $('#hud-goals-btn').addEventListener('click', () => this.ui.goalsModal.open());
+    // Bekleyen görev ödüllerinin sayısı: rozet (0 ise gizli)
+    const refreshGoalsBadge = () => {
+      const n = this.game.quests.claimableCount;
+      goalsBadge.textContent = n;
+      goalsBadge.hidden = n === 0;
+    };
+    this.game.bus.on(Events.QUESTS_CHANGED, refreshGoalsBadge);
+    refreshGoalsBadge();
     this.els.prestigePill.addEventListener('click', () => this.ui.showTab('prestige'));
     this.els.towerExit.addEventListener('click', () => this.game.tower.end('exit'));
     this.game.bus.on(Events.PRESTIGE_ADVICE, ({ recommended, souls }) => {

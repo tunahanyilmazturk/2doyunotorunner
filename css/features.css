@@ -651,3 +651,203 @@
   font-weight: 600;
   color: var(--good);
 }
+
+/* ---------- Hedefler: haftalık hedefler, yakın görevler ve başarımlar ---------- */
+.quest-card.near {
+  border-color: var(--gold);
+  box-shadow: 0 0 6px rgba(242, 193, 78, 0.35), var(--bevel-sunk);
+}
+.near-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 6px;
+}
+.near-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 8px;
+  width: 100%;
+  text-align: left;
+  color: var(--text);
+  background: var(--bg-2);
+  border: 2px solid var(--edge);
+  border-radius: var(--radius);
+  box-shadow: var(--bevel-sunk);
+  cursor: pointer;
+}
+.near-row:hover {
+  border-color: var(--gold);
+}
+.near-icon {
+  flex: none;
+  font-size: 20px;
+  width: 26px;
+  text-align: center;
+}
+.near-info {
+  flex: 1;
+  min-width: 0;
+  font-size: 12px;
+}
+.near-bar {
+  height: 12px;
+  margin-top: 3px;
+}
+.near-bar .fill {
+  background: linear-gradient(180deg, #ffd34d, #c98b12);
+}
+.near-bar span {
+  font-size: 9px;
+  line-height: 9px;
+}
+
+/* Hedefler: günlük ve haftalık bölümler yan yana; dar ekranda alt alta */
+.goals-cols {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+}
+.goals-col {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+.goals-col .quest-list {
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+@media (max-width: 900px) {
+  .goals-cols {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Hedefler sayfasında kartlar biraz daha sıkı: iki sütun dock içine sığsın */
+.goals-page .quest-card {
+  padding: 4px 6px;
+  gap: 6px;
+}
+.goals-page .quest-bar {
+  height: 11px;
+  margin: 2px 0;
+}
+.goals-page .login-day {
+  padding: 2px 4px;
+  font-size: 10px;
+}
+.goals-page .quest-bonus {
+  font-size: 11px;
+  margin-top: 4px;
+}
+.goals-page .section-title {
+  margin: 0 0 4px;
+}
+.goals-page .section-head {
+  margin-top: 2px;
+}
+.goals-page .section-head .btn,
+.goals-page .section-head .muted {
+  font-size: 12px;
+}
+
+/* ---------- Oyun ekranı görev düğmesi, görev penceresi ve giriş takvimi ---------- */
+.hud-goals-btn {
+  position: relative;
+}
+.hud-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  font-family: var(--font-pixel);
+  font-size: 11px;
+  line-height: 14px;
+  text-align: center;
+  color: #fff;
+  background: var(--hp);
+  border: 2px solid var(--edge);
+  border-radius: var(--radius);
+}
+.hud-badge[hidden] {
+  display: none;
+}
+.goals-modal {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: min(760px, 84vw);
+}
+.goals-modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.goals-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.goals-section .quest-list {
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 4px;
+}
+.cal-head {
+  text-align: center;
+  font-size: 11px;
+  color: var(--muted);
+}
+.cal-cell {
+  aspect-ratio: 1 / 0.75;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  background: var(--bg-2);
+  border: 2px solid var(--edge);
+  border-radius: var(--radius);
+  box-shadow: var(--bevel-sunk);
+}
+.cal-cell.blank {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+.cal-cell.logged {
+  background: linear-gradient(180deg, rgba(89, 201, 165, 0.35), var(--bg-2));
+  color: var(--good);
+  font-weight: 600;
+}
+.cal-cell.today {
+  border-color: var(--gold);
+}
+.cal-cell.future {
+  opacity: 0.45;
+}
+
+/* Görev penceresi: içerik modal genişliğine sığsın, uzun satırlar sarılsın */
+.goals-modal,
+.goals-modal-body,
+.goals-section {
+  max-width: 100%;
+  min-width: 0;
+}
+.goals-modal {
+  width: min(560px, 80vw);
+}
+.goals-section .section-head {
+  flex-wrap: wrap;
+}
+.goals-modal .login-strip {
+  grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
+}
+.goals-modal .cal-grid {
+  width: 100%;
+}

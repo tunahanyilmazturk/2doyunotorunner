@@ -120,6 +120,7 @@ export class Game {
     this.inventory.syncCapacity();
     this.skills.grantTreeSkills();
     this.quests.ensureDay(); // gün değiştiyse görevler, giriş serisi ve kule hakları yenilenir
+    this.quests.announce(); // bekleyen hedef ödülü varsa hatırlat
     this.achievements.check(); // kayıttaki ilerlemeyi sessizce işle
     this.player.reset(this.stats.recalculate());
     this.ui.init();

@@ -19,6 +19,7 @@ import { SkillsPanel } from './panels/SkillsPanel.js';
 import { UpgradePanel } from './panels/UpgradePanel.js';
 import { SettingsModal } from './SettingsModal.js';
 import { StatsModal } from './StatsModal.js';
+import { GoalsModal } from './GoalsModal.js';
 
 import { ICONS, iconToken } from './icons.js';
 
@@ -42,6 +43,7 @@ export class UIManager {
     this.hud = new HUD(game, this);
     this.settings = new SettingsModal(game, this);
     this.statsModal = new StatsModal(game, this);
+    this.goalsModal = new GoalsModal(game, this);
     this.tabs = [
       { id: 'character', icon: '🎒', label: 'Karakter', panel: new CharacterPanel(game, this) },
       { id: 'classes', icon: '🎭', label: 'Sınıflar', panel: new ClassesPanel(game, this) },

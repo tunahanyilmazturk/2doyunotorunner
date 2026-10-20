@@ -43,7 +43,8 @@ Beş haritanın hareketli önizlemesi: sunucu açıkken `/tools/map-preview.html
   başlar, kat başına 30 sn. İlk kez geçilen kat Ruh + rün, her 5. kat yumurta, her 10. kat büyük Ruh paketi verir.
   Kuledeyken bölge ilerlemesi donar; kulede ölmek bölge kaybettirmez
 - **Günlük görevler** — her gün (yerel gece yarısı) 3 rastgele görev ve hepsini bitirme bonusu; 7 günlük giriş serisi ödülü.
-  Hedefler sekmesinde başarımlarla birlikte
+  **Haftalık** (7 günde bir) ve **aylık** (ayda bir) hedefler daha büyük ödüllü; yeni görev türleri (yükseltme, yoldaş seviyesi, iksir, yuva, rün birleştirme).
+  Hedefler sekmesinde başarımlarla birlikte; oyun ekranındaki 🎯 düğmesi görev penceresini açar (günlük, haftalık, aylık ve giriş takvimi).
 - **Başarımlar** — 27 grupta 80+ kademeli başarım (kule, yoldaş, rün ve günlük görev grupları dahil; canavar bilgini, tam teçhizat, set kuşanan, silah ustası, hızlı cellat…);
   her biri kalıcı +%2 saldırı ve altın verir
 - **Eşya sistemi** — 10 yuva (Kask, Kolye, Pelerin, Silah, Kalkan, Zırh, Eldiven, Kemer, Yüzük, Çizme),

@@ -24,6 +24,7 @@ export class ElixirSystem {
     if (was >= MAX_ELIXIR_SECONDS) return false;
     this.active[id] = Math.min(MAX_ELIXIR_SECONDS, was + e.duration);
     if (!was) this.game.bus.emit(Events.BUFFS_CHANGED, this.active);
+    this.game.bus.emit(Events.ELIXIR_DRUNK, { id });
     return true;
   }
 

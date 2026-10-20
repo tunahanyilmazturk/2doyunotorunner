@@ -6,7 +6,7 @@ import { Events } from '../src/core/events.js';
 import { createDefaultState } from '../src/core/GameState.js';
 import { sanitizeSave } from '../src/core/saveIntegrity.js';
 import { COMPANIONS, EGG_HATCH_KILLS, xpToNext } from '../src/data/companions.js';
-import { DAILY_QUEST_COUNT, LOGIN_REWARDS } from '../src/data/quests.js';
+import { DAILY_QUEST_COUNT, LOGIN_REWARDS, MONTHLY_QUEST_COUNT, WEEKLY_QUEST_COUNT } from '../src/data/quests.js';
 import { RUNES_TO_COMBINE, combineCost } from '../src/data/runes.js';
 import { TOWER_DAILY_ATTEMPTS, TOWER_UNLOCK_STAGE } from '../src/data/tower.js';
 import { CompanionSystem } from '../src/systems/CompanionSystem.js';
@@ -544,4 +544,80 @@ test('mağaza: güç kazancı yalnızca kuşanılanla aynı yuvada ve kuşanıla
   s.equipment.helmet = weak;
   assert.ok(game.shop.ratingGain(strong) > 0, 'daha güçlü eşya kazanç verir');
   assert.ok(game.shop.ratingGain(weak) <= 0.001, 'aynı eşyada kazanç yok');
+});
+
+test('hedefler: hafta değişince haftalık hedefler yenilenir ve üç görev içerir', () => {
+  const game = makeGame();
+  const q = game.quests;
+  q.ensureDay();
+  const first = game.state.weekly.week;
+  assert.equal(game.state.weekly.quests.length, WEEKLY_QUEST_COUNT);
+  game.clock.time += 8 * 24 * 3600e3;
+  q.ensureDay();
+  assert.notEqual(game.state.weekly.week, first, 'hafta anahtarı değişmeli');
+  assert.equal(game.state.weekly.quests.length, WEEKLY_QUEST_COUNT);
+});
+
+test('hedefler: yeni olaylar günlük ve haftalık görevleri ilerletir', () => {
+  const game = makeGame();
+  const q = game.quests;
+  q.ensureDay();
+  game.state.daily.quests = [
+    { id: 'upgrades', target: 5, progress: 0, claimed: false, reward: { type: 'egg', amount: 1 } },
+    { id: 'elixirs', target: 2, progress: 0, claimed: false, reward: { type: 'egg', amount: 1 } },
+  ];
+  game.bus.emit(Events.UPGRADE_BOUGHT, { id: 'power', count: 3 });
+  game.bus.emit(Events.ELIXIR_DRUNK, { id: 'wrath' });
+  assert.equal(game.state.daily.quests[0].progress, 3, 'yükseltme sayısı kadar ilerler');
+  assert.equal(game.state.daily.quests[1].progress, 1, 'iksir içmek ilerletir');
+  game.bus.emit(Events.SOCKET_OPENED, { slot: 'weapon' });
+  game.bus.emit(Events.RUNE_COMBINED, { typeId: 'ruby', grade: 2 });
+  game.bus.emit(Events.COMPANION_LEVELED, { def: COMPANIONS[0], level: 2 });
+});
+
+test('hedefler: haftalık bonus yalnızca üç haftalık görev de alınınca verilir ve bir kez alınır', () => {
+  const game = makeGame();
+  const q = game.quests;
+  q.ensureDay();
+  game.state.weekly.quests = game.state.weekly.quests.map((x) => ({ ...x, progress: x.target, claimed: false }));
+  assert.equal(q.canClaimWeeklyBonus(), false, 'görevler alınmadan bonus yok');
+  for (let i = 0; i < WEEKLY_QUEST_COUNT; i++) assert.equal(q.claim(i, 'weekly'), true);
+  assert.equal(q.claimWeeklyBonus(), true);
+  assert.equal(q.claimWeeklyBonus(), false, 'bonus tekrar alınamaz');
+});
+
+test('hedefler: günlük gün anahtarı kayıttan korunur (giriş serisi sıfırlanmaz)', () => {
+  const game = makeGame();
+  game.quests.ensureDay();
+  const day = game.state.daily.day;
+  const out = sanitizeSave(JSON.parse(JSON.stringify(game.state)));
+  assert.equal(out.daily.day, day, 'geçerli gün anahtarı kayıttan geri gelmeli');
+  assert.equal(out.daily.quests.length, DAILY_QUEST_COUNT);
+});
+
+test('aylık hedefler: ay değişince yenilenir, üç görev içerir ve bonus bir kez alınır', () => {
+  const game = makeGame(new Date(2026, 9, 20, 12).getTime());
+  const q = game.quests;
+  q.ensureDay();
+  const first = game.state.monthly.month;
+  assert.equal(first, '2026-10');
+  assert.equal(game.state.monthly.quests.length, MONTHLY_QUEST_COUNT);
+  game.clock.time = new Date(2026, 10, 3, 12).getTime();
+  q.ensureDay();
+  assert.equal(game.state.monthly.month, '2026-11', 'ay anahtarı değişmeli');
+  game.state.monthly.quests = game.state.monthly.quests.map((x) => ({ ...x, progress: x.target, claimed: false }));
+  for (let i = 0; i < MONTHLY_QUEST_COUNT; i++) assert.equal(q.claim(i, 'monthly'), true);
+  assert.equal(q.claimMonthlyBonus(), true);
+  assert.equal(q.claimMonthlyBonus(), false);
+});
+
+test('giriş takvimi: her yeni gün giriş geçmişine eklenir ve kayıtta korunur', () => {
+  const game = makeGame(new Date(2026, 9, 20, 12).getTime());
+  game.quests.ensureDay();
+  game.clock.time = new Date(2026, 9, 21, 12).getTime();
+  game.quests.ensureDay();
+  assert.deepEqual(game.state.daily.loginDays, ['2026-10-20', '2026-10-21']);
+  const out = sanitizeSave(JSON.parse(JSON.stringify(game.state)));
+  assert.deepEqual(out.daily.loginDays, ['2026-10-20', '2026-10-21']);
+  assert.equal(out.monthly.month, '2026-10');
 });

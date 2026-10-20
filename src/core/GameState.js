@@ -43,7 +43,9 @@ export function createDefaultState() {
     tree: {}, // Ruh Ağacı düğüm seviyeleri (yeniden doğuşta korunur)
     runes: emptyRuneBag(), // rün çantası: tür → kademe başına adet (kalıcı)
     companions: { owned: {}, active: null, eggs: 1, incubating: null }, // yoldaşlar (kalıcı); ilk yumurta hediye
-    daily: { day: '', quests: [], bonusClaimed: false, streak: 0, lastLoginDay: '', loginClaimed: false },
+    daily: { day: '', quests: [], bonusClaimed: false, streak: 0, lastLoginDay: '', loginClaimed: false, loginDays: [] },
+    weekly: { week: '', quests: [], bonusClaimed: false }, // haftalık hedefler (7 günde bir yenilenir)
+    monthly: { month: '', quests: [], bonusClaimed: false }, // aylık hedefler (ayda bir yenilenir)
     tower: { best: 0, attempts: TOWER_DAILY_ATTEMPTS, keys: 0 }, // Boss Kulesi (kalıcı)
     seals: 0, // Kule mührü: sınıf açma para birimi (kalıcı)
     classes: { active: DEFAULT_CLASS, unlocked: { [DEFAULT_CLASS]: true }, sets: {} }, // sınıflar; sets = aktif olmayanların ekipmanı

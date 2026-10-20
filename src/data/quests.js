@@ -60,10 +60,138 @@ export const QUEST_TEMPLATES = [
     target: () => 3,
     reward: () => ({ type: 'egg', amount: 1 }),
   },
+  {
+    id: 'upgrades', event: 'upgrade', name: 'Yükseltme Ustası',
+    desc: (t) => `${t} yükseltme seviyesi al`,
+    target: (best) => round5(10 + best / 3),
+    reward: (best) => ({ type: 'souls', amount: soulsFor(best, 0.8) }),
+  },
+  {
+    id: 'companions', event: 'companionLevel', name: 'Yoldaş Eğitimi',
+    desc: (t) => `Yoldaşını ${t} kez seviye atlat`,
+    target: () => 3,
+    reward: () => ({ type: 'chest', id: 'wood', amount: 1 }),
+  },
+  {
+    id: 'elixirs', event: 'elixir', name: 'İksir Tadımı',
+    desc: (t) => `${t} iksir iç`,
+    target: () => 3,
+    reward: () => ({ type: 'chest', id: 'wood', amount: 1 }),
+  },
+  {
+    id: 'sockets', event: 'socket', name: 'Yuva Açıcı',
+    desc: (t) => `${t} rün yuvası aç`,
+    target: () => 1,
+    reward: () => ({ type: 'rune', grade: 0, amount: 3 }),
+  },
+  {
+    id: 'alchemy', event: 'combine', name: 'Rün Simyacısı',
+    desc: (t) => `${t} kez rün birleştir`,
+    target: () => 2,
+    reward: () => ({ type: 'towerKey', amount: 1 }),
+  },
 ];
 
-export const QUEST_MAP = Object.fromEntries(QUEST_TEMPLATES.map((q) => [q.id, q]));
+/**
+ * Haftalık hedefler: 7 günde bir yenilenir, daha zordur ve daha büyük ödül verir.
+ * Günlük görevlerle aynı olay sistemini kullanır.
+ */
+export const WEEKLY_TEMPLATES = [
+  {
+    id: 'wkKills', event: 'kill', name: 'Haftalık Avcı',
+    desc: (t) => `Bu hafta ${t} canavar yen`,
+    target: (best) => round5(1500 + best * 15),
+    reward: (best) => ({ type: 'souls', amount: soulsFor(best, 6) }),
+  },
+  {
+    id: 'wkTower', event: 'towerFloor', name: 'Haftalık Tırmanış',
+    desc: (t) => `Bu hafta kulede ${t} kat geç`,
+    target: () => 15,
+    reward: () => ({ type: 'towerKey', amount: 3 }),
+  },
+  {
+    id: 'wkBosses', event: 'boss', name: 'Haftalık Boss Avı',
+    desc: (t) => `Bu hafta ${t} boss yen`,
+    target: () => 20,
+    reward: () => ({ type: 'chest', id: 'iron', amount: 2 }),
+  },
+  {
+    id: 'wkSkills', event: 'skill', name: 'Haftalık Büyücü',
+    desc: (t) => `Bu hafta ${t} kez yetenek kullan`,
+    target: () => 300,
+    reward: () => ({ type: 'chest', id: 'gold', amount: 1 }),
+  },
+  {
+    id: 'wkUpgrades', event: 'upgrade', name: 'Haftalık Gelişim',
+    desc: (t) => `Bu hafta ${t} yükseltme seviyesi al`,
+    target: (best) => round5(120 + best),
+    reward: () => ({ type: 'egg', amount: 1 }),
+  },
+];
+
+/** Haftalık görev sayısı ve hafta bittiğinde verilen ek ödül */
+export const WEEKLY_QUEST_COUNT = 3;
+export const WEEKLY_BONUS_REWARDS = [
+  { type: 'chest', id: 'gold', amount: 1 },
+  { type: 'egg', amount: 2 },
+];
+
+/**
+ * Aylık hedefler: ayda bir yenilenir, en büyük ödüller. Haftalık ile aynı olay sistemini kullanır.
+ */
+export const MONTHLY_TEMPLATES = [
+  {
+    id: 'moKills', event: 'kill', name: 'Aylık Avcı',
+    desc: (t) => `Bu ay ${t} canavar yen`,
+    target: (best) => round5(8000 + best * 60),
+    reward: (best) => ({ type: 'souls', amount: soulsFor(best, 20) }),
+  },
+  {
+    id: 'moTower', event: 'towerFloor', name: 'Aylık Tırmanış',
+    desc: (t) => `Bu ay kulede ${t} kat geç`,
+    target: () => 60,
+    reward: () => ({ type: 'towerKey', amount: 8 }),
+  },
+  {
+    id: 'moBosses', event: 'boss', name: 'Aylık Boss Avı',
+    desc: (t) => `Bu ay ${t} boss yen`,
+    target: () => 80,
+    reward: () => ({ type: 'chest', id: 'gold', amount: 3 }),
+  },
+  {
+    id: 'moUpgrades', event: 'upgrade', name: 'Aylık Gelişim',
+    desc: (t) => `Bu ay ${t} yükseltme seviyesi al`,
+    target: (best) => round5(600 + best * 2),
+    reward: () => ({ type: 'egg', amount: 3 }),
+  },
+  {
+    id: 'moCombine', event: 'combine', name: 'Aylık Simyacı',
+    desc: (t) => `Bu ay ${t} kez rün birleştir`,
+    target: () => 40,
+    reward: () => ({ type: 'rune', grade: 0, amount: 10 }),
+  },
+];
+
+/** Aylık görev sayısı ve ay bittiğinde verilen ek ödül */
+export const MONTHLY_QUEST_COUNT = 3;
+export const MONTHLY_BONUS_REWARDS = [
+  { type: 'chest', id: 'gold', amount: 2 },
+  { type: 'egg', amount: 3 },
+  { type: 'towerKey', amount: 3 },
+];
+
+export const QUEST_MAP = Object.fromEntries([...QUEST_TEMPLATES, ...WEEKLY_TEMPLATES, ...MONTHLY_TEMPLATES].map((q) => [q.id, q]));
+
+/** Ayı belirler: "YYYY-MM" (yerel takvim). */
+export function monthKey(time = Date.now()) {
+  return dayKey(time).slice(0, 7);
+}
 export const DAILY_QUEST_COUNT = 3;
+
+/** Haftayı belirler: 7 günlük dönemler (1970-01-01 referanslı); aynı hafta içinde aynı anahtar. */
+export function weekKey(time = Date.now()) {
+  return String(Math.floor(daysBetween('1970-01-01', dayKey(time)) / 7));
+}
 
 /** Üç görevin de ödülü alınınca verilen ek ödül */
 export const ALL_DONE_REWARDS = [
