@@ -15,6 +15,8 @@ import { RuneSystem } from '../src/systems/RuneSystem.js';
 import { TowerSystem } from '../src/systems/TowerSystem.js';
 import { createItem } from '../src/systems/ItemFactory.js';
 import { ClassSystem } from '../src/systems/ClassSystem.js';
+import { InventorySystem } from '../src/systems/InventorySystem.js';
+import { BAG_EXPANSION_SLOTS, MAX_BAG_EXPANSIONS } from '../src/config/constants.js';
 import { EquipmentSystem } from '../src/systems/EquipmentSystem.js';
 import { ARMOR_SLOTS, CLASSES, CLASS_MAP } from '../src/data/classes.js';
 import { WEAPON_KINDS } from '../src/data/items.js';
@@ -400,4 +402,88 @@ test('sınıf: her sınıfın geçerli bir karakter görünümü var', () => {
   }
   const tunics = CLASSES.map((c) => c.look.tunic);
   assert.equal(new Set(tunics).size, tunics.length, 'sınıf tunikleri birbirinden ayırt edilebilir');
+});
+
+/** Zırh slotu eşyasını Savaşçının (ağır) zırh sınıfına sabitler */
+const heavy = (item) => ({ ...item, armorClass: 'heavy' });
+
+test('envanter: daha iyi, set, kilitli ve başka sınıfa ait eşyalar korunur; sıradan olanlar satılır', () => {
+  const game = makeGame();
+  game.inventory = new InventorySystem(game);
+  const s = game.state;
+  s.stage = 10;
+  s.equipment.helmet = heavy(createItem(s, { level: 30, slot: 'helmet', tier: 2  }));
+
+  const plain = heavy(createItem(s, { level: 5, slot: 'helmet', tier: 0  }));
+  const better = heavy(createItem(s, { level: 60, slot: 'helmet', tier: 5  }));
+  const locked = heavy(createItem(s, { level: 5, slot: 'helmet', tier: 0  }));
+  locked.locked = true;
+  const setPiece = heavy(createItem(s, { level: 5, slot: 'helmet', tier: 0  }));
+  setPiece.set = 'kizil-nisan';
+
+  assert.equal(game.inventory.isProtected(plain), false, 'sıradan eşya satılabilir');
+  assert.equal(game.inventory.isProtected(better), true, '▲ daha iyi eşya korunur');
+  assert.equal(game.inventory.isProtected(locked), true, 'kilitli eşya korunur');
+  assert.equal(game.inventory.isProtected(setPiece), true, 'set parçası korunur');
+
+  // Başka (açık) bir sınıfa ait silah: aktif savaşçı için korunur, sınıf açık değilse satılır
+  const bow = createItem(s, { level: 5, slot: 'weapon', kind: 'bow', tier: 0 });
+  assert.equal(game.inventory.isProtected(bow), false, 'kilitli başka sınıf yoksa satılır');
+  game.state.seals = 100;
+  game.classes.unlock('archer');
+  assert.equal(game.inventory.isProtected(bow), true, 'açık okçu eşyası korunur');
+});
+
+test('envanter: toplu satış korunanları atlar ve kaç eşyanın korunduğunu bildirir', () => {
+  const game = makeGame();
+  game.inventory = new InventorySystem(game);
+  const s = game.state;
+  s.stage = 10;
+  s.equipment.helmet = heavy(createItem(s, { level: 30, slot: 'helmet', tier: 2  }));
+  s.inventory[0] = heavy(createItem(s, { level: 5, slot: 'helmet', tier: 0  }));
+  s.inventory[1] = heavy(createItem(s, { level: 60, slot: 'helmet', tier: 5  }));
+  s.inventory[2] = heavy(createItem(s, { level: 5, slot: 'boots', tier: 0  }));
+  const gold0 = s.gold;
+
+  // Çizme yuvası boş: boş yuvanın ihtiyacı olan eşya (▲ sayılır) korunur
+  const plan = game.inventory.planSellUpTo(0);
+  assert.deepEqual(plan.indices, [0], 'yalnızca sıradan kask planlanır');
+  assert.equal(plan.kept, 1, 'boş yuvadaki çizme korunur');
+  const res = game.inventory.sellAllUpTo(5);
+  assert.equal(res.count, 1, 'tek sıradan eşya satılır');
+  assert.equal(s.inventory[1].tier, 5, '▲ eşya çantada kalır');
+  assert.ok(s.inventory[2], 'boş yuvanın çizmesi çantada kalır');
+  assert.ok(s.gold > gold0);
+});
+
+test('envanter: çanta genişletme altın harcar, kapasiteyi artırır ve sınırda durur', () => {
+  const game = makeGame();
+  game.inventory = new InventorySystem(game);
+  const s = game.state;
+  const base = game.inventory.capacity;
+  s.gold = 0;
+  assert.equal(game.inventory.expand(), false, 'altın yetmezse genişlemez');
+  s.gold = 1e15;
+  const cost = game.inventory.expansionCost;
+  assert.equal(game.inventory.expand(), true);
+  assert.equal(game.inventory.capacity, base + BAG_EXPANSION_SLOTS);
+  assert.equal(s.inventory.length, base + BAG_EXPANSION_SLOTS, 'yeni yuvalar envantere eklenir');
+  assert.equal(s.gold, 1e15 - cost, 'bedel altından düşer');
+  for (let i = 1; i < MAX_BAG_EXPANSIONS; i++) game.inventory.expand();
+  assert.equal(game.inventory.expand(), false, 'en fazla MAX_BAG_EXPANSIONS genişletme');
+});
+
+test('envanter: sıralama modları seçilen ölçüte göre sıralar', () => {
+  const game = makeGame();
+  game.inventory = new InventorySystem(game);
+  const s = game.state;
+  s.inventory[0] = createItem(s, { level: 5, slot: 'amulet', tier: 0 });
+  s.inventory[1] = heavy(createItem(s, { level: 50, slot: 'helmet', tier: 4  }));
+  s.inventory[2] = heavy(createItem(s, { level: 20, slot: 'boots', tier: 2  }));
+  game.inventory.sort('value');
+  const values = s.inventory.filter(Boolean).map((i) => i.value);
+  assert.deepEqual(values, [...values].sort((a, b) => b - a), 'değere göre azalan');
+  game.inventory.sort('tier');
+  const tiers = s.inventory.filter(Boolean).map((i) => i.tier);
+  assert.deepEqual(tiers, [...tiers].sort((a, b) => b - a), 'nadirliğe göre azalan');
 });

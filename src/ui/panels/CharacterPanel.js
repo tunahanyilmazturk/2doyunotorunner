@@ -4,6 +4,8 @@ import { RARITIES, getRarity } from '../../data/rarities.js';
 import { activeSetBonuses } from '../../data/sets.js';
 import { formatStatLine } from '../../data/stats.js';
 import { isUpgradeOver, itemDisplayName, itemSellValue } from '../../systems/ItemFactory.js';
+import { SORT_MODES } from '../../systems/InventorySystem.js';
+import { BAG_EXPANSION_SLOTS, MAX_BAG_EXPANSIONS } from '../../config/constants.js';
 import { drawPlayerDoll } from '../../render/sprites/PlayerSprite.js';
 import { el } from '../../utils/dom.js';
 import { formatNumber } from '../../utils/format.js';
@@ -15,6 +17,15 @@ const DOLL_SLOTS_LEFT = ['helmet', 'cape', 'shield', 'belt', 'boots'];
 const DOLL_SLOTS_RIGHT = ['amulet', 'weapon', 'armor', 'gloves', 'ring'];
 // Tuval ölçüsü CSS ile birebir aynı olmalı (drawPlayerDoll bu kutuya sığdırır).
 const DOLL_CANVAS = { w: 140, h: 220 };
+
+// Envanter filtreleri: eşleşmeyen eşyalar soluk gösterilir (indeksler değişmez, eylemler bozulmaz)
+const FILTERS = [
+  ['all', 'Hepsi'],
+  ['usable', 'Bu sınıfta kuşanılabilir'],
+  ['better', 'Daha iyi (▲)'],
+  ['locked', 'Kilitli'],
+  ['sets', 'Set parçaları'],
+];
 
 // Karakter sekmesi: Ekipman | Envanter | Statlar — eşya yönetimi tek ekranda.
 export class CharacterPanel {
@@ -61,6 +72,22 @@ export class CharacterPanel {
       [el('option', { value: -1, text: 'Kapalı' }), ...RARITIES.slice(0, 4).map((r) => el('option', { value: r.tier, text: `≤ ${r.name}` }))]
     );
 
+    this.sortSelect = el(
+      'select',
+      { class: 'select', title: 'Çantayı bu ölçüte göre sırala' },
+      Object.entries(SORT_MODES).map(([value, text]) => el('option', { value, text }))
+    );
+    this.filterSelect = el(
+      'select',
+      { class: 'select', title: 'Eşleşmeyen eşyalar soluk görünür', onchange: () => this.renderInventory() },
+      FILTERS.map(([value, text]) => el('option', { value, text }))
+    );
+    this.selectBtn = el('button', { class: 'btn btn-sm', text: '☑ Seç', onclick: () => this.toggleSelecting() });
+    this.expandBtn = el('button', { class: 'btn btn-sm btn-buy', onclick: () => game.inventory.expand() });
+    this.selBar = el('div', { class: 'sel-bar', hidden: true });
+    this.selected = new Set();
+    this.selecting = false;
+
     root.append(
       el('div', { class: 'char-col equip-col' }, [
         el('h4', { class: 'section-title', text: '🛡️ Ekipman' }),
@@ -71,14 +98,22 @@ export class CharacterPanel {
       ]),
       el('div', { class: 'char-col inv-col' }, [
         el('div', { class: 'toolbar' }, [
-          el('div', { class: 'toolbar-group' }, [this.countEl, el('button', { class: 'btn btn-sm', text: '↕ Sırala', onclick: () => game.inventory.sort() })]),
+          el('div', { class: 'toolbar-group' }, [this.countEl, this.expandBtn]),
+          el('div', { class: 'toolbar-group' }, [
+            el('label', { text: 'Sırala' }),
+            this.sortSelect,
+            el('button', { class: 'btn btn-sm', text: '↕', title: 'Sırala', onclick: () => game.inventory.sort(this.sortSelect.value) }),
+            el('label', { text: 'Filtre' }),
+            this.filterSelect,
+          ]),
           el('div', { class: 'toolbar-group' }, [
             el('label', { text: 'Toplu Sat' }),
             this.bulkSelect,
             el('button', { class: 'btn btn-sm btn-warn', text: 'Sat', onclick: () => this.bulkSell() }),
           ]),
-          el('div', { class: 'toolbar-group' }, [el('label', { text: 'Oto-Sat' }), this.autoSellSelect]),
+          el('div', { class: 'toolbar-group' }, [el('label', { text: 'Oto-Sat' }), this.autoSellSelect, this.selectBtn]),
         ]),
+        this.selBar,
         this.grid,
         el('div', { class: 'hint', text: 'Sol tık: Kuşan · Sağ tık: Sat · Ctrl+tık: Kilitle 🔒 · ▲ daha iyi' }),
       ])
@@ -162,24 +197,136 @@ export class CharacterPanel {
     const inv = game.state.inventory;
     this.countEl.textContent = `🎒 ${game.inventory.usedSlots}/${inv.length}`;
     this.countEl.classList.toggle('full', game.inventory.freeSlots === 0);
+    // Seçim, eşya silinince geçersiz indeksleri taşımasın
+    this.selected = new Set([...this.selected].filter((i) => inv[i]));
 
     this.grid.replaceChildren(
       ...inv.map((item, i) => {
         if (!item) return createItemSlot(null, { ui });
-        return createItemSlot(item, {
+        const node = createItemSlot(item, {
           ui,
           badge: !game.tree.isSlotUnlocked(item.slot) ? '🔒' : isUpgradeOver(item, game.state.equipment[item.slot], game.state.stage) ? '▲' : null,
-          tooltip: () => ({ equipped: game.state.equipment[item.slot], equipment: game.state.equipment, hint: 'Sol: Kuşan · Sağ: Sat · Ctrl: Kilit' }),
+          tooltip: () => ({
+            equipped: game.state.equipment[item.slot],
+            equipment: game.state.equipment,
+            hint: 'Sol: Kuşan · Sağ: Sat · Ctrl: Kilit',
+            warning: game.classes.canUse(item) ? '' : `⛔ Bu eşya ${game.classes.active.name} sınıfı tarafından kuşanılamaz`,
+          }),
           onClick: (e) => {
-            if (e.ctrlKey || e.metaKey) game.inventory.toggleLock(i);
+            if (this.selecting) this.toggleSelected(i);
+            else if (e.ctrlKey || e.metaKey) game.inventory.toggleLock(i);
             else if (e.shiftKey) this.sell(i);
             else game.equipment.equipFromInventory(i);
           },
           onContext: () => this.sell(i),
         });
+        node.classList.toggle('dim', !this.matchesFilter(item));
+        node.classList.toggle('selected', this.selected.has(i));
+        return node;
       })
     );
+    this.renderSelectionBar();
+    this.updateExpandBtn();
   }
+
+  /** Filtre seçimine uyan eşya mı? (Eşleşmeyenler soluk gösterilir.) */
+  matchesFilter(item) {
+    const { game } = this;
+    switch (this.filterSelect.value) {
+      case 'usable':
+        return game.classes.canUse(item);
+      case 'better':
+        return game.tree.isSlotUnlocked(item.slot) && isUpgradeOver(item, game.state.equipment[item.slot], game.state.stage);
+      case 'locked':
+        return !!item.locked;
+      case 'sets':
+        return !!item.set;
+      default:
+        return true;
+    }
+  }
+
+  toggleSelecting() {
+    this.selecting = !this.selecting;
+    if (!this.selecting) this.selected.clear();
+    this.selectBtn.classList.toggle('active', this.selecting);
+    this.renderInventory();
+  }
+
+  toggleSelected(i) {
+    if (this.selected.has(i)) this.selected.delete(i);
+    else this.selected.add(i);
+    this.renderInventory();
+  }
+
+  /** Seçim modundayken alt çubuk: seçilenleri sat, kilitle/aç, temizle. */
+  renderSelectionBar() {
+    this.selBar.hidden = !this.selecting;
+    if (!this.selecting) return;
+    const { inventory, state } = this.game;
+    const indices = [...this.selected];
+    const anyUnlocked = indices.some((i) => state.inventory[i] && !state.inventory[i].locked);
+    this.selBar.replaceChildren(
+      el('span', { class: 'sel-count', text: `${indices.length} eşya seçildi` }),
+      el('button', {
+        class: 'btn btn-sm btn-warn',
+        text: `Seçilenleri sat${indices.length ? ` · 🪙 ${formatNumber(inventory.planSellIndices(indices).gold)}` : ''}`,
+        disabled: !indices.length,
+        onclick: () => this.sellSelected(),
+      }),
+      el('button', {
+        class: 'btn btn-sm',
+        text: anyUnlocked ? '🔒 Kilitle' : '🔓 Kilidi aç',
+        disabled: !indices.length,
+        onclick: () => {
+          inventory.setLocked(indices, anyUnlocked);
+        },
+      }),
+      el('button', { class: 'btn btn-sm', text: 'Temizle', onclick: () => { this.selected.clear(); this.renderInventory(); } })
+    );
+  }
+
+  async sellSelected() {
+    const indices = [...this.selected];
+    const plan = this.game.inventory.planSellIndices(indices);
+    if (!plan.indices.length) {
+      this.ui.toast.show('Seçilenlerde satılabilecek eşya yok (kilitliler hariç)', 'info');
+      return;
+    }
+    const ok = await this.ui.modal.confirm('Seçilenleri sat?', `${plan.indices.length} eşya · 🪙 ${formatNumber(plan.gold)} karşılığında satılacak.`, 'Sat');
+    if (!ok) return;
+    const { count, gold } = this.game.inventory.sellIndices(indices);
+    this.selected.clear();
+    this.ui.toast.show(`${count} eşya satıldı: +${formatNumber(gold)} 🪙`, 'gold');
+  }
+
+  /** Çanta genişletme düğmesi: fiyat ve kalan hak. */
+  updateExpandBtn() {
+    const inv = this.game.inventory;
+    const maxed = inv.expansions >= MAX_BAG_EXPANSIONS;
+    this.expandBtn.textContent = maxed ? '🎒 Çanta tam' : `🎒 +${BAG_EXPANSION_SLOTS} yuva · 🪙 ${formatNumber(inv.expansionCost)}`;
+    this.expandBtn.disabled = maxed || !inv.canExpand();
+  }
+
+  /** Panel sekmesi açıkken düzenli: genişletme fiyatı altınla birlikte değişir. */
+  tick() {
+    this.updateExpandBtn();
+  }
+
+  async bulkSell() {
+    const max = Number(this.bulkSelect.value);
+    const plan = this.game.inventory.planSellUpTo(max);
+    if (!plan.indices.length) {
+      this.ui.toast.show('Satılacak eşya yok (korunanlar hariç)', 'info');
+      return;
+    }
+    const note = plan.kept ? ` · ${plan.kept} eşya korunuyor (▲ daha iyi, set, kilitli ya da başka sınıfa ait)` : '';
+    const ok = await this.ui.modal.confirm('Toplu sat?', `${plan.indices.length} eşya · 🪙 ${formatNumber(plan.gold)}${note}`, 'Sat');
+    if (!ok) return;
+    const { count, gold } = this.game.inventory.sellAllUpTo(max);
+    if (count) this.ui.toast.show(`${count} eşya satıldı: +${formatNumber(gold)} 🪙`, 'gold');
+  }
+
 
   /**
    * Aktif set bonusları: hangi setten kaç parça kuşanıldı, hangi kademeler açık
@@ -232,9 +379,5 @@ export class CharacterPanel {
     if (gold) this.ui.toast.show(`+${formatNumber(gold)} 🪙`, 'gold', 1200);
   }
 
-  bulkSell() {
-    const { count, gold } = this.game.inventory.sellAllUpTo(Number(this.bulkSelect.value));
-    if (count) this.ui.toast.show(`${count} eşya satıldı: +${formatNumber(gold)} 🪙`, 'gold');
-    else this.ui.toast.show('Satılacak eşya yok (kilitliler hariç)', 'info');
-  }
+
 }

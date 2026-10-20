@@ -560,3 +560,43 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ---------- Envanter: filtre, çoklu seçim, uyarılar ---------- */
+.item-slot.dim {
+  opacity: 0.3;
+}
+.item-slot.selected {
+  outline: 2px solid var(--gold);
+  outline-offset: -2px;
+  box-shadow: 0 0 8px rgba(242, 193, 78, 0.5);
+}
+.sel-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 6px;
+  padding: 6px 8px;
+  background: var(--bg-2);
+  border: 2px solid var(--gold);
+  border-radius: var(--radius);
+}
+.sel-bar[hidden] {
+  display: none;
+}
+.sel-count {
+  margin-right: auto;
+  font-family: var(--font-pixel);
+  color: var(--gold);
+}
+.tt-warn {
+  margin-top: 6px;
+  padding: 4px 6px;
+  color: var(--bad);
+  font-size: 12px;
+  border-left: 3px solid var(--bad);
+}
+.select:focus-visible,
+.btn.active {
+  outline: 2px solid var(--gold);
+}

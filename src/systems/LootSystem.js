@@ -43,7 +43,8 @@ export class LootSystem {
     let autoSold = false;
     let full = false;
 
-    if (autoSell && !item.set && item.tier <= state.settings.autoSellTier) {
+    // Oto-sat: düşük nadirlikli eşya, ama koruma kuralına (▲ daha iyi, set, başka sınıf) takılmıyorsa
+    if (autoSell && item.tier <= state.settings.autoSellTier && !this.game.inventory.isProtected(item)) {
       autoSold = true;
     } else if (this.game.inventory.add(item) < 0) {
       autoSold = true;

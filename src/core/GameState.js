@@ -32,6 +32,7 @@ export function createDefaultState() {
     upgrades: Object.fromEntries(UPGRADES.map((u) => [u.id, 0])),
     upgradeAuto: Object.fromEntries(UPGRADES.map((u) => [u.id, true])), // otomatik alıma dahil mi
     inventory: new Array(INVENTORY_SIZE).fill(null),
+    bagExpansions: 0, // satın alınan çanta genişletmeleri (kalıcı)
     equipment: Object.fromEntries(SLOT_ORDER.map((s) => [s, null])),
     potions: START_POTIONS,
     elixirs: {}, // süreli iksirler: id → kalan saniye

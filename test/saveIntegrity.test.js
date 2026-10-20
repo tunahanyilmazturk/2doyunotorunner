@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { migrate, sanitizeSave } from '../src/core/saveIntegrity.js';
 import { createDefaultState } from '../src/core/GameState.js';
-import { INVENTORY_SIZE, MAX_POTIONS, SAVE_VERSION, SHOP_SIZE } from '../src/config/constants.js';
+import { BAG_EXPANSION_SLOTS, INVENTORY_SIZE, MAX_BAG_EXPANSIONS, MAX_POTIONS, SAVE_VERSION, SHOP_SIZE } from '../src/config/constants.js';
 import { Balance } from '../src/config/balance.js';
 import { SLOT_ORDER } from '../src/data/items.js';
 import { TREE_NODES } from '../src/data/soulTree.js';
@@ -258,7 +258,8 @@ test('envanter boşluklarla doldurulur ve üst sınırda kesilir', () => {
   const state = createDefaultState();
   state.inventory = Array.from({ length: 200 }, () => someItem('helmet', 10, 1));
   const out = sanitizeSave(clone(state));
-  assert.ok(out.inventory.length <= INVENTORY_SIZE + 20, 'envanter üst sınırı aştı');
+  // Üst sınır: taban + Ruh Ağacı perkleri (20) + çanta genişletmeleri
+  assert.ok(out.inventory.length <= INVENTORY_SIZE + 20 + MAX_BAG_EXPANSIONS * BAG_EXPANSION_SLOTS, 'envanter üst sınırı aştı');
   assert.ok(out.inventory.length >= INVENTORY_SIZE);
 
   const sparse = sanitizeSave({ ...createDefaultState(), inventory: [] });

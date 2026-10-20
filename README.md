@@ -59,8 +59,9 @@ Beş haritanın hareketli önizlemesi: sunucu açıkken `/tools/map-preview.html
   Hançer (+saldırı hızı), Yay (+kaçınma), Asa (+yenilenme); her biri karakterin elinde farklı çizilir
 - **Statlar** — saldırı, can, zırh, yenilenme, saldırı hızı, kritik, can çalma, altın, şans,
   **kaçınma**, **diken** (vurulunca geri hasar) ve **boss hasarı**
-- **Envanter** — 30 yuva, kuşan / sat / kilitle / sırala / toplu sat / otomatik sat (set parçaları hariç),
-  "En İyileri Kuşan", kuşanılanla karşılaştırmalı tooltip, ▲ "daha iyi" işareti
+- **Envanter** — 30 yuva (altın ile +5 yuvalık 6 genişletmeye kadar, Ruh Ağacı yuvaları ile birlikte); kuşan / sat / kilitle / sırala (yuva, nadirlik, seviye, değer, güç);
+  filtre (sınıfta kuşanılabilir, ▲ daha iyi, kilitli, set); **Seç** modu ile birden çok eşyayı sat veya kilitle; tooltip'te kuşanılanla stat karşılaştırması
+  ve başka sınıfa ait eşyalar için uyarı; "En İyileri Kuşan". Oto-sat ve toplu sat; ▲ daha iyi, set, kilitli ve boş yuvanın ihtiyacı olan eşyaları korur ve onaylı satar.
 - **Görsel ekipman** — kuşandığın eşyaların nadirlik rengi karakterin üzerinde görünür (kılıç parlaması, pelerin, kask...)
 - **Kağıt bebek (Karakter sekmesi)** — ekipman 5+5 dikey dizilir, ortada kuşanılan on parçayı
   anlık gösteren önden bir figür durur: kask, zırh, omuzluk, kolye, kemer, eldiven, çizme, pelerin,

@@ -9,7 +9,7 @@
 //
 // `sanitizeSave` bilinmeyen alanları atar, bilinen alanları tip/aralık
 // doğrulamasından geçirir ve eşya adlarını kanonik veriden YENİDEN üretir.
-import { GAME_SPEEDS, INVENTORY_SIZE, KILLS_PER_STAGE, MAX_POTIONS, SAVE_VERSION, SHOP_SIZE } from '../config/constants.js';
+import { BAG_EXPANSION_SLOTS, GAME_SPEEDS, INVENTORY_SIZE, KILLS_PER_STAGE, MAX_BAG_EXPANSIONS, MAX_POTIONS, SAVE_VERSION, SHOP_SIZE } from '../config/constants.js';
 import { createDefaultState } from './GameState.js';
 import { Balance } from '../config/balance.js';
 import { ACHIEVEMENTS } from '../data/achievements.js';
@@ -43,7 +43,7 @@ const TRAIT_IDS = new Set(ELITE_TRAITS.map((t) => t.id));
 const WEAPON_KIND_IDS = new Set(Object.keys(WEAPON_KINDS));
 
 /** Ruh Ağacı'nın envantere ekleyebileceği en fazla yuva. */
-const MAX_INVENTORY = INVENTORY_SIZE + Object.values(TREE_MAP)
+const MAX_INVENTORY = INVENTORY_SIZE + MAX_BAG_EXPANSIONS * BAG_EXPANSION_SLOTS + Object.values(TREE_MAP)
   .filter((n) => n.effect?.type === 'perk' && n.effect.key === 'inventorySlots')
   .reduce((sum, n) => sum + n.maxLevel * n.effect.per, 0);
 
@@ -307,6 +307,7 @@ export function sanitizeSave(raw) {
     keys: int(raw.tower?.keys, 0, MAX_KEYS, 0),
   };
 
+  out.bagExpansions = int(raw.bagExpansions, 0, MAX_BAG_EXPANSIONS, 0);
   out.seals = int(raw.seals, 0, 1e6, 0); // Kule mührü (sınıf açma para birimi)
   out.classes = sanitizeClasses(raw.classes, allocateId);
 

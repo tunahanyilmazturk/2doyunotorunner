@@ -21,6 +21,9 @@ export const BOSS_TIME_LIMIT = 45;
 export const RESPAWN_TIME = 2.5;
 
 export const INVENTORY_SIZE = 30;
+/** Çanta genişletme: her alım BAG_EXPANSION_SLOTS yuva ekler, en fazla MAX_BAG_EXPANSIONS kez */
+export const BAG_EXPANSION_SLOTS = 5;
+export const MAX_BAG_EXPANSIONS = 6;
 export const SHOP_SIZE = 6;
 export const SHOP_REFRESH_SECONDS = 300;
 export const MAX_POTIONS = 999;

@@ -13,7 +13,7 @@ export class Tooltip {
     this.el = document.getElementById('tooltip');
   }
 
-  showItem(item, event, { equipped = null, equipment = null, hint = '', priceLabel = null } = {}) {
+  showItem(item, event, { equipped = null, equipment = null, hint = '', priceLabel = null, warning = '' } = {}) {
     const rarity = getRarity(item.tier);
     const stats = getItemStats(item);
     const lines = Object.entries(stats)
@@ -45,6 +45,7 @@ export class Tooltip {
       <ul class="tt-stats">${lines}</ul>
       ${this.setBlock(item, equipment)}
       ${compare}
+      ${warning ? `<div class="tt-warn">${escapeHtml(warning)}</div>` : ''}
       <div class="tt-footer">
         <span>${priceLabel ?? `Satış: 🪙 ${formatNumber(itemSellValue(item))}`}</span>
         ${hint ? `<span class="tt-hint">${hint}</span>` : ''}

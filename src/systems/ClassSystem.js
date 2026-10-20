@@ -1,9 +1,17 @@
 import { Events } from '../core/events.js';
-import { CLASS_MAP, CLASS_IDS } from '../data/classes.js';
+import { CLASS_MAP, CLASS_IDS, CLASSES } from '../data/classes.js';
 import { SLOT_ORDER } from '../data/items.js';
 
 // Karakter sınıfları: açma (Kule Mührü ile), geçiş (ekipman setlerini takas eder),
 // eşya kullanım kısıtı ve sınıfın stat bonusu. Durum state.classes ve state.seals içindedir.
+/** Sınıf bu eşyayı kuşanabilir mi? Kısıtı olmayan eşyalar herkese açıktır. */
+function accepts(c, item) {
+  if (!item) return true;
+  if (item.slot === 'weapon' && item.kind && !c.weaponKinds.includes(item.kind)) return false;
+  if (item.armorClass && item.armorClass !== c.armorClass) return false;
+  return true;
+}
+
 export class ClassSystem {
   constructor(game) {
     this.game = game;
@@ -66,11 +74,13 @@ export class ClassSystem {
 
   /** Eşya bu sınıfta kuşanılabilir mi? Sınıf kısıtı yoksa (kolye, yüzük vb.) evet. */
   canUse(item) {
-    if (!item) return true;
-    const c = this.active;
-    if (item.slot === 'weapon' && item.kind && !c.weaponKinds.includes(item.kind)) return false;
-    if (item.armorClass && item.armorClass !== c.armorClass) return false;
-    return true;
+    return accepts(this.active, item);
+  }
+
+  /** Eşya, aktif olmayan ve açık bir sınıfa mı ait? (satış koruması için) */
+  isReservedForOther(item) {
+    if (!item || (!item.kind && !item.armorClass)) return false; // kısıtsız eşya hiçbir sınıfa özel değil
+    return CLASSES.some((c) => c.id !== this.data.active && this.isUnlocked(c.id) && accepts(c, item));
   }
 
   /** Aktif sınıfın sabit stat bonusu (StatsSystem okur). */
