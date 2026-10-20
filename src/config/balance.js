@@ -90,7 +90,7 @@ export const Balance = {
   enhanceCost: (item) => Math.ceil(item.value * 3 * Math.pow(1.45, item.enhance || 0)),
   enhanceSellBonus: 0.5,
 
-  achievementBonus: 0.03, // açılan başarım başına +%3 saldırı ve altın
+  achievementBonus: 0.02, // açılan başarım başına +%2 saldırı ve altın
 
   // Erken yeniden doğuş da ödüllendirilir: 20 → 16, 25 → 40, 30 → 67, 40 → 131, 50 → 203 Ruh
   prestigeSouls: (maxStage) => (maxStage < 20 ? 0 : Math.floor(2 * Math.pow(maxStage - 15, 1.3))),

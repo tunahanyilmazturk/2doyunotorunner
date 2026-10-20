@@ -45,7 +45,7 @@ Beş haritanın hareketli önizlemesi: sunucu açıkken `/tools/map-preview.html
 - **Günlük görevler** — her gün (yerel gece yarısı) 3 rastgele görev ve hepsini bitirme bonusu; 7 günlük giriş serisi ödülü.
   Hedefler sekmesinde başarımlarla birlikte
 - **Başarımlar** — 27 grupta 80+ kademeli başarım (kule, yoldaş, rün ve günlük görev grupları dahil; canavar bilgini, tam teçhizat, set kuşanan, silah ustası, hızlı cellat…);
-  her biri kalıcı +%3 saldırı ve altın verir
+  her biri kalıcı +%2 saldırı ve altın verir
 - **Eşya sistemi** — 10 yuva (Kask, Kolye, Pelerin, Silah, Kalkan, Zırh, Eldiven, Kemer, Yüzük, Çizme),
   6 nadirlik (Sıradan → Mitik), 7 seviye kademesi, seviyeye göre ölçeklenen rastgele statlar
 - **Eşya setleri** — 5 set (Kızıl Nişan, Buzul Siperi, Fırtına Örtüsü, Yaşam Yemini, Kâhin Gözü), her biri 6 yuva kapsar.
