@@ -1055,3 +1055,27 @@ body.high-contrast {
     grid-template-rows: auto minmax(0, 1fr);
   }
 }
+
+/* Boss Kulesi sekmesi: kompakt kat listesi, alt paneli büyütmeden sığsın */
+.tower-floors {
+  gap: 3px;
+}
+.tower-floor {
+  padding: 3px 6px;
+  gap: 8px;
+}
+.tower-floor-no {
+  width: 44px;
+  font-size: 12px;
+}
+.tower-floor-info .muted {
+  font-size: 10px;
+  line-height: 1.2;
+}
+.tower-side > .muted {
+  font-size: 10px;
+  line-height: 1.25;
+}
+.tower-stats {
+  padding: 6px 8px;
+}

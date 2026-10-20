@@ -16,7 +16,7 @@ import { createItemSlot } from '../components/ItemSlot.js';
 const DOLL_SLOTS_LEFT = ['helmet', 'cape', 'shield', 'belt', 'boots'];
 const DOLL_SLOTS_RIGHT = ['amulet', 'weapon', 'armor', 'gloves', 'ring'];
 // Tuval ölçüsü CSS ile birebir aynı olmalı (drawPlayerDoll bu kutuya sığdırır).
-const DOLL_CANVAS = { w: 140, h: 220 };
+const DOLL_CANVAS = { w: 116, h: 184 };
 
 // Envanter filtreleri: eşleşmeyen eşyalar soluk gösterilir (indeksler değişmez, eylemler bozulmaz)
 const FILTERS = [

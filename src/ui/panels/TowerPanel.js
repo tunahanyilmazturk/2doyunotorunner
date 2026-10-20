@@ -5,7 +5,7 @@ import { describeReward } from '../../systems/rewards.js';
 import { el } from '../../utils/dom.js';
 import { formatTime } from '../../utils/format.js';
 
-const PREVIEW_FLOORS = 8;
+const PREVIEW_FLOORS = 6; // alt panel yüksekliğini sınırlı tutmak için kısa önizleme
 
 // Boss Kulesi sekmesi: giriş, haklar, sıradaki katlar ve ödülleri.
 export class TowerPanel {
@@ -39,7 +39,7 @@ export class TowerPanel {
           this.exitBtn,
           el('div', {
             class: 'muted',
-            text: 'Her giriş en yüksek katının bir üstünden başlar ve kaybedene kadar sürer. Ödüller yalnızca ilk kez geçilen katlarda verilir. Kuledeyken bölge ilerlemen donar; ölmek bölge kaybettirmez.',
+            text: 'Giriş, en yüksek katın bir üstünden başlar. Ödüller ilk geçişte verilir; kuledeyken bölge ilerlemen donar.',
           }),
         ]),
         el('div', {}, [el('h4', { class: 'section-title', text: 'Sıradaki katlar' }), this.floors]),

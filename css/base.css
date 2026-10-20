@@ -66,7 +66,7 @@ body {
 }
 
 #app {
-  --panels-h: clamp(300px, 48vh, 440px);
+  --panels-h: clamp(300px, 44vh, 400px);
   height: 100vh;
   height: 100dvh;
   padding: 8px 12px 10px;
