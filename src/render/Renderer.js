@@ -157,7 +157,8 @@ export class Renderer {
     this.drawCompanion(lc, pr);
     this.drawShadow(lc, player.x, player.y, 22, 1);
     drawPlayerAuras(lc, player, auras);
-    this.outliner.draw(lc, pr, { x: player.x, y: player.y + 8, w: 230, h: 185 }, (c) => drawPlayer(c, player, game.state.equipment, game.classes.active.look, game.classes.active.attack?.anim));
+    // Dış hat kutusu karakterin gerçek sınırlarına göre (silah ucu, miğfer tüyü dahil) küçük tutulur
+    this.outliner.draw(lc, pr, { x: player.x, y: player.y + 8, w: 170, h: 130 },(c) => drawPlayer(c, player, game.state.equipment, game.classes.active.look, game.classes.active.attack?.anim));
     this.drawProjectiles(lc);
 
     game.particles.draw(lc);

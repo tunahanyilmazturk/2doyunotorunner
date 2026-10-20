@@ -125,10 +125,18 @@ export class CharacterPanel {
       this.renderInventory();
       this.renderSets();
     };
-    bus.on(Events.INVENTORY_CHANGED, items);
-    bus.on(Events.EQUIPMENT_CHANGED, items);
+    // Olaylar bir karede birden çok gelse de (loot, toplu satış, kuşanma) panel bir kez yeniden kurulur
+    const scheduleItems = () => {
+      if (this.itemsFrame) return;
+      this.itemsFrame = requestAnimationFrame(() => {
+        this.itemsFrame = 0;
+        items();
+      });
+    };
+    bus.on(Events.INVENTORY_CHANGED, scheduleItems);
+    bus.on(Events.EQUIPMENT_CHANGED, scheduleItems);
     bus.on(Events.ITEM_ENHANCED, () => this.renderEquipment());
-    bus.on(Events.TREE_CHANGED, items);
+    bus.on(Events.TREE_CHANGED, scheduleItems);
     bus.on(Events.SETTINGS_CHANGED, () => (this.autoSellSelect.value = game.state.settings.autoSellTier));
     this.autoSellSelect.value = game.state.settings.autoSellTier;
 

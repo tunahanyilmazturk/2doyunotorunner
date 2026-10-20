@@ -25,14 +25,14 @@ const SCARF = '#c8463d';
 function attackArmAngle(anim, a) {
   const t = 1 - a; // 0 → 1 ilerleme
   switch (anim) {
-    case dash:
+    case 'dash':
       return lerp(-2.0, 0.6, easeOutCubic(t));
-    case holy:
+    case 'holy':
       return lerp(-2.6, 1.0, easeOutCubic(t));
-    case draw:
+    case 'draw':
       // Ok: önce geriye çekilir (gerilim), sonra öne bırakılır
       return t < 0.6 ? lerp(-0.2, 0.5, t / 0.6) : lerp(0.5, -0.2, (t - 0.6) / 0.4);
-    case cast:
+    case 'cast':
       // Asa: yukarı kaldırılır, sonra aşağı iner
       return -0.75 - 2.0 * Math.sin(Math.min(1, t) * Math.PI);
     default:

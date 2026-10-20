@@ -699,3 +699,14 @@ test('saldırı: her sınıfın saldırı tarzı ve animasyonu tanımlı; menzil
   for (let i = 0; i < 120; i++) ps.update(1 / 60);
   assert.equal(deadHits, 0, 'hedef öldüyse isabet olmaz');
 });
+
+test('çizim: her sınıfın saldırı animasyonu hatasız çizilir (sözdizimi ve tanımsız ad regresyonu)', async () => {
+  const { drawPlayer } = await import('../src/render/sprites/PlayerSprite.js');
+  // Her çağrıyı kabul eden sahte bağlam: çizim kodu hatasız çalışmalı
+  const noop = () => {};
+  const ctx = new Proxy({}, { get: (t, k) => (k in t ? t[k] : (k === 'createLinearGradient' || k === 'createRadialGradient' ? () => ({ addColorStop: noop }) : noop)), set: (t, k, v) => ((t[k] = v), true) });
+  const player = { x: 220, y: 330, state: 'fight', runCycle: 0, animTime: 0, hitFlash: 0, dead: false, deathTime: 0, attackAnim: 0.5 };
+  for (const anim of ['swing', 'dash', 'holy', 'draw', 'cast']) {
+    assert.doesNotThrow(() => drawPlayer(ctx, player, {}, undefined, anim), `${anim} animasyonu çizilirken hata`);
+  }
+});
