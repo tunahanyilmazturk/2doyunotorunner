@@ -1,4 +1,5 @@
 import { Events } from '../core/events.js';
+import { SLOT_ORDER } from '../data/items.js';
 import {
   MAX_SOCKETS_BY_TIER, RUNES_TO_COMBINE, RUNE_GRADES, RUNE_IDS, RUNE_MAP,
   combineCost, runeGradeForStage, runeName, runeValue, socketCost,
@@ -102,6 +103,33 @@ export class RuneSystem {
     item.sockets[index] = { type: typeId, grade };
     this.changed(true);
     return true;
+  }
+
+  /** Çantadaki en yüksek kademeli rün (kademe eşitse tür sırasına göre ilki). */
+  bestRune() {
+    let best = null;
+    for (const typeId of RUNE_IDS) {
+      for (let grade = RUNE_GRADES; grade >= 1; grade--) {
+        if (this.count(typeId, grade) > 0 && (!best || grade > best.grade)) best = { typeId, grade };
+      }
+    }
+    return best;
+  }
+
+  /** Kuşanılan eşyaların boş yuvalarını, çantadaki en iyi rünlerle sırayla doldurur. */
+  autoSocket() {
+    let n = 0;
+    for (const slot of SLOT_ORDER) {
+      const item = this.game.state.equipment[slot];
+      if (!item?.sockets) continue;
+      for (let i = 0; i < item.sockets.length; i++) {
+        if (item.sockets[i]) continue;
+        const best = this.bestRune();
+        if (!best) return n;
+        if (this.insert(slot, i, best.typeId, best.grade)) n++;
+      }
+    }
+    return n;
   }
 
   /** Yuvadaki rünü çıkarıp çantaya geri koyar (ücretsiz). */

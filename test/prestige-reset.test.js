@@ -185,3 +185,25 @@ test('yeniden doğuşta takılı rünler kaybolmaz, çantaya döner', () => {
   assert.equal(game.runes.count('onyx', 1), 1);
   assert.equal(s.equipment.weapon, null);
 });
+
+test('yeniden doğuş yoldaşları, Boss Kulesi ilerlemesini ve rün çantasını korur', async () => {
+  const { CompanionSystem } = await import('../src/systems/CompanionSystem.js');
+  const game = makeGame({ runMaxStage: 40, bestStage: 40 });
+  game.companions = new CompanionSystem(game);
+  const s = game.state;
+  s.companions.owned.owl = { level: 9, xp: 4 };
+  s.companions.active = 'owl';
+  s.companions.eggs = 3;
+  s.tower = { best: 14, attempts: 0, keys: 2 };
+  game.runes.add('emerald', 7, 2);
+  fillRun(game);
+
+  assert.equal(game.prestige.prestige(), true);
+
+  assert.deepEqual(s.companions.owned, { owl: { level: 9, xp: 4 } }, 'yoldaş ve seviyesi kalır');
+  assert.equal(s.companions.active, 'owl');
+  assert.equal(s.companions.eggs, 3, 'yumurtalar kalır');
+  assert.equal(s.tower.best, 14, 'kule rekoru kalır');
+  assert.equal(s.tower.keys, 2, 'kule anahtarları kalır');
+  assert.equal(game.runes.count('emerald', 7), 2, 'rün çantası kalır');
+});

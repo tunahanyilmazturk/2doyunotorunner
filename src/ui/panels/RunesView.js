@@ -22,6 +22,7 @@ export class RunesView {
     this.selInfo = el('div', { class: 'rune-sel' });
     this.combineBtn = el('button', { class: 'btn btn-buy btn-sm', onclick: () => this.combine() });
     this.items = el('div', { class: 'rune-items' });
+    this.autoBtn = el('button', { class: 'btn btn-buy btn-sm', text: 'Boş yuvaları doldur', onclick: () => this.autoSocket() });
 
     root.append(
       el('div', { class: 'rune-layout' }, [
@@ -37,6 +38,7 @@ export class RunesView {
           el('div', { class: 'section-head' }, [
             el('h4', { class: 'section-title', text: 'Kuşanılan eşyaların yuvaları' }),
             el('span', { class: 'muted', text: 'Boş yuvaya tıkla: tak · Dolu yuvaya tıkla: çıkar' }),
+            this.autoBtn,
           ]),
           this.items,
         ]),
@@ -49,6 +51,13 @@ export class RunesView {
     bus.on(Events.EQUIPMENT_CHANGED, rebuild);
     bus.on(Events.TREE_CHANGED, rebuild);
     this.render();
+  }
+
+  autoSocket() {
+    const n = this.game.runes.autoSocket();
+    const text = n ? `${n} rün yuvalandı` : 'Takılacak boş yuva ya da rün yok';
+    this.ui.toast.show(text, n ? 'success' : 'info', 1600);
+    if (n) this.render();
   }
 
   select(typeId, grade) {

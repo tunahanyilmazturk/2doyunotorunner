@@ -1,11 +1,9 @@
 import { Events } from '../core/events.js';
 import {
-  COMPANIONS, COMPANION_MAP, COMPANION_RARITIES, EGG_HATCH_KILLS, MAX_COMPANION_LEVEL, MAX_EGGS,
+  BOSS_EGG_CHANCE, COMPANIONS, COMPANION_MAP, COMPANION_RARITIES, EGG_HATCH_KILLS, MAX_COMPANION_LEVEL, MAX_EGGS,
   duplicateXp, passiveValue, powerMult, xpToNext,
 } from '../data/companions.js';
 import { chance, weightedPick } from '../utils/random.js';
-
-const BOSS_EGG_CHANCE = 0.12;
 
 // Yoldaşlar: yumurta/kuluçka, deneyim ve seviye, savaşta saldırı/iyileştirme, pasif bonus.
 // Durum state.companions içinde kalıcıdır (yeniden doğuştan etkilenmez).

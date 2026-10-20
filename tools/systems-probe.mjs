@@ -1,0 +1,64 @@
+// Yeni sistemlerin denge raporu: `node tools/systems-probe.mjs`
+// Oyuncu gücü balance-model.mjs'deki otomatik alım eğrisinden gelir (alt sınır:
+// ekipman, yetenek ve iksir yok). Kule, rün ve yoldaş tahminleri buradan hesaplanır.
+import { BOSS_EVERY, KILLS_PER_STAGE } from '../src/config/constants.js';
+import { Balance } from '../src/config/balance.js';
+import { BOSSES } from '../src/data/monsters.js';
+import { BOSS_EGG_CHANCE, EGG_HATCH_KILLS } from '../src/data/companions.js';
+import { TOWER_HP_MULT, TOWER_TIME, TOWER_UNLOCK_STAGE, towerBossId, towerStage } from '../src/data/tower.js';
+import { runeGradeForStage } from '../src/data/runes.js';
+import { runStages } from './balance-model.mjs';
+
+const PLAYER_STAGES = [10, 20, 30, 40, 60, 90, 120];
+const MAX_FLOOR = 60;
+const fmt = (n, d = 1) => (Number.isFinite(n) ? n.toFixed(d) : '∞');
+const pad = (s, w) => String(s).padStart(w);
+
+const rows = runStages(1, Math.max(...PLAYER_STAGES));
+const at = (stage) => rows.find((r) => r.stage === stage);
+
+// 1) KULE: oyuncu bölge S'deyken, her katın bossunu TOWER_TIME içinde yenebilir mi?
+console.log(`\n=== Boss Kulesi: oyuncu bölgesine göre ulaşılabilen en yüksek kat (süre ${TOWER_TIME} sn) ===`);
+console.log('Kule bossu: towerStage(kat) bölgesinde, can ×' + TOWER_HP_MULT + '. Hız = otomatik alım DPS\'i.\n');
+console.log(pad('oyuncu', 8) + pad('DPS', 10) + pad('son geçilen kat', 20) + pad('kat 1 TTK', 12) + pad('kat 1 bölge', 13));
+for (const S of PLAYER_STAGES) {
+  const r = at(S);
+  let wall = null;
+  for (let f = 1; f <= MAX_FLOOR; f++) {
+    const boss = BOSSES[towerBossId(f)];
+    const ttk = (Balance.monsterHp(boss.hp, towerStage(f)) * Balance.bossHpMult * TOWER_HP_MULT) / (r.dps * 1);
+    if (ttk > TOWER_TIME) { wall = f; break; }
+  }
+  const b1 = BOSSES[towerBossId(1)];
+  const ttk1 = (Balance.monsterHp(b1.hp, towerStage(1)) * Balance.bossHpMult * TOWER_HP_MULT) / r.dps;
+  console.log(
+    pad(S, 8) + pad(fmt(r.dps, 0), 10) + pad(wall ? `${wall - 1}. kat` : `>=${MAX_FLOOR}`, 20) +
+    pad(fmt(ttk1, 1) + 'sn', 12) + pad(towerStage(1), 13)
+  );
+}
+console.log(`\nKilit: ${TOWER_UNLOCK_STAGE}. bölge. Kat 1 bossu bölge ${towerStage(1)} gücünde.`);
+console.log('Not: kule bossunun saldırı gücü dahil edilmedi; hayatta kalma ayrıca test edilmeli.');
+
+// 2) RÜN: bölge başına beklenen rün sayısı ve kademe
+console.log('\n=== Rün üretimi (bölge başına beklenen) ===');
+const normalKills = KILLS_PER_STAGE;
+for (const S of [10, 30, 60, 120]) {
+  const elite = Balance.eliteChance(S) ?? 0;
+  const normal = normalKills * (1 - elite) * 0.03;
+  const eliteRunes = normalKills * elite * 0.25;
+  const bossRunes = 1 + 0.35; // boss her zaman düşürür, %35 ihtimalle iki tane
+  const perStage = normal + eliteRunes + (S % BOSS_EVERY === 0 ? bossRunes : 0);
+  console.log(`bölge ${pad(S, 3)}: ~${fmt(perStage, 2)} rün, tipik kademe ${runeGradeForStage(S, 0.5)}`);
+}
+console.log('Not: boss rünü her 5. bölgede gelir; ortalama bölge başına katkısı ~1/5 oranındadır.');
+
+// 3) YOLDAŞ: yumurta ve çatlama hızı
+const bossEggChance = BOSS_EGG_CHANCE;
+const perBossIncubation = 5; // boss öldürmesi kuluçkaya 5 sayılır
+const perStageIncubation = KILLS_PER_STAGE + perBossIncubation / BOSS_EVERY; // 10 normal öldürme + her 5 bölgede boss (5)
+const stagesPerHatch = EGG_HATCH_KILLS / perStageIncubation;
+const stagesPerEgg = BOSS_EVERY / bossEggChance;
+console.log('\n=== Yoldaş (yumurta) ===');
+console.log(`Kuluçka: bölge başına ~${fmt(perStageIncubation, 0)} ilerleme → ${fmt(stagesPerHatch, 1)} bölgede bir çatlama (yumurta varsa).`);
+console.log(`Yumurta: boss başına %${bossEggChance * 100} → ortalama ${fmt(stagesPerEgg, 0)} bölgede bir yumurta.`);
+console.log(`Yani yumurta, kuluçkanın çatlamasından ${fmt(stagesPerEgg / stagesPerHatch, 1)} kat yavaş; yoldaş arzı yumurta ile sınırlı.`);

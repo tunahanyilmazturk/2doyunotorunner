@@ -17,7 +17,7 @@ import { createItem } from '../src/systems/ItemFactory.js';
 
 function makeGame(time = new Date(2026, 9, 20, 12).getTime()) {
   const state = createDefaultState();
-  state.bestStage = 20; // kule açık
+  state.stage = 20; // kule açık (bölge kilidi şu anki koşuya bakar)
   const bus = new EventBus();
   const seen = [];
   const clock = { time };
@@ -90,6 +90,24 @@ test('rün: tak, stat ver, çıkar, satışta iade', () => {
   assert.equal(game.runes.count('ruby', 3), 2);
 });
 
+test('rün: boş yuvalar en yüksek kademeli rünlerle otomatik doldurulur', () => {
+  const game = makeGame();
+  const s = game.state;
+  const item = createItem(s, { level: 30, slot: 'weapon' });
+  item.tier = 4;
+  item.sockets = [null, { type: 'onyx', grade: 1 }, null];
+  s.equipment.weapon = item;
+  game.runes.add('ruby', 2, 1);
+  game.runes.add('emerald', 5, 1);
+  game.runes.add('topaz', 3, 4);
+
+  assert.equal(game.runes.autoSocket(), 2, 'iki boş yuva var, ikisi de dolar');
+  assert.equal(item.sockets[0].grade, 5, 'önce en yüksek kademe');
+  assert.equal(item.sockets[2].grade, 3, 'sonra bir sonraki');
+  assert.equal(item.sockets[1].type, 'onyx', 'dolu yuva değişmez');
+  assert.equal(game.runes.autoSocket(), 0, 'boş yuva kalmayınca hiçbir şey yapmaz');
+});
+
 test('rün: yuva açma nadirlik sınırına uyar', () => {
   const game = makeGame();
   const s = game.state;
@@ -157,10 +175,10 @@ test('kule: hak harcar, kat ödülünü yalnızca ilk geçişte verir, ölümde 
 
 test('kule: ana koşuda yeterince ilerlemeden açılmaz', () => {
   const game = makeGame();
-  game.state.bestStage = TOWER_UNLOCK_STAGE - 1;
+  game.state.stage = TOWER_UNLOCK_STAGE - 1;
   assert.equal(game.tower.enter(), false);
   assert.equal(game.state.tower.attempts, TOWER_DAILY_ATTEMPTS, 'hak harcanmamalı');
-  game.state.bestStage = TOWER_UNLOCK_STAGE;
+  game.state.stage = TOWER_UNLOCK_STAGE;
   assert.equal(game.tower.enter(), true);
 });
 
@@ -228,6 +246,19 @@ test('giriş ödülü günde bir kez alınır', () => {
   assert.equal(game.quests.loginReward, LOGIN_REWARDS[0]);
   assert.equal(game.quests.claimLogin(), true);
   assert.equal(game.quests.claimLogin(), false);
+});
+
+test('her yoldaşın çizim şekli, pasif stat ve nadirliği geçerlidir', async () => {
+  const { SHAPES } = await import('../src/render/sprites/monsters/index.js');
+  const { STAT_DEFS } = await import('../src/data/stats.js');
+  const { COMPANION_RARITIES } = await import('../src/data/companions.js');
+  const ids = COMPANIONS.map((c) => c.id);
+  assert.equal(new Set(ids).size, ids.length, 'kimlikler benzersiz');
+  for (const c of COMPANIONS) {
+    assert.ok(SHAPES[c.look.shape], `${c.id}: çizim şekli var`);
+    assert.ok(STAT_DEFS[c.passive.stat], `${c.id}: pasif stat tanımlı`);
+    assert.ok(COMPANION_RARITIES[c.rarity], `${c.id}: nadirlik var`);
+  }
 });
 
 test('kayıt doğrulama yeni alanları korur ve bozuk değerleri onarır', () => {

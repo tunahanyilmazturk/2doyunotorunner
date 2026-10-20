@@ -168,6 +168,29 @@ const RECIPES = {
       tone(c, o, { from: 784, to: 1175, dur: 0.12, gain: 0.07, type: 'square', at: t, delay: 0.09 });
     },
   },
+  hatch: {
+    cooldown: 0.5,
+    make: (c, o, t) => {
+      tone(c, o, { from: 880, to: 1320, dur: 0.08, gain: 0.06, type: 'sine', at: t });
+      tone(c, o, { from: 1100, to: 1650, dur: 0.08, gain: 0.06, type: 'sine', at: t, delay: 0.08 });
+      tone(c, o, { from: 1320, to: 1980, dur: 0.1, gain: 0.06, type: 'sine', at: t, delay: 0.16 });
+    },
+  },
+  levelUp: {
+    cooldown: 0.4,
+    make: (c, o, t) => {
+      tone(c, o, { from: 523, to: 784, dur: 0.1, gain: 0.06, type: 'square', at: t });
+      tone(c, o, { from: 659, to: 988, dur: 0.12, gain: 0.06, type: 'square', at: t, delay: 0.1 });
+    },
+  },
+  rune: { cooldown: 0.15, make: (c, o, t) => tone(c, o, { from: 1400, to: 2100, dur: 0.12, gain: 0.05, type: 'sine', at: t }) },
+  towerClear: {
+    cooldown: 0.6,
+    make: (c, o, t) => {
+      tone(c, o, { from: 392, to: 523, dur: 0.12, gain: 0.07, type: 'triangle', at: t });
+      tone(c, o, { from: 523, to: 784, dur: 0.14, gain: 0.07, type: 'triangle', at: t, delay: 0.12 });
+    },
+  },
   ui: { cooldown: 0.03, make: (c, o, t) => tone(c, o, { from: 700, dur: 0.03, gain: 0.04, type: 'square', at: t }) },
 };
 
@@ -193,6 +216,10 @@ const EVENT_SOUNDS = [
   [Events.ACHIEVEMENT_UNLOCKED, (p) => (p.silent ? null : 'achievement')],
   [Events.PRESTIGE, () => 'prestige'],
   [Events.OFFLINE_REWARD, () => 'reward'],
+  [Events.COMPANION_HATCHED, () => 'hatch'],
+  [Events.COMPANION_LEVELED, () => 'levelUp'],
+  [Events.RUNE_FOUND, () => 'rune'],
+  [Events.TOWER_FLOOR_CLEARED, () => 'towerClear'],
 ];
 
 export class AudioSystem {

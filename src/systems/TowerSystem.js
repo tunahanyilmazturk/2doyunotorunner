@@ -29,8 +29,9 @@ export class TowerSystem {
     return this.data.best + 1;
   }
 
+  /** Kilit şu anki koşunun bölgesine bağlıdır: savaş gücü de bu koşudan gelir. */
   get unlocked() {
-    return this.game.state.bestStage >= TOWER_UNLOCK_STAGE;
+    return this.game.state.stage >= TOWER_UNLOCK_STAGE;
   }
 
   get canEnter() {

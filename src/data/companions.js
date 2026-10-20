@@ -53,6 +53,20 @@ export const COMPANIONS = [
     passive: { stat: 'thorns', base: 10, per: 1 },
   },
   {
+    id: 'sparrow', name: 'Serçe', emoji: '🐦', rarity: 0,
+    desc: 'Hızlı ve çevik; saldırılardan sıyrılmayı öğretir',
+    look: { shape: 'flyer', size: 16, colors: { body: '#c79a6b', dark: '#7a5a3a', eye: '#1a1208' }, features: ['beak'] },
+    attack: { pct: 0.18, interval: 0.9 },
+    passive: { stat: 'dodge', base: 2, per: 0.2 },
+  },
+  {
+    id: 'shadowWolf', name: 'Gölge Kurdu', emoji: '🐺', rarity: 2,
+    desc: 'Gölgeden çıkıp kritik ısırık atar',
+    look: { shape: 'beast', size: 28, colors: { body: '#2b2538', dark: '#120e18', eye: '#ff4d6d' }, features: ['tail'] },
+    attack: { pct: 0.9, interval: 1.4 },
+    passive: { stat: 'crit', base: 3, per: 0.3 },
+  },
+  {
     id: 'dragonling', name: 'Ejder Yavrusu', emoji: '🐉', rarity: 3,
     desc: 'Ateş püskürür; kritik vuruşları alevlendirir',
     look: { shape: 'flyer', size: 26, colors: { body: '#e0482f', dark: '#8f1f12', eye: '#ffe14d' }, features: ['horns'] },
@@ -64,6 +78,8 @@ export const COMPANIONS = [
 export const COMPANION_MAP = Object.fromEntries(COMPANIONS.map((c) => [c.id, c]));
 export const COMPANION_IDS = COMPANIONS.map((c) => c.id);
 
+/** Normal bir bossun yumurta düşürme ihtimali (kule bossları hariç) */
+export const BOSS_EGG_CHANCE = 0.3;
 export const MAX_COMPANION_LEVEL = 50;
 export const EGG_HATCH_KILLS = 120;
 export const MAX_EGGS = 99;

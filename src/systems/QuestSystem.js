@@ -60,7 +60,7 @@ export class QuestSystem {
   rollQuests() {
     const best = this.game.state.bestStage;
     // Kule kilitliyken kule görevi tamamlanamaz
-    const pool = QUEST_TEMPLATES.filter((t) => t.event !== 'towerFloor' || best >= TOWER_UNLOCK_STAGE);
+    const pool = QUEST_TEMPLATES.filter((t) => t.event !== 'towerFloor' || this.game.state.stage >= TOWER_UNLOCK_STAGE);
     return shuffle(pool)
       .slice(0, DAILY_QUEST_COUNT)
       .map((t) => ({ id: t.id, target: t.target(best), progress: 0, claimed: false, reward: t.reward(best) }));
